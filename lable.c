@@ -2,8 +2,6 @@
 #include <string.h>
 #include <ctype.h>
 
-int isLable(char * text);
-
 /*
     Gets text that could contain a lable. 
     Don't send null or empty text
