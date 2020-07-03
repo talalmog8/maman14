@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "assembler.h"
 #include <string.h>
 #include <ctype.h>
 
