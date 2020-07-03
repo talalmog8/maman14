@@ -33,30 +33,34 @@ void disposefile(FILE *file){
     Line length is At most 80 character without '\n'
 */
 char* readline(FILE *file){    
-    char* line = (char *)malloc(sizeof(char));
+    static char last = 0;
+    char* line = (char *)malloc(sizeof(char)*2); /* at least '\n' and '\0' */
     char* start = line;
-    int size = 1;
+    int size = 2;
     int current;
     
     if(!line){
         fprintf(stderr, "Failed to allocate space for input lines. exiting program");
             exit(1);
+    }    
+    if(last == EOF){
+        last = 0; /* for next file need to reset this flag*/
+        return NULL; /* Finished parsing file last function call */
     }
 
     while ((size <= MAX_LINE_LENGTH) && (current = fgetc(file)) != EOF)
     {
-        *line = current;
-        if(current == '\n'){                        
+        *(line++) = current;                        
+        if(current == '\n'){                                    
             break;   
-        }                    
-
-        line++;
+        } 
         if(!realloc(start, ++size)){
             fprintf(stderr, "Failed to reallocate space for input lines. exiting program");
             exit(1);
         }
     }            
-
+    *(line) = '\0';    
+    last = current;    
     return start;
 }
 
