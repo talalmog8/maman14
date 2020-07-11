@@ -3,7 +3,7 @@
 #define TAB '\t'
 #define SPACE ' '
 #define NEWLINE '\n'
-#define PARSERS_AMOUNT 1
+#define PARSERS_AMOUNT 2
 #define END_OF_STRING '\0'
 
 static parsing_result is_comment_or_empty(char *line);
@@ -15,6 +15,7 @@ static parsing_result is_comment_or_empty(char *line)
     if (*line == NEWLINE || *line == COMMENT)
     {
         result = CORRECT;
+        printf("EMPTYLINE \\ COMMENT\n");
     }
     else if (*line == TAB || *line == SPACE)
     {
@@ -24,6 +25,7 @@ static parsing_result is_comment_or_empty(char *line)
         if (*line == NEWLINE || *line == END_OF_STRING)
         {
             result = CORRECT;
+            printf("EMPTYLINE \\ COMMENT\n");
         }
         else
         {
@@ -31,7 +33,6 @@ static parsing_result is_comment_or_empty(char *line)
         }
     }
 
-    printf("Parser: is_comment_or_empty. Result: %d\n", result);
     return result;
 }
 
@@ -41,8 +42,7 @@ bool parse(FILE *file)
     int counter = 0;
     int i;
     parsing_result result;
-    parsing_result (*parsers[])(char *text) = {
-        is_comment_or_empty};
+    parsing_result (*parsers[])(char *text) = { is_comment_or_empty, main_parser};
 
     while ((line = readline(file)) != NULL)
     {        
