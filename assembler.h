@@ -1,4 +1,5 @@
 #include<stdio.h>
+
 #include "command_template.h"
 
 typedef enum {
@@ -32,6 +33,13 @@ typedef enum {
     stop
 } operation_names;
 
+typedef enum {
+    __string,
+    __data,
+    __extern,
+    __entry
+} guide_names;
+
 typedef struct
 {
     operation_names opkind;
@@ -57,7 +65,7 @@ bool parselable(char *lable, int length);
 parsing_result parse_command(char *line);
 
 operation_names isoperation(char *text);
-bool isguide(char *text);
+bool is_guide(char *line);
 int skip_white_characters(char *text);
 bool is_comment_or_empty(char *line);
 
