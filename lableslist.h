@@ -1,3 +1,4 @@
+#include<string.h>
 
 typedef enum{
     entry,
@@ -21,3 +22,4 @@ void printlist(stringnode *head);
 void addtoend(stringnode *head, char *content, int location, lable_area area, lable_kind kind);
 void disposelist(stringnode *head);
 stringnode *createnode(char *content, int location, lable_area area, lable_kind kind);
+int exists(stringnode *head, char *lable);

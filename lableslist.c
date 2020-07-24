@@ -1,5 +1,6 @@
 #include "assembler.h"
 #include <stdlib.h>
+
 #include "lableslist.h"
 
 /*
@@ -66,15 +67,17 @@ void disposelist(stringnode *head)
     free(current);
 }
 
-int main(void)
-{
-    stringnode *head = createnode("a", 100, code, external);
-    addtoend(head, "a", 100, code, external);
-    addtoend(head, "aa", 101, data, entry);
-    addtoend(head, "aaa", 102, code, external);
-    addtoend(head, "aaaa", 103, data, entry);
-    addtoend(head, "aaaaa", 104, code, external);
-    printlist(head);
-    disposelist(head);
-    return 0;
+int exists(stringnode *head, char *lable){
+    stringnode *current = head;
+
+    if (current == NULL)
+        return 0;
+
+    while ((current->next) != NULL){
+        if(!strcmp(current->lable, lable)){
+            return 1;
+        }        
+        current = current -> next;
+    }
+    return 0;    
 }
