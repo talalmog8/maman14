@@ -9,6 +9,8 @@ bool firstpass(FILE *file)
     int counter = 0;
     int i;
 
+    setIC(100);
+    setDC(0);
     while ((origline = line = readline(file)) != NULL)
     {
         line += skip_white_characters(line);

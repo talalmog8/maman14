@@ -60,3 +60,11 @@ operation_names isoperation(char *text);
 bool isguide(char *text);
 int skip_white_characters(char *text);
 bool is_comment_or_empty(char *line);
+
+/* registers operations */
+void setIC(int ic);
+unsigned int getIC();
+void incIC(unsigned  int addition);
+void setDC(int dc);
+unsigned int getDC();
+void incDC(unsigned  int addition);
