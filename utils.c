@@ -31,22 +31,22 @@ operation_names isoperation(char *text){
     int i = 0;
     operations ops[] = {
         { unknown, "unknown"},
-        { mov, "mov"},
-        { cmp, "cmp"},
-        { add, "add"},
-        { sub, "sub"},
-        { lea, "lea"},
-        { clr, "clr"},
-        { not, "not"},
-        { inc, "inc"},
-        { dec, "dec"},
-        { jmp, "jmp"},
-        { bne, "bne"},
-        { jsr, "jsr"},
-        { red, "red"},
-        { prn, "prn"},
-        { rts, "rts"},
-        { stop, "stop"}
+        { mov, "mov "},
+        { cmp, "cmp "},
+        { add, "add "},
+        { sub, "sub "},
+        { lea, "lea "},
+        { clr, "clr "},
+        { not, "not "},
+        { inc, "inc "},
+        { dec, "dec "},
+        { jmp, "jmp "},
+        { bne, "bne "},
+        { jsr, "jsr "},
+        { red, "red "},     
+        { prn, "prn "},
+        { rts, "rts "},
+        { stop, "stop "}
     };    
     
     for (; i < OPS; i++)
