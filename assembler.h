@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include "command_template.h"
 
 typedef enum {
     FALSE,
@@ -50,11 +51,12 @@ void disposefile(FILE *file);
 void disposeline(char *linestart);
 
 /* parsing */
-bool parse(FILE *file);
+bool firstpass(FILE *file);
 char* findlable(char * text);
 bool parselable(char *lable, int length);
-parsing_result main_parser(char *line);
+parsing_result parse_command(char *line);
 
 operation_names isoperation(char *text);
 bool isguide(char *text);
 int skip_white_characters(char *text);
+bool is_comment_or_empty(char *line);

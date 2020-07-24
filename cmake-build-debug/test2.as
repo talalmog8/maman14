@@ -1,15 +1,20 @@
-HI: mov r2, #2
-    TAL: mov r2, #2
-mov r2, #2
-3I: mov r2, #2
-;
-r2:mov r2, #2
+MAIN: add r3, LIST
+LOOP: prn #48
+lea STR, r6
+inc r6
+mov r3,K
+sub r1, r4
+; tal
+bne END
+cmp K, #-6
+bne &END
+dec K
 
-mov r2, #2
-                 
-RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR:mov r2, #2
-; dfsdf
- 
 
+jmp &LOOP
+END: stop
+STR: .string “abcd”
 
-                
+LIST: .data 6, -9
+    .data -100
+K: .data 31

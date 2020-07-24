@@ -1,10 +1,10 @@
 #include "assembler.h"
 #include<string.h>
+#define COMMENT ';'
+#define NEWLINE '\n'
+
 
 #define OPS 16
-int stringlen(char *string);
-operation_names isoperation(char *text);
-int skip_white_characters(char *text);
 
 int skip_white_characters(char *text){
     int i = 0;
@@ -17,12 +17,16 @@ int skip_white_characters(char *text){
     return i;
 }
 
-int stringlen(char *string){
-    int counter = 1;
-    while (*string != '\0')            
-        ++counter;
-    return counter;
+bool is_comment_or_empty(char *line)
+{
+    if (*line == NEWLINE || *line == COMMENT)
+    {
+        printf("EMPTYLINE \\ COMMENT\n");
+        return  TRUE;
+    }
+    return FALSE;
 }
+
 
 /*
     Returns operation number identifier or -1 if text didn't match any known operation

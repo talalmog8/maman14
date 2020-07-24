@@ -5,7 +5,7 @@ typedef struct{
     bool (* parser)(char *);
 } parseFuncs;
 
-parsing_result main_parser(char *line){
+parsing_result parse_command(char *line){
     char *lable_result;
     parsing_result result = OTHER;
     line += skip_white_characters(line);
