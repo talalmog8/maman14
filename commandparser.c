@@ -1,7 +1,7 @@
 #include <string.h>
 #include "assembler.h"
 #define GUIDE_AMOUNT 4
-
+/*
 parsing_result parse_command(char *line){
     char *lable_result;
     parsing_result result = OTHER;
@@ -9,7 +9,7 @@ parsing_result parse_command(char *line){
 
     if(lable_result = findlable(line)){
         if(parselable(line, (lable_result - line - 1))){
-            /* add lable to list if is a valid lable */
+
             printf("FOUND LABLE\n");
         }
         else{
@@ -25,6 +25,8 @@ parsing_result parse_command(char *line){
     return result;
 }
 
+*/
+
 bool is_guide(char *line){
     int i;
     line += skip_white_characters(line);
@@ -36,18 +38,20 @@ bool is_guide(char *line){
     } guide_type;
 
     guide_type  types[] = {
-            {".string ", strlen(".string"), __string},
-            {".data ", strlen(".data"), __data},
-            {".entry ", strlen(".entry"), __entry},
-            {".extern ", strlen(".extern"), __extern}
+            {".string ", strlen(".string "), __string},
+            {".data ", strlen(".data "), __data},
+            {".entry ", strlen(".entry "), __entry},
+            {".extern ", strlen(".extern "), __extern}
     };
 
 
     for (i = 0; i < GUIDE_AMOUNT; ++i) {
         if(!strncmp(line, types[i].type, types[i].length)){
+            line += types[i].length;
             return types[i].no;
         }
     }
+
 
     return -1;
 }

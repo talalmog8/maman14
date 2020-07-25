@@ -1,34 +1,46 @@
 #include "assembler.h"
-
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #define MAX_LABLE_SIZE 31
 #define RESERVED_OPS_AMOUNT 11
 
+char * allocate_label(int length){
+    char *label;
 
-char *findlable(char *text) {
+    label = (char *)malloc((sizeof(char *) * length));
+
+    if(!label){
+        fprintf(stderr, "Failed to allocate label. exiting program\n");
+        exit(1);
+    }
+
+    return label;
+}
+
+int findlable(char *line) {
     int i = 0;
 
-    while (text[i] != '\n' && text[i] != ':') {
+    while (line[i] != '\n' && line[i] != ':') {
         i++;
     }
 
-    if (text[i] == ':') {
-        return (text + i + 1);
+    if (line[i] == ':') {
+        return i;
     }
 
-    return NULL;
+    return -1;
 }
 
-bool parselable(char *lable, int length) {
+bool parselable(char *line, int length, char *output) {
     int i;
 
     if (length > MAX_LABLE_SIZE) {
         fprintf(stderr, "Lable bigger than max size\n");
         return FALSE;
     }
-    if (!isalpha(lable[0])) {
+    if (!isalpha(line[0])) {
         fprintf(stderr, "Lable not starting with letter\n");
         return FALSE;
     }
@@ -50,10 +62,21 @@ bool parselable(char *lable, int length) {
     };
 
     for (i = 0; i < RESERVED_OPS_AMOUNT; ++i) {
-        if (!strncmp(lable, reserved[i].name, length)) {
+        if (!strncmp(line, reserved[i].name, length)) {
             fprintf(stderr, "reserved assembly word used as label %s\n", reserved[i].name);
             return FALSE;
         }
     }
+
+
+    for(i = 1; i < length; i++){
+        if(!isalnum(line[i])){
+            return FALSE;
+        }
+    }
+
+    output = strncpy(output, line, length);
+    line+= (length + 1); /* foward line after label */
+    return TRUE;
 }
 

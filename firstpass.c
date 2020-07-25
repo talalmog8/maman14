@@ -1,11 +1,12 @@
 #include "assembler.h"
 
+
 bool firstpass(FILE *file)
 {
     bool output = TRUE;
     bool  foundLabel = FALSE;
-    char *line, *origline;
-    char *end_of_lable;
+    char *line, *origline, *label;
+    int label_length;
     int guide_result = 0;
     int i;
 
@@ -14,14 +15,15 @@ bool firstpass(FILE *file)
     while ((origline = line = readline(file)) != NULL)
     {
         line += skip_white_characters(line);
+
         if(is_comment_or_empty(line)){
             continue;
         }
-        else if((end_of_lable = findlable(line))){
-            if(parselable(line, (end_of_lable - line - 1))){
+        else if((label_length = findlable(line)) != -1){
+            label = allocate_label(label_length);
+            if(parselable(line, label_length, label)){
                 foundLabel = TRUE;
-                printf("LABEL in line: %s", line);
-                line = end_of_lable;
+                printf("LABEL in line: %s", origline);
             }
             else{
                 fprintf(stderr, "Found illegal label in line: %s", line);

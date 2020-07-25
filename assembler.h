@@ -60,9 +60,11 @@ void disposeline(char *linestart);
 
 /* parsing */
 bool firstpass(FILE *file);
-char* findlable(char * text);
-bool parselable(char *lable, int length);
+int findlable(char * line);
+bool parselable(char *line, int length, char *output);
+char * allocate_label(int length);
 parsing_result parse_command(char *line);
+
 
 operation_names isoperation(char *text);
 bool is_guide(char *line);
