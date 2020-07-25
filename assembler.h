@@ -61,7 +61,7 @@ void disposeline(char *linestart);
 
 /* parsing */
 bool firstpass(FILE *file);
-int findlable(char * line);
+int findlable(char * line, bool atStart);
 bool parselable(char *line, int length, char *output);
 char * allocate_label(int length);
 parsing_result parse_command(char *line);

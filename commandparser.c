@@ -29,7 +29,6 @@ parsing_result parse_command(char *line){
 
 int is_guide(char *line){
     int i;
-    line += skip_white_characters(line);
 
     typedef struct{
         char *type;
@@ -47,7 +46,7 @@ int is_guide(char *line){
 
     for (i = 0; i < GUIDE_AMOUNT; ++i) {
         if(!strncmp(line, types[i].type, types[i].length)){
-            line += types[i].length;
+            strcpy(line, (line + types[i].length));
             return types[i].no;
         }
     }

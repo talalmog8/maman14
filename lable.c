@@ -19,17 +19,22 @@ char * allocate_label(int length){
     return label;
 }
 
-int findlable(char *line) {
+int findlable(char *line, bool atStart) {
     int i = 0;
 
-    while (line[i] != '\n' && line[i] != ':') {
+    while (line[i] != '\n' && line[i] != '\0' && line[i] != ':') {
         i++;
     }
 
-    if (line[i] == ':') {
-        return i;
+    if(atStart){
+        if (line[i] == ':') {
+            return i;
+        }
+        return -1;
     }
-
+    line += skip_white_characters(line);
+    if(line[i] == '\n' || line[i] == '\0')
+        return i;
     return -1;
 }
 
@@ -76,7 +81,6 @@ bool parselable(char *line, int length, char *output) {
     }
 
     output = strncpy(output, line, length);
-    line+= (length + 1); /* foward line after label */
     return TRUE;
 }
 

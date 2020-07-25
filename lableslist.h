@@ -1,8 +1,8 @@
 #include<string.h>
 
 typedef enum{
-    entry,
-    external
+    label_entry = 1,
+    label_external = 2
 } lable_kind;
 
 typedef enum{
