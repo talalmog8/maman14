@@ -18,8 +18,8 @@ typedef struct node {
     struct node *next;
 } stringnode;
 
-void printlist(stringnode *head);
-void addtoend(stringnode *head, char *content, int location, lable_area area, lable_kind kind);
-void disposelist(stringnode *head);
+void printlist();
+void addtoend(char *content, int location, lable_area area, lable_kind kind);
+void disposelist();
 stringnode *createnode(char *content, int location, lable_area area, lable_kind kind);
-int exists(stringnode *head, char *lable);
+int exists(char *lable);

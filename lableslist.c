@@ -1,14 +1,14 @@
 #include "assembler.h"
 #include <stdlib.h>
 
-#include "lableslist.h"
-
 /*
     This file holds function to for linked list operation of char array nodes
 
 */
 
-void printlist(stringnode *head)
+static  stringnode* head = NULL;
+
+void printlist()
 {
     int index = 0;
     stringnode *current = head;
@@ -21,12 +21,14 @@ void printlist(stringnode *head)
     }
 }
 
-void addtoend(stringnode *head, char *content, int location, lable_area area, lable_kind kind)
+void addtoend(char *content, int location, lable_area area, lable_kind kind)
 {
     stringnode *current = head;
 
-    if (current == NULL)
+    if (head == NULL) {
+        head = createnode(content, location, area, kind);
         return;
+    }
 
     while ((current->next) != NULL)
         current = current->next;
@@ -51,7 +53,7 @@ stringnode *createnode(char *content, int location, lable_area area, lable_kind 
     return new;
 }
 
-void disposelist(stringnode *head)
+void disposelist()
 {
     stringnode *current = head, *next;
 
@@ -64,10 +66,11 @@ void disposelist(stringnode *head)
         free(current);
         current = next;
     }
+    free(current->lable);
     free(current);
 }
 
-int exists(stringnode *head, char *lable){
+int exists(char *lable){
     stringnode *current = head;
 
     if (current == NULL)

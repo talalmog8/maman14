@@ -27,7 +27,7 @@ parsing_result parse_command(char *line){
 
 */
 
-bool is_guide(char *line){
+int is_guide(char *line){
     int i;
     line += skip_white_characters(line);
 

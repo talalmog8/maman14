@@ -12,6 +12,7 @@ bool firstpass(FILE *file)
 
     setIC(100);
     setDC(0);
+    disposelist();
     while ((origline = line = readline(file)) != NULL)
     {
         line += skip_white_characters(line);
@@ -29,9 +30,20 @@ bool firstpass(FILE *file)
                 fprintf(stderr, "Found illegal label in line: %s", line);
                 output = FALSE;
             }
+        }
 
-            if((guide_result = is_guide(line)) != -1){
-                printf("Found Guide: Type: %d : %s", guide_result, line);
+
+        if(((guide_result = is_guide(line)) == __string) || guide_result == __data){
+            printf("Found Guide: Type: %d : %s", guide_result, line);
+
+            if(foundLabel == TRUE){
+                if(exists(label)){
+                    printf("Label already exists");
+                    output = FALSE;
+                }
+                else{
+                    addtoend(label, getDC(), data, entry);
+                }
             }
         }
 
