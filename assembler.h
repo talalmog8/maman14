@@ -1,7 +1,9 @@
 #include<stdio.h>
-
 #include "lableslist.h"
 #include "command_template.h"
+#define MAX_LINE_LENGTH 81
+#define MAX_FILE_NAME_LENGTH 100
+#define MAX_PROGRAM_OUTPUT_SIZE 200
 
 typedef enum {
     FALSE,
@@ -71,6 +73,8 @@ operation_names isoperation(char *text);
 int is_guide(char *line);
 int skip_white_characters(char *text);
 bool is_comment_or_empty(char *line);
+bool parse_guide(char *line, guide_names guide_type);
+
 
 /* registers operations */
 void setIC(int ic);
@@ -79,3 +83,12 @@ void incIC(unsigned  int addition);
 void setDC(int dc);
 unsigned int getDC();
 void incDC(unsigned  int addition);
+
+
+/* binary output arrays */
+void assign_output_arrays(void);
+void append_command(command_template command);
+void reset_output_arrays(void);
+void append_guide(guide_template guide);
+void dispose_output_arrays(void);
+void print_output_arrays(void);

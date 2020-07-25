@@ -45,6 +45,8 @@ bool firstpass(FILE *file)
                     addtoend(label, getDC(), data, 0);
                 }
             }
+
+            parse_guide(line, guide_result);
         }
         else if (guide_result == __entry){
             printf("Found entry guide. this will be handled in second pass\n");
@@ -69,5 +71,6 @@ bool firstpass(FILE *file)
         disposeline(origline);
     }
     printlist();
+    print_output_arrays();
     return output;
 }

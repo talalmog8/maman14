@@ -1,6 +1,3 @@
-#include <string.h>
-#include "assembler.h"
-#define GUIDE_AMOUNT 4
 /*
 parsing_result parse_command(char *line){
     char *lable_result;
@@ -27,30 +24,4 @@ parsing_result parse_command(char *line){
 
 */
 
-int is_guide(char *line){
-    int i;
 
-    typedef struct{
-        char *type;
-        size_t length;
-        guide_names no;
-    } guide_type;
-
-    guide_type  types[] = {
-            {".string ", strlen(".string "), __string},
-            {".data ", strlen(".data "), __data},
-            {".entry ", strlen(".entry "), __entry},
-            {".extern ", strlen(".extern "), __extern}
-    };
-
-
-    for (i = 0; i < GUIDE_AMOUNT; ++i) {
-        if(!strncmp(line, types[i].type, types[i].length)){
-            strcpy(line, (line + types[i].length));
-            return types[i].no;
-        }
-    }
-
-
-    return -1;
-}

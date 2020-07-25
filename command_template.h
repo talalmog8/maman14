@@ -10,3 +10,7 @@ typedef struct {
     unsigned int orig_delivery_type : 2;
     unsigned int opcode :6;
 } command_template;
+
+typedef struct {
+    unsigned int data : 24;
+} guide_template;

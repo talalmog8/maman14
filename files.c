@@ -2,8 +2,6 @@
 #include<stdlib.h>
 #include<string.h>
 #define POSTFIX ".as"
-#define MAX_LINE_LENGTH 81 
-#define MAX_FILE_NAME_LENGTH 100
 
 /*
     Tries to open file with specified name + ".as" postfix
