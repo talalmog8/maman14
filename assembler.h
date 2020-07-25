@@ -57,7 +57,7 @@ FILE * readFile(char *name);
 
 /* file */
 FILE * openfile(char *name);
-char* readline(FILE *file);
+char *readline(FILE *file, char* line);
 void disposefile(FILE *file);
 void disposeline(char *linestart);
 

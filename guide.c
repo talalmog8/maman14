@@ -49,7 +49,7 @@ static bool parse_data(char *line){
     char *token;
     int counter = 0;
 
-    token = strtok(line, ", \t");
+    token = strtok(line, ", \t\n\0");
 
     while (token != NULL){
         if(parse_number(token)){

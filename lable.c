@@ -6,10 +6,12 @@
 #define MAX_LABLE_SIZE 31
 #define RESERVED_OPS_AMOUNT 11
 
-char * allocate_label(int length){
+static void copy(char *dest,char *source, int length);
+
+char *allocate_label(int length){
     char *label;
 
-    label = (char *)malloc((sizeof(char *) * length));
+    label = (char *)malloc((sizeof(char) * (length + 1)));
 
     if(!label){
         fprintf(stderr, "Failed to allocate label. exiting program\n");
@@ -80,7 +82,16 @@ bool parselable(char *line, int length, char *output) {
         }
     }
 
-    output = strncpy(output, line, length);
+    copy(output, line, length);
+
     return TRUE;
+}
+
+static void copy(char *dest,char *source, int length){
+    int i;
+    for ( i= 0; i < length; ++i) {
+        dest[i] = source[i];
+    }
+    dest[length] = '\0';
 }
 

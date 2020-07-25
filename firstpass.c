@@ -4,16 +4,17 @@
 bool firstpass(FILE *file)
 {
     bool output = TRUE;
-    bool  foundLabel = FALSE;
+    bool  foundLabel;
     char *line, *origline, *label;
     int label_length;
     int guide_result = 0;
 
     setIC(100);
     setDC(0);
-    disposelist();
-    while ((origline = line = readline(file)) != NULL)
+    char line_mem[MAX_LINE_LENGTH];
+    while (readline(file, (line = origline = line_mem)) != NULL)
     {
+        foundLabel = FALSE;
         line += skip_white_characters(line);
 
         if(is_comment_or_empty(line)){
@@ -23,7 +24,6 @@ bool firstpass(FILE *file)
             label = allocate_label(label_length);
             if(parselable(line, label_length, label)){
                 foundLabel = TRUE;
-                printf("LABEL in line: %s", origline);
                 line+= (label_length + 1); /* foward line after label */
                 line += skip_white_characters(line);
             }
@@ -34,19 +34,21 @@ bool firstpass(FILE *file)
         }
 
         if(((guide_result = is_guide(line)) == __string) || guide_result == __data){
-            printf("Found string or data Guide: %s", line);
+            printf("Found string or data Guide: %s", origline);
 
             if(foundLabel == TRUE){
                 if(exists(label)){
-                    printf("Label already exists");
+                    printf("Label already exists\n");
                     output = FALSE;
                 }
                 else{
                     addtoend(label, getDC(), data, 0);
                 }
             }
-
-            parse_guide(line, guide_result);
+            output &= parse_guide(line, guide_result);
+            if(!output){
+                printf("Guide line arguments could not be parsed properly. arguments: %s", origline);
+            }
         }
         else if (guide_result == __entry){
             printf("Found entry guide. this will be handled in second pass\n");
@@ -55,7 +57,7 @@ bool firstpass(FILE *file)
         else if(guide_result == __extern){
             label_length = findlable(line, FALSE);
             if(label_length == -1){
-                printf("Missing label on exten guide command");
+                printf("Missing label on extern guide command\n");
                 output = FALSE;
             }
             else if(parselable(line, label_length, (label = allocate_label(label_length)))){
@@ -67,9 +69,8 @@ bool firstpass(FILE *file)
                 }
             }
         }
-
-        disposeline(origline);
     }
+
     printlist();
     print_output_arrays();
     return output;

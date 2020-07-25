@@ -16,7 +16,7 @@ void printlist()
     while (current != NULL)
     {
         printf("%d: lable: %s location: %d area: %s kind: %s\n", (index++), current->lable, current->location
-        , (current -> area) ? "data" : "code", (current -> kind) ? "external" : "entry");
+        , (current -> area) ? "data" : "code", ((current -> kind) == 1) ? "entry" : "external");
         current = current->next;
     }
 }
@@ -50,6 +50,7 @@ stringnode *createnode(char *content, int location, lable_area area, lable_kind 
     new->location = location;
     new->area = area;
     new->kind = kind;
+    new -> next = NULL;
     return new;
 }
 

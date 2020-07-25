@@ -30,9 +30,9 @@ void disposefile(FILE *file){
     If allocation fails, program exits with error code 1.
     Line length is At most 80 character without '\n'
 */
-char* readline(FILE *file){
+char *readline(FILE *file, char *line){
 
-    char* line = (char *)malloc(sizeof(MAX_LINE_LENGTH)); /* at least '\n' and '\0' */
+    //char* line = (char *)malloc(sizeof(char) * sizeof(MAX_LINE_LENGTH)); /* at least '\n' and '\0' */
 
     return fgets(line, MAX_LINE_LENGTH, file);
 }
