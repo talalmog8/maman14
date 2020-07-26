@@ -47,7 +47,7 @@ typedef struct
 {
     operation_names opkind;
     char* opname;
-} operations;
+} operation;
 
 
 /* command line arguements */
@@ -59,22 +59,28 @@ FILE * readFile(char *name);
 FILE * openfile(char *name);
 char *readline(FILE *file, char* line);
 void disposefile(FILE *file);
-void disposeline(char *linestart);
 
 /* parsing */
 bool firstpass(FILE *file);
+
+
+/* labels */
 int findlable(char * line, bool atStart);
 bool parselable(char *line, int length, char *output);
 char * allocate_label(int length);
-parsing_result parse_command(char *line);
 
-
+/* command */
 operation_names isoperation(char *text);
+bool parse_command(char *line);
+
+/* guide */
 int is_guide(char *line);
-int skip_white_characters(char *text);
-bool is_comment_or_empty(char *line);
 bool parse_guide(char *line, guide_names guide_type);
 
+/* utilities functions*/
+bool is_comment_or_empty(char *line);
+bool is_space(char  x);
+int skip_white_characters(char *text);
 
 /* registers operations */
 void setIC(int ic);

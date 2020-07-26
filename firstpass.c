@@ -56,6 +56,8 @@ bool firstpass(FILE *file) {
             /* this sould be command line*/
             if(foundLabel)
                 output &= add_label_if_new(label, getIC(), label_code, label_no_kind);
+
+            parse_command(moving_line);
         }
     }
 

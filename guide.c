@@ -6,7 +6,6 @@
 static bool parse_numbers(char *line);
 static bool parse_number(char *text);
 static bool parse_string(char *text);
-static bool is_space(char  x);
 static bool is_end(char  x);
 
 int is_guide(char *line){
@@ -135,9 +134,7 @@ static bool parse_string(char *text){
     return TRUE;
 }
 
-static bool is_space(char  x){
-    return (x == '\t') || (x == ' ');
-}
+
 
 static bool is_end(char  x){
     return ((x == '\n') || (x == '\0'));

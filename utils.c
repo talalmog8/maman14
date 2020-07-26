@@ -1,5 +1,4 @@
 #include "assembler.h"
-#include<string.h>
 #define COMMENT ';'
 #define NEWLINE '\n'
 
@@ -27,39 +26,7 @@ bool is_comment_or_empty(char *line)
     return FALSE;
 }
 
-
-/*
-    Returns operation number identifier or -1 if text didn't match any known operation
-*/
-operation_names isoperation(char *text){
-    int i = 0;
-    operations ops[] = {
-        { unknown, "unknown"},
-        { mov, "mov "},
-        { cmp, "cmp "},
-        { add, "add "},
-        { sub, "sub "},
-        { lea, "lea "},
-        { clr, "clr "},
-        { not, "not "},
-        { inc, "inc "},
-        { dec, "dec "},
-        { jmp, "jmp "},
-        { bne, "bne "},
-        { jsr, "jsr "},
-        { red, "red "},     
-        { prn, "prn "},
-        { rts, "rts "},
-        { stop, "stop "}
-    };    
-    
-    for (; i < OPS; i++)
-    {
-        if(!strncmp(text, ops[i].opname, strlen(ops[i].opname))){
-            return ops[i].opkind;
-        }
-    }
-    
-    return ops[0].opkind;
+bool is_space(char  x){
+    return (x == '\t') || (x == ' ');
 }
 

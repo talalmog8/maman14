@@ -69,9 +69,4 @@ char* readline2(FILE *file){
     return start;
 }
 
-/*
-    Dispose line created with dynamic memory allocation
-*/
-void disposeline(char *linestart){
-    free(linestart);
-}
+
