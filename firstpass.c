@@ -28,14 +28,12 @@ bool firstpass(FILE *file)
                 line += skip_white_characters(line);
             }
             else{
-                fprintf(stderr, "Found illegal label in line: %s", line);
+                fprintf(stderr, "Found illegal label in line: %s", line_mem);
                 output = FALSE;
             }
         }
 
         if(((guide_result = is_guide(line)) == __string) || guide_result == __data){
-            printf("Found string or data Guide: %s", origline);
-
             if(foundLabel == TRUE){
                 if(exists(label)){
                     printf("Label already exists\n");
@@ -47,7 +45,7 @@ bool firstpass(FILE *file)
             }
             output &= parse_guide(line, guide_result);
             if(!output){
-                printf("Guide line arguments could not be parsed properly. arguments: %s", origline);
+                printf("Guide line arguments could not be parsed properly. arguments: %s", line_mem);
             }
         }
         else if (guide_result == __entry){
@@ -65,7 +63,7 @@ bool firstpass(FILE *file)
                 line+= (label_length); /* foward line after label */
                 line += skip_white_characters(line);
                 if(*line != '\n' && *line != '\0'){
-                    printf("Too much data in command: %s", origline);
+                    printf("Too much data in command: %s", line_mem);
                 }
             }
         }

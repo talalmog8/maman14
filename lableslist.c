@@ -12,7 +12,7 @@ void printlist()
 {
     int index = 0;
     stringnode *current = head;
-
+    printf("Labels:\n");
     while (current != NULL)
     {
         printf("%d: lable: %s location: %d area: %s kind: %s\n", (index++), current->lable, current->location

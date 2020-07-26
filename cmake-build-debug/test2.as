@@ -13,7 +13,7 @@ dec K
 
 jmp &LOOP
 END: stop
-STR: .string “abcd”
+STR: .string "abcd"
 
 LIST: .data 6, -9, 900
 TAL: .data 45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45
