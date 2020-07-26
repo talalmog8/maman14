@@ -1,5 +1,6 @@
 #include "assembler.h"
 #include<string.h>
+#include <ctype.h>
 
 bool parse_command(char *line){
     operation_names operation;
@@ -41,7 +42,7 @@ operation_names isoperation(char *text){
     for (; i < (sizeof(ops)/ sizeof(operation)); i++)
     {
         if((!strncmp(text, ops[i].opname, (length = strlen(ops[i].opname))))){
-            if(!is_space(text[length])){
+            if(!isspace(text[length])){
                 fprintf(stderr, "Missing spece or tab after operation name. Line: %s", text);
                 return unknown;
             }

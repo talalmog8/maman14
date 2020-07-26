@@ -74,13 +74,15 @@ operation_names isoperation(char *text);
 bool parse_command(char *line);
 
 /* guide */
-int is_guide(char *line);
+int is_guide(char **line_p);
 bool parse_guide(char *line, guide_names guide_type);
 
 /* utilities functions*/
 bool is_comment_or_empty(char *line);
 bool is_space(char  x);
-int skip_white_characters(char *text);
+bool is_end(char  x);
+void skip_white_characters(char **text_p);
+void skip_characters(char **text_p, int amount);
 
 /* registers operations */
 void setIC(int ic);

@@ -34,7 +34,8 @@ int findlable(char *line, bool atStart) {
         }
         return -1;
     }
-    line += skip_white_characters(line);
+    skip_white_characters(&line);
+
     if(line[i] == '\n' || line[i] == '\0')
         return i;
     return -1;

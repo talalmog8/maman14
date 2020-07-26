@@ -2,6 +2,10 @@
 
 static bool add_label_if_new(char *label, int location, int area, int kind);
 
+void movePointer(char **p){
+    *p = (*p + 1);
+}
+
 bool firstpass(FILE *file) {
     bool output = TRUE;
     bool foundLabel;
@@ -14,7 +18,7 @@ bool firstpass(FILE *file) {
     char line_mem[MAX_LINE_LENGTH];
     while (readline(file, (moving_line = line_mem)) != NULL) {
         foundLabel = FALSE;
-        moving_line += skip_white_characters(moving_line);
+        skip_white_characters(&moving_line);
 
         if (is_comment_or_empty(moving_line)) {
             continue;
@@ -22,38 +26,37 @@ bool firstpass(FILE *file) {
             label = allocate_label(label_length);
             if (parselable(moving_line, label_length, label)) {
                 foundLabel = TRUE;
-                moving_line += (label_length + 1); /* foward line after label */
-                moving_line += skip_white_characters(moving_line);
+                skip_characters(&moving_line, label_length + 1);
             } else {
                 fprintf(stderr, "Found illegal label in line: %s", line_mem);
                 output = FALSE;
             }
         }
 
-        if (((guide_result = is_guide(moving_line)) == __string) || guide_result == __data) {
+        if (((guide_result = is_guide(&moving_line)) == __string) || guide_result == __data) {
             if (foundLabel == TRUE)
                 output &= add_label_if_new(label, getDC(), label_data, label_no_kind);
             output &= parse_guide(moving_line, guide_result);
-            if (!output)
-                printf("Guide line arguments could not be parsed properly. arguments: %s", line_mem);
-        } else if (guide_result == __entry) {
+        }
+        else if (guide_result == __entry) {
             printf("Found entry guide. this will be handled in second pass\n");
             continue;
-        } else if (guide_result == __extern) {
+        }
+        else if (guide_result == __extern) {
             label_length = findlable(moving_line, FALSE);
             if (label_length == -1) {
                 printf("Missing label on extern guide command\n");
                 output = FALSE;
-            } else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
+            }
+            else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 addtoend(label, 0, label_data, label_external);
-                moving_line += (label_length); /* foward line after label */
-                moving_line += skip_white_characters(moving_line);
-                if (*moving_line != '\n' && *moving_line != '\0') {
-                    printf("Too much label_data in command: %s", line_mem);
+                skip_characters(&moving_line, label_length);
+                if (!is_end(*moving_line)) {
+                    fprintf(stderr,"Too much data in command: %s", line_mem);
                 }
             }
         } else {
-            /* this sould be command line*/
+            /* this should be command line*/
             if(foundLabel)
                 output &= add_label_if_new(label, getIC(), label_code, label_no_kind);
 
