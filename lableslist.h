@@ -1,25 +1,26 @@
 #include<string.h>
 
 typedef enum{
-    label_entry = 1,
-    label_external = 2
-} lable_kind;
+    label_no_kind,
+    label_entry,
+    label_external
+} label_kind;
 
 typedef enum{
-    code,
-    data
-} lable_area;
+    label_code,
+    label_data
+} label_area;
 
 typedef struct node {
     char *lable;
     int location;
-    lable_kind kind;
-    lable_area area; 
+    label_kind kind;
+    label_area area;
     struct node *next;
-} stringnode;
+} labelnode;
 
 void printlist();
-void addtoend(char *content, int location, lable_area area, lable_kind kind);
+void addtoend(char *content, int location, label_area area, label_kind kind);
 void disposelist();
-stringnode *createnode(char *content, int location, lable_area area, lable_kind kind);
+labelnode *createnode(char *content, int location, label_area area, label_kind kind);
 int exists(char *lable);

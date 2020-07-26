@@ -6,24 +6,23 @@
 
 */
 
-static  stringnode* head = NULL;
+static  labelnode* head = NULL;
 
 void printlist()
 {
     int index = 0;
-    stringnode *current = head;
+    labelnode *current = head;
     printf("Labels:\n");
     while (current != NULL)
     {
-        printf("%d: lable: %s location: %d area: %s kind: %s\n", (index++), current->lable, current->location
-        , (current -> area) ? "data" : "code", ((current -> kind) == 1) ? "entry" : "external");
+        printf("%d: label: %s location: %d area: %d kind: %d\n", (index++), current->lable, current->location, current -> area, current -> kind);
         current = current->next;
     }
 }
 
-void addtoend(char *content, int location, lable_area area, lable_kind kind)
+void addtoend(char *content, int location, label_area area, label_kind kind)
 {
-    stringnode *current = head;
+    labelnode *current = head;
 
     if (head == NULL) {
         head = createnode(content, location, area, kind);
@@ -36,9 +35,9 @@ void addtoend(char *content, int location, lable_area area, lable_kind kind)
     current->next = createnode(content, location, area, kind);
 }
 
-stringnode *createnode(char *content, int location, lable_area area, lable_kind kind)
+labelnode *createnode(char *content, int location, label_area area, label_kind kind)
 {
-    stringnode *new = (stringnode *)malloc(sizeof(stringnode));
+    labelnode *new = (labelnode *)malloc(sizeof(labelnode));
 
     if (!new)
     {
@@ -56,7 +55,7 @@ stringnode *createnode(char *content, int location, lable_area area, lable_kind 
 
 void disposelist()
 {
-    stringnode *current = head, *next;
+    labelnode *current = head, *next;
 
     if (current == NULL)
         return;
@@ -72,7 +71,7 @@ void disposelist()
 }
 
 int exists(char *lable){
-    stringnode *current = head;
+    labelnode *current = head;
 
     if (current == NULL)
         return 0;

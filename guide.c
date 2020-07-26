@@ -39,7 +39,7 @@ int is_guide(char *line){
 }
 
 bool parse_guide(char *line, guide_names guide_type){
-    if(guide_type == data){
+    if(guide_type == __data){
         return parse_numbers(line);
     }
     return parse_string(line);
