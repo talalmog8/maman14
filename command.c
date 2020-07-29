@@ -1,6 +1,7 @@
 #include "assembler.h"
 #include<string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #define PARSER_NAME(opname) parse_##opname
 
@@ -60,18 +61,50 @@ operation isoperation(char **text_p){
     return ops[0];  
 }
 
-int readArgs(char *line, char* arg1, char*arg2){
-    char *token;
-    int cnt = 0;
+arguments readArgs(char *line){
+    arguments args;
+    char *token, *arg1 = NULL, *arg2 = NULL;
 
-    if((arg1 = strtok(line, ", \t\n\0")))){
-        cnt++;
-        if((arg2 = strtok(line, ", \t\n\0")){
-            cnt++;
+    if((token = strtok(line, ", \t\n\0"))){
+        arg1 = malloc(sizeof(char)*strlen(token));
+        if(!arg1){
+            fprintf(stderr, "Failed to allocate memory for argument. exiting...");
+            exit(1);
+        }
+        strcpy(arg1, token);
+        if((token = strtok(NULL, ", \t\n\0"))){
+            arg2 = malloc(sizeof(char)*strlen(token));
+            if(!arg2){
+                fprintf(stderr, "Failed to allocate memory for argument. exiting...");
+                exit(1);
+            }
+            strcpy(arg2, token);
+        }
+        else{
+            fprintf(stderr, "Managed to read only 1 operands from 2. arguments: %s", line);
         }
     }
+    else{
+        fprintf(stderr, "Managed to read only 0 operands from 2. arguments: %s", line);
+    }
 
-    return cnt;
+    args.arg1 = arg1;
+    args.arg2 = arg2;
+
+    return args;
 }
 
+char *read_arg(char *line){
+    char *token;
+    char *arg = NULL;
+    token = strtok(line, ", \t\n\0");
 
+    if(token){
+        arg  = malloc(sizeof(char) * strlen(token));
+        strcpy(arg, token);
+        return arg;
+    }
+
+    fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
+    return  arg;
+}

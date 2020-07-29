@@ -9,7 +9,7 @@ bne END
 cmp K, #-6
 bne &END
 dec K
-
+rts
 
 jmp &LOOP
 END: stop
