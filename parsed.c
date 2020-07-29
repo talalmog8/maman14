@@ -30,12 +30,12 @@ void reset_output_arrays(void){
     current_command = 0;
 }
 
-void append_command(command_template command){
-    commands_p[current_command++] = command;
+command_template* get_current_command(){
+    return &commands_p[current_command++];
 }
 
-void append_guide(guide_template guide){
-    guides_p[current_guide++] = guide;
+guide_template* get_current_guide(){
+    return &guides_p[current_guide++];
 }
 
 void dispose_output_arrays(void){

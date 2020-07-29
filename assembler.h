@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include "lableslist.h"
 #include "command_template.h"
+#include "operations_parsers.h"
+
 #define MAX_LINE_LENGTH 81
 #define MAX_FILE_NAME_LENGTH 100
 #define MAX_PROGRAM_OUTPUT_SIZE 200
@@ -16,25 +18,6 @@ typedef enum {
     ERROR
 } parsing_result;
 
-typedef enum {
-    unknown = -1,    
-    mov,
-    cmp,
-    add,
-    sub,
-    lea,
-    clr,
-    not,
-    inc,
-    dec,
-    jmp,
-    bne,
-    jsr,
-    red,
-    prn,
-    rts,
-    stop
-} operation_names;
 
 typedef enum {
     __string,
@@ -42,12 +25,6 @@ typedef enum {
     __extern,
     __entry
 } guide_names;
-
-typedef struct
-{
-    operation_names opkind;
-    char* opname;
-} operation;
 
 
 /* command line arguements */
@@ -70,8 +47,7 @@ bool parselable(char *line, int length, char *output);
 char * allocate_label(int length);
 
 /* command */
-operation_names isoperation(char *text);
-bool parse_command(char *line);
+bool parse_command(char **line_p);
 
 /* guide */
 int is_guide(char **line_p);
@@ -97,6 +73,7 @@ void incDC(unsigned  int addition);
 void assign_output_arrays(void);
 void append_command(command_template command);
 void reset_output_arrays(void);
-void append_guide(guide_template guide);
 void dispose_output_arrays(void);
 void print_output_arrays(void);
+guide_template* get_current_guide();
+command_template* get_current_command();

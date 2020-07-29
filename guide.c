@@ -66,7 +66,6 @@ static bool parse_numbers(char *line){
 }
 
 static bool parse_number(char *text){
-    guide_template template;
     int i = 0;
     int num = 0;
     int sign = 1;
@@ -91,16 +90,12 @@ static bool parse_number(char *text){
     }
 
     num = num * sign;
-
-    template.data = num;
-    append_guide(template);
-
+    get_current_guide()->data = num;
     return TRUE;
 }
 
 static bool parse_string(char *text){
     int i;
-    guide_template  template;
     skip_white_characters(&text);
 
     if(*text != '\"'){
@@ -110,8 +105,7 @@ static bool parse_string(char *text){
 
     for (i = 1; text[i] != '\"' && text[i] != '\n' && text[i] != '\0' ; ++i) {
         if((text[i] > 32 && text[i] < 127) || isspace(text[i])){
-            template.data = text[i];
-            append_guide(template);
+            get_current_guide() -> data = text[i];;
             incDC(1);
         }
         else{
@@ -131,9 +125,8 @@ static bool parse_string(char *text){
         return FALSE;
     }
 
-    template.data = '\0';
-    append_guide(template);
-
+    get_current_guide() -> data = '\0';
+    incDC(1);
     return TRUE;
 }
 
