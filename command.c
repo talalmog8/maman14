@@ -57,9 +57,21 @@ operation isoperation(char **text_p){
         }
     }
 
-    return ops[0];
+    return ops[0];  
 }
 
+int readArgs(char *line, char* arg1, char*arg2){
+    char *token;
+    int cnt = 0;
 
+    if((arg1 = strtok(line, ", \t\n\0")))){
+        cnt++;
+        if((arg2 = strtok(line, ", \t\n\0")){
+            cnt++;
+        }
+    }
+
+    return cnt;
+}
 
 

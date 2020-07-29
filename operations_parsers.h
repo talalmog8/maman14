@@ -8,6 +8,7 @@ typedef struct
 } operation;
 
 operation isoperation(char **text_p);
+int readArgs(char *line, char* arg1, char*arg2);
 
 int parse_mov(char *text, int opcode, int funct);
 int parse_cmp(char *text, int opcode, int funct);
