@@ -43,7 +43,7 @@ operation_names isoperation(char *text){
     {
         if((!strncmp(text, ops[i].opname, (length = strlen(ops[i].opname))))){
             if(!isspace(text[length])){
-                fprintf(stderr, "Missing spece or tab after operation name. Line: %s", text);
+                fprintf(stderr, "Missing space or tab after operation name. Line: %s", text);
                 return unknown;
             }
             return ops[i].opkind;

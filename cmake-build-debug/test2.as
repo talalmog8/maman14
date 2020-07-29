@@ -16,8 +16,8 @@ END: stop
 STR: .string "abcd"
 
 LIST: .data 6, -9, 900
-TAL: .data 45,45
+TAL: .data 45,45,45,45,45,45,45,45,45,45,45,45,45,45,45
     .data -100
 K: .data 31
-.extern L3
+        .extern L3
 .entry MAIN
