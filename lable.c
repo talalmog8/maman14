@@ -42,6 +42,15 @@ int findlable(char *line, bool atStart) {
 }
 
 bool parselable(char *line, int length, char *output) {
+    if(islable(line, length)){
+        copy(output, line, length);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool islable(char *line, int length) {
     int i;
 
     if (length > MAX_LABLE_SIZE) {
@@ -82,8 +91,6 @@ bool parselable(char *line, int length, char *output) {
             return FALSE;
         }
     }
-
-    copy(output, line, length);
 
     return TRUE;
 }

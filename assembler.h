@@ -45,6 +45,7 @@ bool firstpass(FILE *file);
 int findlable(char * line, bool atStart);
 bool parselable(char *line, int length, char *output);
 char * allocate_label(int length);
+bool islable(char *line, int length);
 
 /* command */
 bool parse_command(char **line_p);
