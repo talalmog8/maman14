@@ -35,10 +35,29 @@ int parse_lea(char *text, int opcode, int funct) {
 }
 
 int parse_clr(char *text, int opcode, int funct) {
+    int _register;
+    command_template *command;
     char *arg = read_arg(text);
-
-    if(arg){
-
+   
+    if(arg){            
+        command = get_current_command();
+        command->opcode = opcode;
+        command->func = funct;
+        command->orig_register = 0;
+        command->orig_delivery_type = 0;
+        command->A = 1;
+        command->R = 0;
+        command->E = 0;
+        if(_register = isregister(arg)){
+            command->des_register = _register;
+            command->des_delivery_type = 3;    
+            incIC(1);
+        }        
+        else if(islable(arg, strlen(arg))){
+            command -> des_register = 0;
+            command-> des_delivery_type = 1;
+            incIC(2);
+        }
         free(arg);
     }
 }

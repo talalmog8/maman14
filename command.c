@@ -108,3 +108,44 @@ char *read_arg(char *line){
     fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
     return  arg;
 }
+
+/*
+    Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1
+*/
+int isregister(char *arg){    
+    if(*(arg++) == 'r'){
+        if(*arg >= '0' && *arg <= '7'){
+            return (*arg - '0');
+        }
+    }
+
+    return -1;
+}
+
+bool try_parse_number(char* arg, int *number){
+    int i = 0;
+    int num = 0;
+    int sign = 1;
+
+    if(*arg == '-'){
+        sign = -1;
+        i++;
+    }
+    else if(*arg == '+'){
+        i++;
+    }
+
+    for (; arg[i] != '\0'; ++i) {
+        if(isdigit(arg[i])){
+            num *= 10;
+            num += (arg[i] - '0');
+        }
+        else{            
+            return FALSE;
+        }
+    }
+
+    *number = num * sign;     
+    return TRUE;
+}
+
