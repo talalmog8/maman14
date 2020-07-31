@@ -103,21 +103,11 @@ int parse_jsr(char *text, int opcode, int funct) {
 }
 
 int parse_red(char *text, int opcode, int funct) {
-    char *arg = read_arg(text);
-
-    if(arg){
-
-        free(arg);
-    }
+    return parse_one_arg_command(text, opcode, funct);
 }
 
 int parse_prn(char *text, int opcode, int funct) {
-    char *arg = read_arg(text);
-
-    if(arg){
-
-        free(arg);
-    }
+    return parse_one_arg_command(text, opcode, funct);
 }
 
 int parse_rts(char *text, int opcode, int funct) {
