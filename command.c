@@ -97,7 +97,7 @@ arguments readArgs(char *line){
 char *read_arg(char *line){
     char *token;
     char *arg = NULL;
-    token = strtok(line, ", \t\n\0");
+    token = strtok(line, " \t\n\0");
 
     if(token){
         arg  = malloc(sizeof(char) * strlen(token));

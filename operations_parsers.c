@@ -72,9 +72,18 @@ int parse_dec(char *text, int opcode, int funct) {
 
 int parse_jmp(char *text, int opcode, int funct) {
     char *arg = read_arg(text);
+    command_template *current;
 
     if(arg){
+        current = get_current_command();
+        current -> opcode = opcode;
+        current -> func = funct;
+        current -> orig_delivery_type = 0;
+        current -> orig_register = 0;
 
+        current-> A = 1;
+        current-> R = 0;
+        current-> E = 0;
         free(arg);
     }
 }
