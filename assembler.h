@@ -78,3 +78,4 @@ void dispose_output_arrays(void);
 void print_output_arrays(void);
 guide_template* get_current_guide();
 command_template* get_current_command();
+command_template* peek_last_command();

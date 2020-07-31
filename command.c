@@ -122,7 +122,7 @@ int isregister(char *arg){
     return -1;
 }
 
-bool try_parse_number(char* arg, int *number){
+int try_parse_number(char* arg, int *number){
     int i = 0;
     int num = 0;
     int sign = 1;

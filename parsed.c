@@ -34,6 +34,10 @@ command_template* get_current_command(){
     return &commands_p[current_command++];
 }
 
+command_template* peek_last_command(){
+    return &commands_p[current_command - 1];
+}
+
 guide_template* get_current_guide(){
     return &guides_p[current_guide++];
 }
