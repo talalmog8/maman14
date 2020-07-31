@@ -149,3 +149,14 @@ int try_parse_number(char* arg, int *number){
     return TRUE;
 }
 
+int isaddress(char *arg){
+    if(*arg == '&'){
+        if(islable(arg + 1, strlen(arg))){
+            return TRUE;            
+        }
+        fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);
+        return FALSE;
+    }
+    return FALSE;
+}
+
