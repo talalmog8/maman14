@@ -67,21 +67,7 @@ int parse_dec(char *text, int opcode, int funct) {
 }
 
 int parse_jmp(char *text, int opcode, int funct) {
-    char *arg = read_arg(text);
-    command_template *current;
-
-    if(arg){
-        current = get_current_command();
-        current -> opcode = opcode;
-        current -> func = funct;
-        current -> orig_delivery_type = 0;
-        current -> orig_register = 0;
-
-        current-> A = 1;
-        current-> R = 0;
-        current-> E = 0;
-        free(arg);
-    }
+    return parse_one_arg_command(text, opcode, funct);
 }
 
 int parse_bne(char *text, int opcode, int funct) {
@@ -133,7 +119,7 @@ static void dispose_operands(arguments args){
 }
 
 static int parse_one_arg_command(char *text, int opcode, int funct) {
-    int _register;
+    int _register, number_arg;
     int parsed = 0;
     command_template *command;
     char *arg = read_arg(text);
@@ -142,8 +128,19 @@ static int parse_one_arg_command(char *text, int opcode, int funct) {
         command = get_current_command();
         if ((_register = isregister(arg)) != -1) {
             fill_one_arg_command_defaults(command, opcode, funct, _register, 3);
+            /* TODO insert number payload  */
             parsed = 1;
-        } else if (islable(arg, strlen(arg))) {
+        }
+        else if(try_parse_number(arg,&number_arg)){
+            fill_one_arg_command_defaults(command, opcode, funct, 0, 0);
+            command = get_current_command(); /* reserved for number */
+            /* TODO insert address payload  */
+        }
+        else if(isaddress(arg)){
+            fill_one_arg_command_defaults(command, opcode, funct, 0, 2);
+            command = get_current_command(); /* reserved for label's address */
+        }
+        else if (islable(arg, strlen(arg))) {
             fill_one_arg_command_defaults(command, opcode, funct, 0, 1);
             incIC(1); /* saved space for label address*/
             parsed = 1;

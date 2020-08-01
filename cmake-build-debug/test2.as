@@ -16,7 +16,7 @@ jmp &LOOP
 END: stop
 STR: .string "abcd"
 red r1
-prn r4
+prn #4
 
 LIST: .data 6, -9, 900
 TAL: .data 45,45,45,45,45,45,45,45,45,45,45,45,45,45,45

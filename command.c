@@ -15,7 +15,7 @@ bool parse_command(char **line_p){
     }
 
     operation.parser(*line_p, operation.opcode, operation.funct);
-    printf("Command: %s", line);
+    printf("Command: %s\n", line);
     return TRUE;
 }
 
@@ -100,6 +100,9 @@ char *read_arg(char *line){
     token = strtok(line, " \t\n\0");
 
     if(token){
+        if(strtok(NULL, " \t\n\0")){
+            fprintf(stderr, "More arguments than expected\n");
+        }
         arg  = malloc(sizeof(char) * strlen(token));
         strcpy(arg, token);
         return arg;
@@ -123,9 +126,13 @@ int isregister(char *arg){
 }
 
 int try_parse_number(char* arg, int *number){
-    int i = 0;
+    int i = 1;
     int num = 0;
     int sign = 1;
+
+    if(!(*arg == '#')){
+        return FALSE;
+    }
 
     if(*arg == '-'){
         sign = -1;
@@ -151,7 +158,8 @@ int try_parse_number(char* arg, int *number){
 
 int isaddress(char *arg){
     if(*arg == '&'){
-        if(islable(arg + 1, strlen(arg))){
+        arg++; /* skip & */
+        if(islable(arg, strlen(arg))){
             return TRUE;            
         }
         fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);
