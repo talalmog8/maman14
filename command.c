@@ -61,7 +61,7 @@ operation isoperation(char **text_p){
     return ops[0];  
 }
 
-arguments readArgs(char *line){
+arguments read_args(char *line){
     arguments args;
     char *token, *arg1 = NULL, *arg2 = NULL;
 
@@ -134,11 +134,11 @@ int try_parse_number(char* arg, int *number){
         return FALSE;
     }
 
-    if(*arg == '-'){
+    if(arg[i] == '-'){
         sign = -1;
         i++;
     }
-    else if(*arg == '+'){
+    else if(arg[i] == '+'){
         i++;
     }
 
