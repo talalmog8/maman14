@@ -1,8 +1,17 @@
 #include <stdlib.h>
 #include "assembler.h"
 
+#define EXTRACT_OPCODE(num) ((num) >> 15)
+#define EXTRACT_FUNC(num) ((num) & 31)
+#define EXTRACT_DES_REG(num) (((num) >> 5) & 7)
+#define EXTRACT_DES_DEV_TYPE(num) (((num) >> 8) & 3)
+#define EXTRACT_ORIG_REG(num) (((num) >> 10) & 7)
+#define EXTRACT_ORIG_DEV_TYPE(num) (((num) >> 13) & 3)
+
+
 static int parse_one_arg_command(char *text, int opcode, int funct);
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct, int des_register, int des_delivery_type);
+static void insert_number_to_command(command_template *command, int number);
 static bool parse_zero_args_command(char *text, int opcode, int funct);
 static void dispose_operands(arguments args);
 
@@ -128,17 +137,17 @@ static int parse_one_arg_command(char *text, int opcode, int funct) {
         command = get_current_command();
         if ((_register = isregister(arg)) != -1) {
             fill_one_arg_command_defaults(command, opcode, funct, _register, 3);
-            /* TODO insert number payload  */
             parsed = 1;
         }
         else if(try_parse_number(arg,&number_arg)){
             fill_one_arg_command_defaults(command, opcode, funct, 0, 0);
-            command = get_current_command(); /* reserved for number */
-            /* TODO insert address payload  */
+            insert_number_to_command(get_current_command(), number_arg);
+            parsed = 1;
         }
         else if(isaddress(arg)){
             fill_one_arg_command_defaults(command, opcode, funct, 0, 2);
             command = get_current_command(); /* reserved for label's address */
+            parsed = 1;
         }
         else if (islable(arg, strlen(arg))) {
             fill_one_arg_command_defaults(command, opcode, funct, 0, 1);
@@ -183,4 +192,16 @@ static bool parse_zero_args_command(char *text, int opcode, int funct){
         return  FALSE;
     }
     return TRUE;
+}
+
+static void insert_number_to_command(command_template *command, int number){
+    command -> opcode = EXTRACT_OPCODE(number);
+    command -> func = EXTRACT_FUNC(number);
+    command -> des_register = EXTRACT_DES_REG(number);
+    command -> des_delivery_type = EXTRACT_DES_DEV_TYPE(number);
+    command -> orig_register = EXTRACT_ORIG_REG(number);
+    command -> orig_delivery_type = EXTRACT_ORIG_DEV_TYPE(number);
+    command -> A = 1;
+    command -> R = 0;
+    command -> E = 0;
 }
