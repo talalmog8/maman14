@@ -8,41 +8,47 @@
 #define EXTRACT_ORIG_REG(num) (((num) >> 10) & 7)
 #define EXTRACT_ORIG_DEV_TYPE(num) (((num) >> 13) & 3)
 
+#define EMPTY_FIELD 0
+
+#define IMMEDIATE_ADDRESSING 0
+#define DIRECT_ADDRESSING 1
+#define RELATIVE_ADDRESSING 2
+#define REGISTER_ADDRESSING 3
 
 static int parse_one_arg_command(char *text, int opcode, int funct);
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct, int des_register, int des_delivery_type);
 static void insert_number_to_command(command_template *command, int number);
 static bool parse_zero_args_command(char *text, int opcode, int funct);
 static void dispose_operands(arguments args);
-
+static int parse_arg(char *arg, command_template *, bool);
+static int parse_two_args_command(char *text, int opcode, int funct);
+static void fill_empty_command(command_template *command);
 
 int parse_mov(char *text, int opcode, int funct) {
-    arguments args;
-    args = readArgs(text);
-    dispose_operands(args);
+    return parse_two_args_command(text, opcode, funct);
 }
 
 int parse_cmp(char *text, int opcode, int funct) {
     arguments args;
-    args = readArgs(text);
+    args = read_args(text);
     dispose_operands(args);
 }
 
 int parse_add(char *text, int opcode, int funct) {
     arguments args;
-    args = readArgs(text);
+    args = read_args(text);
     dispose_operands(args);
 }
 
 int parse_sub(char *text, int opcode, int funct) {
     arguments args;
-    args = readArgs(text);
+    args = read_args(text);
     dispose_operands(args);
 }
 
 int parse_lea(char *text, int opcode, int funct) {
     arguments args;
-    args = readArgs(text);
+    args = read_args(text);
     dispose_operands(args);
 }
 
@@ -115,7 +121,6 @@ int parse_stop(char *text, int opcode, int funct) {
 
 static void dispose_operands(arguments args){
     if(args.arg1 != NULL && args.arg2 != NULL){
-
         free(args.arg1);
         free(args.arg2);
     }
@@ -125,6 +130,72 @@ static void dispose_operands(arguments args){
     else if(args.arg2 != NULL){
         free(args.arg2);
     }
+}
+
+static int parse_two_args_command(char *text, int opcode, int funct){
+    int parsed = 0;
+    arguments args = read_args(text);
+    command_template *command = get_current_command();
+
+    if(args.arg1 && args.arg2){
+        command -> opcode = opcode;
+        command -> func = funct;
+        command -> A = 1;
+        command -> R = 0;
+        command -> E  = 0;
+
+        if(parse_arg(args.arg1, command, FALSE) != -1){
+            if(parse_arg(args.arg2, command, TRUE) != -1){
+                parsed = 1;
+            }
+            else{
+                fprintf(stderr, "Failed to parse second argument in command. arguments: %s", text);
+            }
+        }
+        else{
+            fprintf(stderr, "Failed to parse first argument in command. arguments: %s", text);
+        }
+
+    }
+
+    dispose_operands(args);
+    return parsed;
+}
+
+static int parse_arg(char *arg, command_template *command, bool is_destination){
+    int number_arg;
+    int _register = EMPTY_FIELD;
+    int addressing_type = -1;
+
+    if ((_register = isregister(arg)) != -1) {
+        addressing_type = REGISTER_ADDRESSING;
+    }
+    else if(try_parse_number(arg,&number_arg)){
+        addressing_type = IMMEDIATE_ADDRESSING;
+        insert_number_to_command(get_current_command(), number_arg);
+    }
+    else if(isaddress(arg)){
+        addressing_type =  RELATIVE_ADDRESSING;
+        fill_empty_command(get_current_command()); /* reserved for label's address */
+        incIC(1);
+    }
+    else if (islable(arg, strlen(arg))) {
+        addressing_type = DIRECT_ADDRESSING;
+        fill_empty_command(get_current_command()); /* reserved for label's address */
+        incIC(1); /* saved space for label address*/
+    }
+
+
+    if(is_destination){
+        command -> des_delivery_type = addressing_type;
+        command -> des_register = (_register == -1) ? EMPTY_FIELD : _register;
+    }
+    else{
+        command -> orig_delivery_type = addressing_type;
+        command -> orig_register = (_register == -1) ? EMPTY_FIELD : _register;
+    }
+
+    return addressing_type;
 }
 
 static int parse_one_arg_command(char *text, int opcode, int funct) {
@@ -204,4 +275,17 @@ static void insert_number_to_command(command_template *command, int number){
     command -> A = 1;
     command -> R = 0;
     command -> E = 0;
+    incIC(1);
+}
+
+static void fill_empty_command(command_template *command){
+    command -> opcode = 0;
+    command -> des_register = 0;
+    command -> des_delivery_type = 0;
+    command -> orig_register = 0;
+    command -> orig_delivery_type = 0;
+    command -> A = 0;
+    command -> R = 0;
+    command -> E = 0;
+    command -> func = 0;
 }
