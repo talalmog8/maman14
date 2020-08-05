@@ -29,27 +29,19 @@ int parse_mov(char *text, int opcode, int funct) {
 }
 
 int parse_cmp(char *text, int opcode, int funct) {
-    arguments args;
-    args = read_args(text);
-    dispose_operands(args);
+    return parse_two_args_command(text, opcode, funct);
 }
 
 int parse_add(char *text, int opcode, int funct) {
-    arguments args;
-    args = read_args(text);
-    dispose_operands(args);
+    return parse_two_args_command(text, opcode, funct);
 }
 
 int parse_sub(char *text, int opcode, int funct) {
-    arguments args;
-    args = read_args(text);
-    dispose_operands(args);
+    return parse_two_args_command(text, opcode, funct);
 }
 
 int parse_lea(char *text, int opcode, int funct) {
-    arguments args;
-    args = read_args(text);
-    dispose_operands(args);
+    return parse_two_args_command(text, opcode, funct);
 }
 
 int parse_clr(char *text, int opcode, int funct) {
