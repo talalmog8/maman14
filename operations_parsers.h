@@ -14,7 +14,7 @@ typedef struct {
 
 
 operation isoperation(char **text_p);
-arguments readArgs(char *line);
+arguments read_args(char *line);
 char *read_arg(char *line);
 int try_parse_number(char* arg, int *number);
 int isregister(char *arg);
