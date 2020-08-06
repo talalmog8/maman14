@@ -24,4 +24,4 @@ void addtoend(char *content, int location, label_area area, label_kind kind);
 void disposelist();
 labelnode *createnode(char *content, int location, label_area area, label_kind kind);
 int exists(char *lable);
-bool add_label_if_new(char *label, int location, int area, int kind);
+int add_label_if_new(char *label, int location, int area, int kind);

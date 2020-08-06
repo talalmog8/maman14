@@ -78,21 +78,11 @@ int parse_jmp(char *text, int opcode, int funct) {
 }
 
 int parse_bne(char *text, int opcode, int funct) {
-    char *arg = read_arg(text);
-
-    if(arg){
-
-        free(arg);
-    }
+    return parse_one_arg_command(text, opcode, funct);
 }
 
 int parse_jsr(char *text, int opcode, int funct) {
-    char *arg = read_arg(text);
-
-    if(arg){
-
-        free(arg);
-    }
+    return parse_one_arg_command(text, opcode, funct);
 }
 
 int parse_red(char *text, int opcode, int funct) {
@@ -209,11 +199,12 @@ static int parse_one_arg_command(char *text, int opcode, int funct) {
         }
         else if(isaddress(arg)){
             fill_one_arg_command_defaults(command, opcode, funct, 0, 2);
-            command = get_current_command(); /* reserved for label's address */
+            fill_empty_command(get_current_command()); /* reserved for label's address */
             parsed = 1;
         }
         else if (islable(arg, strlen(arg))) {
             fill_one_arg_command_defaults(command, opcode, funct, 0, 1);
+            fill_empty_command(get_current_command());
             incIC(1); /* saved space for label address*/
             parsed = 1;
         }

@@ -86,7 +86,7 @@ int exists(char *lable){
 }
 
 
-bool add_label_if_new(char *label, int location, int area, int kind) {
+int add_label_if_new(char *label, int location, int area, int kind) {
     if (exists(label)) {
         fprintf(stderr, "Label already exists. Label: %s\n", label);
         return FALSE;
