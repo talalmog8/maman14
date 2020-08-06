@@ -1,33 +1,28 @@
 #include "assembler.h"
 
-static bool add_label_if_new(char *label, int location, int area, int kind);
-
-void movePointer(char **p){
-    *p = (*p + 1);
-}
-
 bool firstpass(FILE *file) {
     bool output = TRUE;
     bool foundLabel;
     char *moving_line, *label;
     int label_length;
     int guide_result = 0;
-
-    setIC(100);
-    setDC(0);
     char line_mem[MAX_LINE_LENGTH];
+    
+    setIC(100);
+    setDC(0);    
     while (readline(file, (moving_line = line_mem)) != NULL) {
         foundLabel = FALSE;
         skip_white_characters(&moving_line);
 
         if (is_comment_or_empty(moving_line)) {
             continue;
-        } else if ((label_length = findlable(moving_line, TRUE)) != -1) {
-            label = allocate_label(label_length);
-            if (parselable(moving_line, label_length, label)) {
+        } 
+        else if ((label_length = findlable(moving_line, TRUE)) != -1) {            
+            if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 foundLabel = TRUE;
                 skip_characters(&moving_line, label_length + 1);
-            } else {
+            } 
+            else {
                 fprintf(stderr, "Found illegal label in line: %s", line_mem);
                 output = FALSE;
             }
@@ -42,9 +37,8 @@ bool firstpass(FILE *file) {
             printf("Found entry guide. this will be handled in second pass\n");
             continue;
         }
-        else if (guide_result == __extern) {
-            label_length = findlable(moving_line, FALSE);
-            if (label_length == -1) {
+        else if (guide_result == __extern) {            
+            if ((label_length = findlable(moving_line, FALSE)) == -1) {
                 printf("Missing label on extern guide command\n");
                 output = FALSE;
             }
@@ -55,7 +49,8 @@ bool firstpass(FILE *file) {
                     fprintf(stderr,"Too much data in command: %s", line_mem);
                 }
             }
-        } else {
+        } 
+        else {
             /* this should be command line*/
             if(foundLabel)
                 output &= add_label_if_new(label, getIC(), label_code, label_no_kind);
@@ -67,15 +62,4 @@ bool firstpass(FILE *file) {
     printlist();
     print_output_arrays();
     return output;
-}
-
-
-static bool add_label_if_new(char *label, int location, int area, int kind) {
-    if (exists(label)) {
-        fprintf(stderr, "Label already exists. Label: %s\n", label);
-        return FALSE;
-    } else {
-        addtoend(label, location, area, kind);
-        return TRUE;
-    }
 }

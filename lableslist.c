@@ -84,3 +84,14 @@ int exists(char *lable){
     }
     return 0;    
 }
+
+
+bool add_label_if_new(char *label, int location, int area, int kind) {
+    if (exists(label)) {
+        fprintf(stderr, "Label already exists. Label: %s\n", label);
+        return FALSE;
+    } else {
+        addtoend(label, location, area, kind);
+        return TRUE;
+    }
+}
