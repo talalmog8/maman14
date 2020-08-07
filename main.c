@@ -14,6 +14,12 @@ int main(int argc, char *argv[]){
         if(!firstpass(file)){
             printf("Failed first pass\n");
         }
+        else{
+            printlist();
+            print_output_arrays();
+            printf("ICF: %d\n", getIC());
+            printf("IDC: %d\n", getDC());
+        }
         disposelist();
         disposefile(file);
         printf("Disposed File: \"%s.as\"\n", arg);

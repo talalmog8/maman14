@@ -68,21 +68,31 @@ void disposelist()
     }
     free(current->lable);
     free(current);
+
+    head = NULL;
 }
 
-int exists(char *lable){
+int exists(char *label){
     labelnode *current = head;
 
-    if (current == NULL)
-        return 0;
-
-    while ((current->next) != NULL){
-        if(!strcmp(current->lable, lable)){
+    while (current != NULL){
+        if(!strcmp(current->lable, label)){
             return 1;
         }        
         current = current -> next;
     }
     return 0;    
+}
+
+void increment_data_labels(int ic){
+    labelnode *current = head;
+
+    while (current != NULL){
+        if(current -> area == label_data){
+            current -> location += ic;
+        }
+        current = current -> next;
+    }
 }
 
 

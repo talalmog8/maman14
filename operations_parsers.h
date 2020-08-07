@@ -15,25 +15,13 @@ typedef struct {
 
 operation isoperation(char **text_p);
 arguments read_args(char *line);
+void dispose_operands(arguments args);
 char *read_arg(char *line);
+
 int try_parse_number(char* arg, int *number);
 int isregister(char *arg);
 int isaddress(char *arg);
 
-
-int parse_mov(char *text, int opcode, int funct);
-int parse_cmp(char *text, int opcode, int funct);
-int parse_add(char *text, int opcode, int funct);
-int parse_sub(char *text, int opcode, int funct);
-int parse_lea(char *text, int opcode, int funct);
-int parse_clr(char *text, int opcode, int funct);
-int parse_not(char *text, int opcode, int funct);
-int parse_inc(char *text, int opcode, int funct);
-int parse_dec(char *text, int opcode, int funct);
-int parse_jmp(char *text, int opcode, int funct);
-int parse_bne(char *text, int opcode, int funct);
-int parse_jsr(char *text, int opcode, int funct);
-int parse_red(char *text, int opcode, int funct);
-int parse_prn(char *text, int opcode, int funct);
-int parse_rts(char *text, int opcode, int funct);
-int parse_stop(char *text, int opcode, int funct);
+int parse_two_args_command(char *text, int opcode, int funct);
+int parse_one_arg_command(char *text, int opcode, int funct);
+int fill_zero_args_command(char *text, int opcode, int funct);

@@ -59,7 +59,6 @@ bool firstpass(FILE *file) {
         }
     }
 
-    printlist();
-    print_output_arrays();
+    increment_data_labels(getIC());
     return output;
 }

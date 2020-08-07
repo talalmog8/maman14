@@ -3,8 +3,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#define PARSER_NAME(opname) parse_##opname
-
 bool parse_command(char **line_p){
     char *line = *line_p;
     operation operation;
@@ -15,7 +13,7 @@ bool parse_command(char **line_p){
     }
 
     operation.parser(*line_p, operation.opcode, operation.funct);
-    printf("Command: %s\n", line);
+    printf("IC: %d Command: %s\n", getIC(), line);
     return TRUE;
 }
 
@@ -28,22 +26,22 @@ operation isoperation(char **text_p){
     int i = 0, length;
     operation ops[] = {
             { -1, 0, "unknown", NULL},
-            { 0, 0, "mov", PARSER_NAME(mov)},
-            { 1, 0,"cmp", PARSER_NAME(cmp)},
-            { 2, 1, "add", PARSER_NAME(add)},
-            { 2, 2, "sub", PARSER_NAME(sub)},
-            { 4, 0, "lea", PARSER_NAME(lea)},
-            { 5, 1, "clr", PARSER_NAME(clr)},
-            { 5, 2, "not", PARSER_NAME(not)},
-            { 5, 3, "inc", PARSER_NAME(inc)},
-            { 5, 4, "dec", PARSER_NAME(dec)},
-            { 9, 1, "jmp", PARSER_NAME(jmp)},
-            { 9, 2, "bne", PARSER_NAME(bne)},
-            { 9, 3, "jsr", PARSER_NAME(jsr)},
-            { 12, 0, "red", PARSER_NAME(red)},
-            { 13, 0, "prn", PARSER_NAME(prn)},
-            { 14, 0, "rts", PARSER_NAME(rts)},
-            { 15, 0, "stop", PARSER_NAME(stop)}
+            { 0, 0, "mov", parse_two_args_command },
+            { 1, 0,"cmp",  parse_two_args_command },
+            { 2, 1, "add", parse_two_args_command },
+            { 2, 2, "sub", parse_two_args_command },
+            { 4, 0, "lea",   parse_two_args_command },
+            { 5, 1, "clr",   parse_one_arg_command },
+            { 5, 2, "not",   parse_one_arg_command },
+            { 5, 3, "inc",   parse_one_arg_command },
+            { 5, 4, "dec",   parse_one_arg_command },
+            { 9, 1, "jmp",   parse_one_arg_command},
+            { 9, 2, "bne",   parse_one_arg_command},
+            { 9, 3, "jsr",   parse_one_arg_command},
+            { 12, 0, "red",  parse_one_arg_command},
+            { 13, 0, "prn",  parse_one_arg_command},
+            { 14, 0, "rts",  fill_zero_args_command},
+            { 15, 0, "stop", fill_zero_args_command}
     };
 
     for (; i < (sizeof(ops) / sizeof(operation)); i++)
@@ -94,6 +92,17 @@ arguments read_args(char *line){
     return args;
 }
 
+void dispose_operands(arguments args) {
+    if (args.arg1 != NULL && args.arg2 != NULL) {
+        free(args.arg1);
+        free(args.arg2);
+    } else if (args.arg1 != NULL) {
+        free(args.arg1);
+    } else if (args.arg2 != NULL) {
+        free(args.arg2);
+    }
+}
+
 char *read_arg(char *line){
     char *token;
     char *arg = NULL;
@@ -111,6 +120,8 @@ char *read_arg(char *line){
     fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
     return  arg;
 }
+
+
 
 /*
     Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1
