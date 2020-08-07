@@ -39,6 +39,7 @@ void disposefile(FILE *file);
 
 /* parsing */
 bool firstpass(FILE *file);
+bool secondpass(FILE *file);
 
 
 /* labels */

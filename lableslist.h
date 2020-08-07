@@ -26,3 +26,4 @@ labelnode *createnode(char *content, int location, label_area area, label_kind k
 int exists(char *label);
 void increment_data_labels(int ic);
 int add_label_if_new(char *label, int location, int area, int kind);
+int update_label_kind(char  *label, label_kind new_kind);

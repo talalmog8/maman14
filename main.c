@@ -15,10 +15,14 @@ int main(int argc, char *argv[]){
             printf("Failed first pass\n");
         }
         else{
+            rewind(file);
             printlist();
             print_output_arrays();
             printf("ICF: %d\n", getIC());
             printf("IDC: %d\n", getDC());
+           if(!secondpass(file)){
+               printf("Failed second pass\n");
+           }
         }
         disposelist();
         disposefile(file);
