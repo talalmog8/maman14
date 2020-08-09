@@ -1,3 +1,15 @@
+#define EMPTY_FIELD 0
+#define IMMEDIATE_ADDRESSING 0
+#define DIRECT_ADDRESSING 1
+#define RELATIVE_ADDRESSING 2
+#define REGISTER_ADDRESSING 3
+
+#define EXTRACT_OPCODE(num) ((num) >> 15)
+#define EXTRACT_FUNC(num) ((num) & 31)
+#define EXTRACT_DES_REG(num) (((num) >> 5) & 7)
+#define EXTRACT_DES_DEV_TYPE(num) (((num) >> 8) & 3)
+#define EXTRACT_ORIG_REG(num) (((num) >> 10) & 7)
+#define EXTRACT_ORIG_DEV_TYPE(num) (((num) >> 13) & 3)
 
 typedef struct
 {
@@ -5,6 +17,7 @@ typedef struct
     int funct;
     char* opname;
     int (*parser)(char *text, int opcode, int funct);
+    int (*label_inserter)(char *text);
 } operation;
 
 typedef struct {

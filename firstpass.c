@@ -55,7 +55,7 @@ bool firstpass(FILE *file) {
             if(foundLabel)
                 output &= add_label_if_new(label, getIC(), label_code, label_no_kind);
 
-            output &= parse_command(&moving_line);
+            output &= firstpass_parse_command(&moving_line);
         }
     }
 

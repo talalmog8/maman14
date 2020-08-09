@@ -7,6 +7,8 @@ bool secondpass(FILE *file) {
     int guide_result;
     char line_mem[MAX_LINE_LENGTH];
 
+    setIC(100);
+    setDC(0);
     while (readline(file, (moving_line = line_mem)) != NULL) {
         skip_white_characters(&moving_line);
         if (is_comment_or_empty(moving_line)) {
@@ -27,7 +29,7 @@ bool secondpass(FILE *file) {
             }
             else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 if(!update_label_kind(label, label_entry)){
-                    fprintf(stderr, "Couldn't find label in label's linked list, in order to update it's kind to entry. lable: %s", label);
+                    fprintf(stderr, "Couldn't find label in label's linked list, in order to update it's kind to entry. label: %s", label);
                     output = FALSE;
                 }
                 skip_characters(&moving_line, label_length);
@@ -39,7 +41,7 @@ bool secondpass(FILE *file) {
         }
         else {
             /* this should be command operation*/
-            printf(">Ho");
+            output &= secondpass_parse_command(&moving_line);
         }
     }
 

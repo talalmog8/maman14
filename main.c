@@ -16,13 +16,12 @@ int main(int argc, char *argv[]){
         }
         else{
             rewind(file);
-            printlist();
-            print_output_arrays();
             printf("ICF: %d\n", getIC());
             printf("IDC: %d\n", getDC());
            if(!secondpass(file)){
                printf("Failed second pass\n");
            }
+            print_output_arrays();
         }
         disposelist();
         disposefile(file);
@@ -31,8 +30,7 @@ int main(int argc, char *argv[]){
       else{
         printf("Could not open file: \"%s.as\". It will not be compiled\n", arg);
       }
-    }    
-
+    }
     dispose_output_arrays();
     return 0;
 }

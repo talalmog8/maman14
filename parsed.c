@@ -34,8 +34,8 @@ command_template* get_current_command(){
     return &commands_p[current_command++];
 }
 
-command_template* peek_last_command(){
-    return &commands_p[current_command - 1];
+command_template* get_command_by_ic(unsigned int ic){
+    return &commands_p[ic - 100];
 }
 
 guide_template* get_current_guide(){
@@ -43,8 +43,8 @@ guide_template* get_current_guide(){
 }
 
 void dispose_output_arrays(void){
-    free(commands_p);
     free(guides_p);
+    free(commands_p);
 }
 
 void print_output_arrays(void){

@@ -49,7 +49,13 @@ char * allocate_label(int length);
 bool islable(char *line, int length);
 
 /* command */
-bool parse_command(char **line_p);
+bool firstpass_parse_command(char **line_p);
+
+/*second pass */
+bool secondpass_parse_command(char **line_p);
+int secondpass_two_args_command(char *text);
+int secondpass_one_arg_command(char *text);
+int secondpass_zero_arg_command(char *text);
 
 /* guide */
 int is_guide(char **line_p);
@@ -79,4 +85,4 @@ void dispose_output_arrays(void);
 void print_output_arrays(void);
 guide_template* get_current_guide();
 command_template* get_current_command();
-command_template* peek_last_command();
+command_template* get_command_by_ic(unsigned int ic);

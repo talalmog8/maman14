@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-bool parse_command(char **line_p){
+bool firstpass_parse_command(char **line_p){
     char *line = *line_p;
     operation operation;
 
@@ -17,6 +17,23 @@ bool parse_command(char **line_p){
     return TRUE;
 }
 
+bool secondpass_parse_command(char **line_p){
+    char *line = *line_p;
+    operation operation;
+
+    if((operation = isoperation(line_p)).opcode == -1){
+        fprintf(stderr, "entered unknown operation in line %s", line);
+        return FALSE;
+    }
+
+    if(operation.label_inserter){
+        operation.label_inserter(*line_p);
+    }
+
+    printf("IC: %d Command: %s\n", getIC(), line);
+    return TRUE;
+}
+
 /*
     Returns operation number identifier or -1 if text didn't match any known operation
     Also moves text pointer after the operation name that was found
@@ -26,22 +43,22 @@ operation isoperation(char **text_p){
     int i = 0, length;
     operation ops[] = {
             { -1, 0, "unknown", NULL},
-            { 0, 0, "mov", parse_two_args_command },
-            { 1, 0,"cmp",  parse_two_args_command },
-            { 2, 1, "add", parse_two_args_command },
-            { 2, 2, "sub", parse_two_args_command },
-            { 4, 0, "lea",   parse_two_args_command },
-            { 5, 1, "clr",   parse_one_arg_command },
-            { 5, 2, "not",   parse_one_arg_command },
-            { 5, 3, "inc",   parse_one_arg_command },
-            { 5, 4, "dec",   parse_one_arg_command },
-            { 9, 1, "jmp",   parse_one_arg_command},
-            { 9, 2, "bne",   parse_one_arg_command},
-            { 9, 3, "jsr",   parse_one_arg_command},
-            { 12, 0, "red",  parse_one_arg_command},
-            { 13, 0, "prn",  parse_one_arg_command},
-            { 14, 0, "rts",  fill_zero_args_command},
-            { 15, 0, "stop", fill_zero_args_command}
+            { 0, 0, "mov", parse_two_args_command, secondpass_two_args_command },
+            { 1, 0,"cmp",  parse_two_args_command, secondpass_two_args_command },
+            { 2, 1, "add", parse_two_args_command, secondpass_two_args_command },
+            { 2, 2, "sub", parse_two_args_command, secondpass_two_args_command },
+            { 4, 0, "lea",   parse_two_args_command, secondpass_two_args_command },
+            { 5, 1, "clr",   parse_one_arg_command, secondpass_one_arg_command },
+            { 5, 2, "not",   parse_one_arg_command, secondpass_one_arg_command },
+            { 5, 3, "inc",   parse_one_arg_command, secondpass_one_arg_command },
+            { 5, 4, "dec",   parse_one_arg_command, secondpass_one_arg_command },
+            { 9, 1, "jmp",   parse_one_arg_command, secondpass_one_arg_command},
+            { 9, 2, "bne",   parse_one_arg_command, secondpass_one_arg_command},
+            { 9, 3, "jsr",   parse_one_arg_command, secondpass_one_arg_command},
+            { 12, 0, "red",  parse_one_arg_command, secondpass_one_arg_command},
+            { 13, 0, "prn",  parse_one_arg_command, secondpass_one_arg_command},
+            { 14, 0, "rts",  fill_zero_args_command, secondpass_zero_arg_command},
+            { 15, 0, "stop", fill_zero_args_command, secondpass_zero_arg_command}
     };
 
     for (; i < (sizeof(ops) / sizeof(operation)); i++)
