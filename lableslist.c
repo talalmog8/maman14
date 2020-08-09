@@ -84,6 +84,18 @@ int exists(char *label){
     return 0;    
 }
 
+labelnode* get_label(char *label){
+    labelnode *current = head;
+
+    while (current != NULL){
+        if(!strcmp(current->lable, label)){
+            return current;
+        }
+        current = current -> next;
+    }
+    return NULL;
+}
+
 int update_label_kind(char  *label, label_kind new_kind){
     labelnode *current = head;
 
@@ -101,7 +113,7 @@ void increment_data_labels(int ic){
     labelnode *current = head;
 
     while (current != NULL){
-        if(current -> area == label_data){
+        if((current -> area == label_data) && (current -> kind != label_external) ){
             current -> location += ic;
         }
         current = current -> next;
