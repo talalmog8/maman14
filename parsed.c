@@ -51,16 +51,21 @@ void print_output_arrays(char *filename, int ic, int dc){
     command_2_integer commandconverter;
     guide_2_integer guideconverter;
     int i;
-    FILE *file = stdout; /* openfile_for_write(filename); */
+    FILE *file = openfile_for_write(filename);
 
-    printf("%d %d\n", (ic - 100) , dc);
+    if(!file){
+        fprintf(stderr, "Filed to open file for assembler object file. filename: %s\n", filename);
+        exit(1);
+    }
+
+    fprintf(file,"\t%d %d\n", (ic - 100) , dc);
     for (i = 0; i < current_command; ++i) {
         commandconverter.command = commands_p[i];
-        fprintf(file, "%07d %06X\n", (i + 100), commandconverter.command_as_integer);
+        fprintf(file, "%07d %06x\n", (i + 100), commandconverter.command_as_integer);
     }    
     for (i = 0; i < current_guide; ++i) {
         guideconverter.guide = guides_p[i];
-        fprintf(file, "%07d %06X\n", (i + ic), guideconverter.guide_as_integer);
+        fprintf(file, "%07d %06x\n", (i + ic), guideconverter.guide_as_integer);
     }
 }
 
