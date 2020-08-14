@@ -17,7 +17,7 @@ typedef struct
     int funct;
     char* opname;
     int (*parser)(char *text, int opcode, int funct);
-    int (*label_inserter)(char *text);
+    int (*address_inserter)(char *text);
 } operation;
 
 typedef struct {

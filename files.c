@@ -3,6 +3,11 @@
 #include<string.h>
 #define POSTFIX ".as"
 #define OBJECT_POSTFIX ".ob"
+
+/*
+ * TODO check warnings in functions
+ */
+
 /*
     Tries to open file with specified name + ".as" postfix
 */

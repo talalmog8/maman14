@@ -3,11 +3,19 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-bool firstpass_parse_command(char **line_p){
+/*
+ * This file contains function for parsing commands
+ */
+
+/*
+ * Checks if string contains known command. If such command is found, the proper parser function is executed and TRUE is returned,
+ * Otherwise, FALSE is returned.
+ */
+bool firstpass_parse_command(char **line_p) {
     char *line = *line_p;
     operation operation;
 
-    if((operation = isoperation(line_p)).opcode == -1){
+    if ((operation = isoperation(line_p)).opcode == -1) {
         fprintf(stderr, "entered unknown operation in line %s", line);
         return FALSE;
     }
@@ -16,52 +24,55 @@ bool firstpass_parse_command(char **line_p){
     return TRUE;
 }
 
-bool secondpass_parse_command(char **line_p){
+/*
+ * Checks if string contains known command. If such command is found, the proper address_inserter function is executed and TRUE is returned,
+ * Otherwise, FALSE is returned.
+ */
+bool secondpass_parse_command(char **line_p) {
     char *line = *line_p;
     operation operation;
 
-    if((operation = isoperation(line_p)).opcode == -1){
+    if ((operation = isoperation(line_p)).opcode == -1) {
         fprintf(stderr, "entered unknown operation in line %s", line);
         return FALSE;
     }
 
-    if(operation.label_inserter){
-        operation.label_inserter(*line_p);
+    if (operation.address_inserter) {
+        operation.address_inserter(*line_p);
     }
     return TRUE;
 }
 
 /*
-    Returns operation number identifier or -1 if text didn't match any known operation
-    Also moves text pointer after the operation name that was found
-*/
-operation isoperation(char **text_p){
+ * Tries to find operation in specified string. If an operation is found, it's info is returned, and the specified pointer moved after the operation.
+ * Otherwise, unknown operation is returned.
+ */
+operation isoperation(char **text_p) {
     char *text = *text_p;
     int i = 0, length;
     operation ops[] = {
-            { -1, 0, "unknown", NULL},
-            { 0, 0, "mov", parse_two_args_command, secondpass_two_args_command },
-            { 1, 0,"cmp",  parse_two_args_command, secondpass_two_args_command },
-            { 2, 1, "add", parse_two_args_command, secondpass_two_args_command },
-            { 2, 2, "sub", parse_two_args_command, secondpass_two_args_command },
-            { 4, 0, "lea",   parse_two_args_command, secondpass_two_args_command },
-            { 5, 1, "clr",   parse_one_arg_command, secondpass_one_arg_command },
-            { 5, 2, "not",   parse_one_arg_command, secondpass_one_arg_command },
-            { 5, 3, "inc",   parse_one_arg_command, secondpass_one_arg_command },
-            { 5, 4, "dec",   parse_one_arg_command, secondpass_one_arg_command },
-            { 9, 1, "jmp",   parse_one_arg_command, secondpass_one_arg_command},
-            { 9, 2, "bne",   parse_one_arg_command, secondpass_one_arg_command},
-            { 9, 3, "jsr",   parse_one_arg_command, secondpass_one_arg_command},
-            { 12, 0, "red",  parse_one_arg_command, secondpass_one_arg_command},
-            { 13, 0, "prn",  parse_one_arg_command, secondpass_one_arg_command},
-            { 14, 0, "rts",  fill_zero_args_command, secondpass_zero_arg_command},
-            { 15, 0, "stop", fill_zero_args_command, secondpass_zero_arg_command}
+            {-1, 0, "unknown", NULL},
+            {0,  0, "mov",  parse_two_args_command, secondpass_two_args_command},
+            {1,  0, "cmp",  parse_two_args_command, secondpass_two_args_command},
+            {2,  1, "add",  parse_two_args_command, secondpass_two_args_command},
+            {2,  2, "sub",  parse_two_args_command, secondpass_two_args_command},
+            {4,  0, "lea",  parse_two_args_command, secondpass_two_args_command},
+            {5,  1, "clr",  parse_one_arg_command,  secondpass_one_arg_command},
+            {5,  2, "not",  parse_one_arg_command,  secondpass_one_arg_command},
+            {5,  3, "inc",  parse_one_arg_command,  secondpass_one_arg_command},
+            {5,  4, "dec",  parse_one_arg_command,  secondpass_one_arg_command},
+            {9,  1, "jmp",  parse_one_arg_command,  secondpass_one_arg_command},
+            {9,  2, "bne",  parse_one_arg_command,  secondpass_one_arg_command},
+            {9,  3, "jsr",  parse_one_arg_command,  secondpass_one_arg_command},
+            {12, 0, "red",  parse_one_arg_command,  secondpass_one_arg_command},
+            {13, 0, "prn",  parse_one_arg_command,  secondpass_one_arg_command},
+            {14, 0, "rts",  fill_zero_args_command, secondpass_zero_arg_command},
+            {15, 0, "stop", fill_zero_args_command, secondpass_zero_arg_command}
     };
 
-    for (; i < (sizeof(ops) / sizeof(operation)); i++)
-    {
-        if((!strncmp(text, ops[i].opname, (length = strlen(ops[i].opname))))){
-            if(!isspace(text[length])){
+    for (; i < (sizeof(ops) / sizeof(operation)); i++) {
+        if ((!strncmp(text, ops[i].opname, (length = strlen(ops[i].opname))))) {
+            if (!isspace(text[length])) {
                 fprintf(stderr, "Missing space or tab after operation name. Line: %s", text);
                 return ops[0];
             }
@@ -70,35 +81,42 @@ operation isoperation(char **text_p){
         }
     }
 
-    return ops[0];  
+    return ops[0];
 }
 
-arguments read_args(char *line){
+/*
+ * Tries to read 2 arguments separated by ',' from specified string, after trimming white characters.
+ * If an argument is found, it is copied to a new string, allocated by dynamic memory.
+ * A struct containing the arguments found, is returned.
+ */
+arguments read_args(char *line) {
     arguments args;
     char *token, *arg1 = NULL, *arg2 = NULL;
 
-    if((token = strtok(line, ", \t\n\0"))){
-        arg1 = malloc(sizeof(char)*strlen(token));
-        if(!arg1){
+    if ((token = strtok(line, ", \t\n\0"))) {
+        arg1 = malloc(sizeof(char) * strlen(token));
+        if (!arg1) {
             fprintf(stderr, "Failed to allocate memory for argument. exiting...");
             exit(1);
         }
         strcpy(arg1, token);
-        if((token = strtok(NULL, ", \t\n\0"))){
-            arg2 = malloc(sizeof(char)*strlen(token));
-            if(!arg2){
+        if ((token = strtok(NULL, ", \t\n\0"))) {
+            arg2 = malloc(sizeof(char) * strlen(token));
+            if (!arg2) {
                 fprintf(stderr, "Failed to allocate memory for argument. exiting...");
                 exit(1);
             }
             strcpy(arg2, token);
-        }
-        else{
+        } else {
             fprintf(stderr, "Managed to read only 1 operands from 2. arguments: %s", line);
         }
-    }
-    else{
+    } else {
         fprintf(stderr, "Managed to read only 0 operands from 2. arguments: %s", line);
     }
+
+/*
+ * TODO check if no more arguments left
+*/
 
     args.arg1 = arg1;
     args.arg2 = arg2;
@@ -106,6 +124,9 @@ arguments read_args(char *line){
     return args;
 }
 
+/*
+ * Disposes specified variable of dynamic allocated memory
+ */
 void dispose_operands(arguments args) {
     if (args.arg1 != NULL && args.arg2 != NULL) {
         free(args.arg1);
@@ -117,32 +138,40 @@ void dispose_operands(arguments args) {
     }
 }
 
-char *read_arg(char *line){
+/*
+ * Reads argument from specified string, after trimming white characters.
+ * If argument is found, it is copied to a new string, allocated by dynamic memory, and a pointer to it's beginning is returned.
+ * Otherwise NULL is returned.
+ */
+char *read_arg(char *line) {
     char *token;
     char *arg = NULL;
     token = strtok(line, " \t\n\0");
 
-    if(token){
-        if(strtok(NULL, " \t\n\0")){
+    if (token) {
+        if (strtok(NULL, " \t\n\0")) {
             fprintf(stderr, "More arguments than expected\n");
         }
-        arg  = malloc(sizeof(char) * strlen(token));
+        arg = malloc(sizeof(char) * strlen(token));
         strcpy(arg, token);
         return arg;
     }
 
+    /*
+     * TODO check if no more arguments left
+     */
+
     fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
-    return  arg;
+    return arg;
 }
 
 
-
 /*
-    Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1
-*/
-int isregister(char *arg){    
-    if(*(arg++) == 'r'){
-        if(*arg >= '0' && *arg <= '7'){
+ * Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1
+ */
+int isregister(char *arg) {
+    if (*(arg++) == 'r') {
+        if (*arg >= '0' && *arg <= '7') {
             return (*arg - '0');
         }
     }
@@ -150,42 +179,49 @@ int isregister(char *arg){
     return -1;
 }
 
-int try_parse_number(char* arg, int *number){
+/*
+ * Checks if specified string is a valid integer. If it is a number, the specified integer pointer is initialized to the number found,
+ * and 1 is returned
+ * Otherwise 0 is returned.
+ */
+int try_parse_number(char *arg, int *number) {
     int i = 1;
     int num = 0;
     int sign = 1;
 
-    if(*arg != '#'){
+    if (*arg != '#') {
         return FALSE;
     }
 
-    if(arg[i] == '-'){
+    if (arg[i] == '-') {
         sign = -1;
         i++;
-    }
-    else if(arg[i] == '+'){
+    } else if (arg[i] == '+') {
         i++;
     }
 
     for (; arg[i] != '\0'; ++i) {
-        if(isdigit(arg[i])){
+        if (isdigit(arg[i])) {
             num *= 10;
             num += (arg[i] - '0');
-        }
-        else{            
+        } else {
             return FALSE;
         }
     }
 
-    *number = num * sign;     
+    *number = num * sign;
     return TRUE;
 }
 
-int isaddress(char *arg){
-    if(*arg == '&'){
-        arg++; /* skip & */
-        if(islable(arg, (int)strlen(arg))){
-            return TRUE;            
+/*
+ * Returns 1 if specified string is a valid address which is '&' followed by a valid label.
+ * Returns 0 otherwise.
+ */
+int isaddress(char *arg) {
+    if (*arg == '&') {
+        arg++; /* skip '&' */
+        if (islable(arg, (int)strlen(arg))) {
+            return TRUE;
         }
         fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);
         return FALSE;
