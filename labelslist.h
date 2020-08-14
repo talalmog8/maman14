@@ -19,6 +19,7 @@ typedef struct node {
     struct node *next;
 } labelnode;
 
+labelnode* iterate_labels(void);
 void printlist();
 void addtoend(char *content, int location, label_area area, label_kind kind);
 void disposelist();

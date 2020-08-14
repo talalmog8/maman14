@@ -1,5 +1,5 @@
-build: parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o main.c assembler.h
-	gcc -g main.c parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o operations_parsers.o -ansi -pedantic -Wall -o build
+build: parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o entries_output.o main.c assembler.h
+	gcc -g main.c entries_output.o parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o operations_parsers.o -ansi -pedantic -Wall -o build
 files.o: files.c assembler.h
 	gcc -c files.c -ansi -pedantic -Wall -o files.o	
 cmdline.o: cmdline.c assembler.h
@@ -26,3 +26,5 @@ command.o: command.c utils.o operations_parsers.o secondpass_parsers.o label.o a
 	gcc -c command.c -ansi -pedantic -Wall -o command.o
 operations_parsers.o: operations_parsers.c parsed.o registers.o label.o utils.o assembler.h
 	gcc -c operations_parsers.c -ansi -pedantic -Wall -o operations_parsers.o
+entries_output.o: entries_output.c files.o assembler.h
+	gcc -c entries_output.c -ansi -pedantic -Wall -o entries_output.o

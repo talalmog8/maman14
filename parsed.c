@@ -1,5 +1,6 @@
 #include "assembler.h"
 #include <stdlib.h>
+#define OBJECT_POSTFIX ".ob"
 
 static command_template  *commands_p;
 static int current_command;
@@ -47,11 +48,11 @@ void dispose_output_arrays(void){
     free(commands_p);
 }
 
-void print_output_arrays(char *filename, int ic, int dc){
+void print_output_arrays(char *filename, unsigned int ic, unsigned int dc){
     command_2_integer commandconverter;
     guide_2_integer guideconverter;
     int i;
-    FILE *file = openfile_for_write(filename);
+    FILE *file = openfile_for_write(filename, OBJECT_POSTFIX);
 
     if(!file){
         fprintf(stderr, "Filed to open file for assembler object file. filename: %s\n", filename);
@@ -67,5 +68,8 @@ void print_output_arrays(char *filename, int ic, int dc){
         guideconverter.guide = guides_p[i];
         fprintf(file, "%07d %06x\n", (i + ic), guideconverter.guide_as_integer);
     }
+
+
+    fclose(file);
 }
 

@@ -8,6 +8,10 @@
 
 static  labelnode* head = NULL;
 
+labelnode* iterate_labels(void){
+    return head;
+}
+
 void printlist()
 {
     int index = 0;

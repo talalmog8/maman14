@@ -34,7 +34,6 @@ bool firstpass(FILE *file) {
             output &= parse_guide(moving_line, guide_result);
         }
         else if (guide_result == __entry) {
-            printf("Found entry guide. this will be handled in second pass\n");
             continue;
         }
         else if (guide_result == __extern) {            

@@ -2,38 +2,21 @@
 #include<stdlib.h>
 #include<string.h>
 #define POSTFIX ".as"
-#define OBJECT_POSTFIX ".ob"
 
 /*
  * TODO check warnings in functions
  */
 
 /*
-    Tries to open file with specified name + ".as" postfix
-*/
-FILE *openfile_for_read(char *name)
-{
-    char filename[MAX_FILE_NAME_LENGTH];     
-    char *p= filename;
-
-    p = strcpy(filename, name);
-    p = strcat(filename, POSTFIX);
-
-    printf("Attempting To Open File. Filename: \"%s\"\n", p);
-    return fopen(p, "r");
-}
-
-/*
     Tries to open file with specified name + ".ob" postfix
 */
-FILE *openfile_for_write(char *name)
+FILE *openfile_for_write(char *name, char *postfix)
 {
     FILE* output;
-    char filename[MAX_FILE_NAME_LENGTH];     
-    char *p= filename;
+    char filename[MAX_FILE_NAME_LENGTH];
+    char *p;
 
-    p = strcpy(filename, name);
-    p = strcat(filename, OBJECT_POSTFIX);
+    p = strcat(strcpy(filename, name), postfix);
 
     printf("Attempting To Open File. Filename: \"%s\"\n", p);
 
@@ -43,6 +26,20 @@ FILE *openfile_for_write(char *name)
     }
 
     return output;
+}
+
+/*
+    Tries to open file with specified name + ".as" postfix
+*/
+FILE *openfile_for_read(char *name)
+{
+    char filename[MAX_FILE_NAME_LENGTH];
+    char *p;
+
+    p = strcat(strcpy(filename, name), POSTFIX);
+
+    printf("Attempting To Open File. Filename: \"%s\"\n", p);
+    return fopen(p, "r");
 }
 
 

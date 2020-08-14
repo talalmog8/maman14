@@ -13,13 +13,6 @@ typedef enum {
 } bool;
 
 typedef enum {
-    CORRECT,
-    OTHER,
-    ERROR
-} parsing_result;
-
-
-typedef enum {
     __string,
     __data,
     __extern,
@@ -27,14 +20,14 @@ typedef enum {
 } guide_names;
 
 
-/* command line arguements */
+/* command line arguments */
 char * nextArg(int amount, char* args[]);
 FILE * readFile(char *name);
 
 
 /* file */
 FILE * openfile_for_read(char *name);
-FILE *openfile_for_write(char *name);
+FILE *openfile_for_write(char *name, char *postfix);
 char *readline(FILE *file, char* line);
 void disposefile(FILE *file);
 
@@ -73,17 +66,19 @@ void skip_characters(char **text_p, int amount);
 void setIC(int ic);
 unsigned int getIC();
 void incIC(unsigned  int addition);
-void setDC(int dc);
+void setDC(int dc); /* todo unsigned */
 unsigned int getDC();
 void incDC(unsigned  int addition);
 
 
 /* binary output arrays */
 void assign_output_arrays(void);
-void append_command(command_template command);
 void reset_output_arrays(void);
 void dispose_output_arrays(void);
-void print_output_arrays(char *filename, int ic, int dc);
+void print_output_arrays(char *filename, unsigned int ic, unsigned int dc);
 guide_template* get_current_guide();
 command_template* get_current_command();
 command_template* get_command_by_ic(unsigned int ic);
+
+/* output files */
+void printentries(char *filename, labelnode *head);
