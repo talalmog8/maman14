@@ -19,7 +19,6 @@ void skip_characters(char **text_p, int amount){
 
 bool is_comment_or_empty(char *line) {
     if (*line == NEWLINE || *line == COMMENT) {
-        printf("EMPTYLINE \\ COMMENT\n");
         return TRUE;
     }
     return FALSE;

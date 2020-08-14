@@ -53,15 +53,6 @@ bool parselable(char *line, int length, char *output) {
 bool islable(char *line, int length) {
     int i;
 
-    if (length > MAX_LABLE_SIZE) {
-        fprintf(stderr, "Lable bigger than max size\n");
-        return FALSE;
-    }
-    if (!isalpha(line[0])) {
-        fprintf(stderr, "Lable not starting with letter\n");
-        return FALSE;
-    }
-
     struct {
         char *name;
     } reserved[] = {
@@ -77,6 +68,17 @@ bool islable(char *line, int length) {
             {".entry"},
             {".extern"},
     };
+
+    if (length > MAX_LABLE_SIZE) {
+        fprintf(stderr, "Lable bigger than max size\n");
+        return FALSE;
+    }
+    if (!isalpha(line[0])) {
+        fprintf(stderr, "Lable not starting with letter\n");
+        return FALSE;
+    }
+
+
 
     for (i = 0; i < RESERVED_OPS_AMOUNT; ++i) {
         if (!strncmp(line, reserved[i].name, length)) {

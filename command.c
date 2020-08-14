@@ -13,7 +13,6 @@ bool firstpass_parse_command(char **line_p){
     }
 
     operation.parser(*line_p, operation.opcode, operation.funct);
-    printf("IC: %d Command: %s\n", getIC(), line);
     return TRUE;
 }
 
@@ -29,8 +28,6 @@ bool secondpass_parse_command(char **line_p){
     if(operation.label_inserter){
         operation.label_inserter(*line_p);
     }
-
-    printf("IC: %d Command: %s\n", getIC(), line);
     return TRUE;
 }
 
@@ -158,7 +155,7 @@ int try_parse_number(char* arg, int *number){
     int num = 0;
     int sign = 1;
 
-    if(!(*arg == '#')){
+    if(*arg != '#'){
         return FALSE;
     }
 
@@ -187,7 +184,7 @@ int try_parse_number(char* arg, int *number){
 int isaddress(char *arg){
     if(*arg == '&'){
         arg++; /* skip & */
-        if(islable(arg, strlen(arg))){
+        if(islable(arg, (int)strlen(arg))){
             return TRUE;            
         }
         fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);

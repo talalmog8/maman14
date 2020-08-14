@@ -35,6 +35,7 @@ int parse_two_args_command(char *text, int opcode, int funct) {
 
 static int parse_arg(char *arg, command_template *command, bool is_destination) {
     int number_arg;
+
     int _register = EMPTY_FIELD;
     int addressing_type = -1;
 

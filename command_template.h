@@ -11,6 +11,16 @@ typedef struct {
     unsigned int opcode :6;
 } command_template;
 
+typedef union {
+    command_template command;
+    unsigned int command_as_integer;
+} command_2_integer;
+
 typedef struct {
     unsigned int data : 24;
 } guide_template;
+
+typedef union {
+    guide_template guide;
+    unsigned int guide_as_integer;
+} guide_2_integer;

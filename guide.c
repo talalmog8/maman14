@@ -18,16 +18,15 @@ int is_guide(char **line_p){
     } guide_type;
 
     guide_type  types[] = {
-            {".string", strlen(".string"), __string},
-            {".data", strlen(".data"), __data},
-            {".entry", strlen(".entry"), __entry},
-            {".extern", strlen(".extern"), __extern}
+            {".string", 7, __string},
+            {".data", 5, __data},
+            {".entry", 6, __entry},
+            {".extern", 7, __extern}
     };
 
 
     for (i = 0; i < sizeof(types) / sizeof(guide_type); ++i) {
         if(!strncmp(line, types[i].type, types[i].length) && is_space(line[types[i].length])){
-            printf("Guide: %s", line);
             skip_characters(line_p, types[i].length);
             return types[i].no;
         }
