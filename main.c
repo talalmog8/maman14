@@ -8,7 +8,7 @@ int main(int argc, char *argv[]){
     printf("Reading Command Line Arguements For Program: \"%s\" Number Of Arguements: %d\n", argv[0], argc);
     while((arg = nextArg(argc, argv)) != NULL){        
       printf("Next Command Line Arguement: %s\n", arg);              
-      if((file = openfile(arg))){
+      if((file = openfile_for_read(arg))){
         printf("File Opened: %s\n", arg);
         reset_output_arrays();
         if(!firstpass(file)){
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
            if(!secondpass(file)){
                printf("Failed second pass\n");
            }
-            print_output_arrays();
+            
         }
         disposelist();
         disposefile(file);

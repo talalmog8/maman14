@@ -47,15 +47,16 @@ void dispose_output_arrays(void){
     free(commands_p);
 }
 
-void print_output_arrays(void){
+void print_output_arrays(char *filename, int ic, int dc){    
     int i;
-    printf("commands:\n");
+    FILE *file = openfile_for_write(filename);
+
+    printf("%d %d\n", (ic - 100) , dc);
     for (i = 0; i < current_command; ++i) {
-        printf("no: %d %06X\n", i, commands_p[i]);
-    }
-    printf("guides:\n");
+        fprintf(file, "%07d %06X\n", (i + 100), commands_p[i]);
+    }    
     for (i = 0; i < current_guide; ++i) {
-        printf("no: %d %06X\n", i, guides_p[i]);
+        fprintf(file, "%07d %06X\n", (i + ic), guides_p[i]);
     }
 }
 

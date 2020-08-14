@@ -33,7 +33,8 @@ FILE * readFile(char *name);
 
 
 /* file */
-FILE * openfile(char *name);
+FILE * openfile_for_read(char *name);
+FILE *openfile_for_write(char *name);
 char *readline(FILE *file, char* line);
 void disposefile(FILE *file);
 
@@ -82,7 +83,7 @@ void assign_output_arrays(void);
 void append_command(command_template command);
 void reset_output_arrays(void);
 void dispose_output_arrays(void);
-void print_output_arrays(void);
+void print_output_arrays(char *filename, int ic, int dc);
 guide_template* get_current_guide();
 command_template* get_current_command();
 command_template* get_command_by_ic(unsigned int ic);

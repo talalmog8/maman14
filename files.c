@@ -2,11 +2,11 @@
 #include<stdlib.h>
 #include<string.h>
 #define POSTFIX ".as"
-
+#define OBJECT_POSTFIX ".ob"
 /*
     Tries to open file with specified name + ".as" postfix
 */
-FILE *openfile(char *name)
+FILE *openfile_for_read(char *name)
 {
     char filename[MAX_FILE_NAME_LENGTH];     
     char *p= filename;
@@ -17,6 +17,29 @@ FILE *openfile(char *name)
     printf("Attempting To Open File. Filename: \"%s\"\n", p);
     return fopen(p, "r");
 }
+
+/*
+    Tries to open file with specified name + ".ob" postfix
+*/
+FILE *openfile_for_write(char *name)
+{
+    FILE* output;
+    char filename[MAX_FILE_NAME_LENGTH];     
+    char *p= filename;
+
+    p = strcpy(filename, name);
+    p = strcat(filename, OBJECT_POSTFIX);
+
+    printf("Attempting To Open File. Filename: \"%s\"\n", p);
+
+    if(!(output = fopen(p, "w"))){
+        fprintf(stderr, "Failed to open output file. exiting program\n");
+        exit(1);
+    }
+
+    return output;
+}
+
 
 /*
     Disposes file
@@ -31,42 +54,7 @@ void disposefile(FILE *file){
     Line length is At most 80 character without '\n'
 */
 char *readline(FILE *file, char *line){
-
-    //char* line = (char *)malloc(sizeof(char) * sizeof(MAX_LINE_LENGTH)); /* at least '\n' and '\0' */
-
     return fgets(line, MAX_LINE_LENGTH, file);
-}
-
-char* readline2(FILE *file){
-    static char last = 0;
-    char* line = (char *)malloc(sizeof(char) * 2); /* at least '\n' and '\0' */
-    char* start = line;
-    int size = 2;
-    int current;
-
-    if(!line){
-        fprintf(stderr, "Failed to allocate space for input lines. exiting program");
-        exit(1);
-    }
-    if(last == EOF){
-        last = 0; /* for next file need to reset this flag*/
-        return NULL; /* Finished parsing file last function call */
-    }
-
-    while ((size <= MAX_LINE_LENGTH) && (current = fgetc(file)) != EOF)
-    {
-        *(line++) = current;
-        if(current == '\n'){
-            break;
-        }
-        if(!realloc(start, ++size)){
-            fprintf(stderr, "Failed to reallocate space for input lines. exiting program");
-            exit(1);
-        }
-    }
-    *(line) = '\0';
-    last = current;
-    return start;
 }
 
 
