@@ -6,10 +6,8 @@ int main(int argc, char *argv[]) {
     char *arg;
     FILE *file;
     assign_output_arrays();
-    printf("Reading Command Line Arguments For Program: \"%s\" Number Of Arguments: %d\n", argv[0], argc);
     while ((arg = nextArg(argc, argv)) != NULL) {
         if ((file = openfile_for_read(arg))) {
-            printf("File Opened: %s\n", arg);
             reset_output_arrays();
             if (firstpass(file)) {
                 rewind(file);
