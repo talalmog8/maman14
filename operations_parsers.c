@@ -29,7 +29,6 @@ int parse_two_args_command(char *text, int opcode, int funct) {
 
     }
 
-    dispose_operands(args);
     return parsed;
 }
 
@@ -102,7 +101,7 @@ int parse_one_arg_command(char *text, int opcode, int funct) {
         fill_empty_command(get_current_command());
         incIC(1); /* saved space for label address*/
     }
-    free(arg);
+
 
     return addressing_type;
 }

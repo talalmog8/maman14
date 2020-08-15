@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "assembler.h"
 
 static int parse_arg(char *arg);
@@ -24,7 +25,6 @@ int secondpass_two_args_command(char *text) {
 
     }
 
-    dispose_operands(args);
     return parsed;
 }
 
@@ -57,7 +57,6 @@ int secondpass_one_arg_command(char *text) {
     int number_arg;
     int addressing_type = -1;
     char *arg;
-    labelnode *label;
     incIC(1);
 
     if (!(arg = read_arg(text))) {
@@ -80,7 +79,6 @@ int secondpass_one_arg_command(char *text) {
             addressing_type = -1;
         }
     }
-
     return addressing_type;
 }
 
@@ -100,7 +98,7 @@ static int insert_jump(command_template *command, char *arg){
     }
 
     if(label -> location == 0){
-        fprintf(stderr, "Cannot jump to extarnal labels.\n");
+        fprintf(stderr, "Cannot jump to external labels.\n");
         return FALSE;
     }
 
@@ -129,10 +127,10 @@ static int insert_label(command_template *command, char *label) {
 
     if (label_info->kind == label_external) {
         fill_flags(command, FALSE, FALSE, TRUE);
+        add_external(label, getIC());
     } else {
         fill_flags(command, FALSE, TRUE, FALSE);
     }
-
 
     command->opcode = EXTRACT_OPCODE(label_info->location);
     command->func = EXTRACT_FUNC(label_info->location);
@@ -141,6 +139,7 @@ static int insert_label(command_template *command, char *label) {
     command->orig_register = EXTRACT_ORIG_REG(label_info->location);
     command->orig_delivery_type = EXTRACT_ORIG_DEV_TYPE(label_info->location);
     incIC(1);
+
     return TRUE;
 }
 

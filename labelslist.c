@@ -7,6 +7,7 @@
 */
 
 static  labelnode* head = NULL;
+static labelnode *createnode(char *, int , label_area, label_kind);
 
 labelnode* iterate_labels(void){
     return head;
@@ -39,7 +40,7 @@ void addtoend(char *content, int location, label_area area, label_kind kind)
     current->next = createnode(content, location, area, kind);
 }
 
-labelnode *createnode(char *content, int location, label_area area, label_kind kind)
+static labelnode *createnode(char *content, int location, label_area area, label_kind kind)
 {
     labelnode *new = (labelnode *)malloc(sizeof(labelnode));
 

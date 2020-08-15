@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
                 icf = getIC();
                 idf = getDC();
                 if (secondpass(file)) {
+                    printexternals(arg, iterate_externals());
                     printentries(arg, iterate_labels());
                     print_output_arrays(arg, icf, idf);
                 } else {
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
                 printf("Failed first pass\n");
             }
             disposelist();
+            dispose_externals();
             disposefile(file);
         } else {
             printf("Could not open file: \"%s.as\". It will not be compiled\n", arg);

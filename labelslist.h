@@ -23,7 +23,6 @@ labelnode* iterate_labels(void);
 void printlist();
 void addtoend(char *content, int location, label_area area, label_kind kind);
 void disposelist();
-labelnode *createnode(char *content, int location, label_area area, label_kind kind);
 int exists(char *label);
 void increment_data_labels(int ic);
 int add_label_if_new(char *label, int location, int area, int kind);
