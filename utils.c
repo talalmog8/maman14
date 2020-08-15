@@ -10,7 +10,7 @@
  * Skips white characters in the string that the specified pointer points to
  */
 void skip_white_characters(char **text_p) {
-    while (**text_p == '\t' || **text_p == ' ') {
+    while (**text_p == TAB || **text_p == SPACE) {
         (*text_p)++;
     }
 }

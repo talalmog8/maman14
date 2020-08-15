@@ -8,9 +8,15 @@
 
 static void copy(char *dest,char *source, int length);
 
+/*
+    Allocates memory for label with the specified length
+*/
 char *allocate_label(int length){
     char *label;
 
+    /*
+        TODO change to calloc
+    */
     label = (char *)malloc((sizeof(char) * (length + 1)));
 
     if(!label){
@@ -21,6 +27,12 @@ char *allocate_label(int length){
     return label;
 }
 
+/*
+    Tries to find label in specified string. 
+    If a label is found, it's length is returned. 
+    Otherwise -1 is returned. 
+    TODO change to macros
+*/
 int findlable(char *line, bool atStart) {
     int i = 0;
 
@@ -41,6 +53,11 @@ int findlable(char *line, bool atStart) {
     return -1;
 }
 
+/*
+    Parses a label in provided string of specified length. 
+    If a valid label is found, it is copied to string that output points to, and TRUE is returned. 
+    Otherwise, FALSE is returned.
+*/
 bool parselable(char *line, int length, char *output) {
     if(islable(line, length)){
         copy(output, line, length);
@@ -50,6 +67,10 @@ bool parselable(char *line, int length, char *output) {
     return FALSE;
 }
 
+/*
+    Validates if a line starts in a valid label of size length
+    Returns TRUE if finds a valid label. Otherwise, returns FALSE
+*/
 bool islable(char *line, int length) {
     int i;
 
@@ -97,9 +118,13 @@ bool islable(char *line, int length) {
     return TRUE;
 }
 
+/*
+    Copies source string to destination string. the number of copied characters is specified. 
+    TODO change to strncpy
+*/
 static void copy(char *dest,char *source, int length){
     int i;
-    for ( i= 0; i < length; ++i) {
+    for (i= 0; i < length; ++i) {
         dest[i] = source[i];
     }
     dest[length] = '\0';

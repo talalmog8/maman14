@@ -59,7 +59,7 @@ static labelnode *createnode(char *content, int location, label_area area, label
 /*
  * Disposes all memory that has been dynamic allocated in labels list
  */
-void disposelist(void)
+void dispose_labels(void)
 {
     labelnode *current = head, *next;
 

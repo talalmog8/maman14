@@ -6,6 +6,11 @@ static bool parse_numbers(char *line);
 static bool parse_number(char *text);
 static bool parse_string(char *text);
 
+/*
+    Check if specified string contains a guide type command. 
+    If a valid guide type is found, the proper guide_name is returned.
+    Otherwise, -1 is returned 
+*/
 int is_guide(char **line_p){
     int i;
     char *line = (*line_p);
@@ -35,6 +40,9 @@ int is_guide(char **line_p){
     return -1;
 }
 
+/*
+    Parses specified string as guide command 
+*/
 bool parse_guide(char *line, guide_names guide_type){
     if(guide_type == __data){
         return parse_numbers(line);
@@ -63,6 +71,10 @@ static bool parse_numbers(char *line){
     return counter > 0;
 }
 
+/*
+    Parses a number from specified string and adds it to guide's output array.
+    Returns TRUE if number is valid and otherwise returns FALSE 
+*/
 static bool parse_number(char *text){
     int i = 0;
     int num = 0;
@@ -92,6 +104,10 @@ static bool parse_number(char *text){
     return TRUE;
 }
 
+/*
+   Parses the content of a .string command and adds it to guides output array. 
+   Returns TRUE if the string is valid, otherwise, returns FALSE
+*/
 static bool parse_string(char *text){
     int i;
     skip_white_characters(&text);
