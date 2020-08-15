@@ -2,29 +2,22 @@
 #include <stdlib.h>
 
 /*
-    This file holds function to for linked list operation of char array nodes
-
+    This file holds functions to manipulate labels linked list
 */
 
-static  labelnode* head = NULL;
+static  labelnode* head = NULL; /* holds the head of the labels linked list */
 static labelnode *createnode(char *, int , label_area, label_kind);
 
+/*
+ * Used for iterating over the labels list in different files
+ */
 labelnode* iterate_labels(void){
     return head;
 }
 
-void printlist()
-{
-    int index = 0;
-    labelnode *current = head;
-    printf("Labels:\n");
-    while (current != NULL)
-    {
-        printf("%d: label: %s location: %d area: %d kind: %d\n", (index++), current->lable, current->location, current -> area, current -> kind);
-        current = current->next;
-    }
-}
-
+/*
+ * Adds a new label to the end of the labels list, with the provided information
+ */
 void addtoend(char *content, int location, label_area area, label_kind kind)
 {
     labelnode *current = head;
@@ -40,6 +33,11 @@ void addtoend(char *content, int location, label_area area, label_kind kind)
     current->next = createnode(content, location, area, kind);
 }
 
+/*
+ * Creates a new node for labels list, holding the provided information.
+ * The node's memory is dynamically allocated.
+ * A pointer to the node is returned.
+ */
 static labelnode *createnode(char *content, int location, label_area area, label_kind kind)
 {
     labelnode *new = (labelnode *)malloc(sizeof(labelnode));
@@ -50,7 +48,7 @@ static labelnode *createnode(char *content, int location, label_area area, label
         exit(1);
     }
 
-    new->lable = content;
+    new->label = content;
     new->location = location;
     new->area = area;
     new->kind = kind;
@@ -58,7 +56,10 @@ static labelnode *createnode(char *content, int location, label_area area, label
     return new;
 }
 
-void disposelist()
+/*
+ * Disposes all memory that has been dynamic allocated in labels list
+ */
+void disposelist(void)
 {
     labelnode *current = head, *next;
 
@@ -71,17 +72,21 @@ void disposelist()
         free(current);
         current = next;
     }
-    free(current->lable);
+    free(current->label);
     free(current);
 
     head = NULL;
 }
 
+/*
+ * Returns 1 if a label with the specified name is stored in labels list.
+ * Otherwise, returns 0
+ */
 int exists(char *label){
     labelnode *current = head;
 
     while (current != NULL){
-        if(!strcmp(current->lable, label)){
+        if(!strcmp(current->label, label)){
             return 1;
         }        
         current = current -> next;
@@ -89,11 +94,15 @@ int exists(char *label){
     return 0;    
 }
 
+/*
+ * Searches for a label with the specified name in labels list. If such label is found, a pointer to it is returned.
+ * Otherwise, NULL is returned.
+ */
 labelnode* get_label(char *label){
     labelnode *current = head;
 
     while (current != NULL){
-        if(!strcmp(current->lable, label)){
+        if(!strcmp(current->label, label)){
             return current;
         }
         current = current -> next;
@@ -101,11 +110,16 @@ labelnode* get_label(char *label){
     return NULL;
 }
 
+/*
+ * Tries to find label with specified name in labels list.
+ * If such label is found, the label's kind is updated using the specified label kind, and 1 is returned.
+ * Otherwise, if such label isn't found, 0 is returned.
+ */
 int update_label_kind(char  *label, label_kind new_kind){
     labelnode *current = head;
 
     while (current != NULL){
-        if(!strcmp(current->lable, label)){
+        if(!strcmp(current->label, label)){
             current -> kind = new_kind;
             return 1;
         }
@@ -114,6 +128,9 @@ int update_label_kind(char  *label, label_kind new_kind){
     return 0;
 }
 
+/*
+ * Adds specified ic to all non label_external labels that classified as label_data
+ */
 void increment_data_labels(int ic){
     labelnode *current = head;
 
@@ -125,6 +142,10 @@ void increment_data_labels(int ic){
     }
 }
 
+/*
+ * Tries to add specified label to labels list.
+ * If specified label already exists in list, returns false, Otherwise, adds label to end of the list, and returns TRUE
+ */
 int add_label_if_new(char *label, int location, int area, int kind) {
     if (exists(label)) {
         fprintf(stderr, "Label already exists. Label: %s\n", label);
