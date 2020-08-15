@@ -27,9 +27,11 @@ FILE * readFile(char *name);
 
 /* file */
 FILE * openfile_for_read(char *name);
+FILE *lazyopen(FILE *file, char *filename, char *postfix);
 FILE *openfile_for_write(char *name, char *postfix);
 char *readline(FILE *file, char* line);
 void disposefile(FILE *file);
+
 
 /* parsing */
 bool firstpass(FILE *file);
@@ -80,5 +82,16 @@ guide_template* get_current_guide();
 command_template* get_current_command();
 command_template* get_command_by_ic(unsigned int ic);
 
+/* externals list */
+typedef struct external_node{
+    unsigned int location;
+    char *label;
+    struct external_node *next;
+} external_node;
+external_node * iterate_externals(void);
+void add_external(char *label, int location);
+void dispose_externals();
+
 /* output files */
 void printentries(char *filename, labelnode *head);
+void printexternals(char *filename, external_node *head);

@@ -60,3 +60,18 @@ char *readline(FILE *file, char *line){
 }
 
 
+/*
+ * Opens file if not open yet, for write operations with 'ent' postfix
+ */
+FILE *lazyopen(FILE *file, char *filename, char *postfix){
+    if (!file) {
+        /* lazy initialization */
+        file = openfile_for_write(filename, postfix);
+        if (!file) {
+            fprintf(stderr, "Failed to open file for entries. filename: %s\n", filename);
+            exit(1);
+        }
+    }
+    return file;
+}
+
