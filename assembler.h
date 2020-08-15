@@ -65,10 +65,10 @@ void skip_white_characters(char **text_p);
 void skip_characters(char **text_p, int amount);
 
 /* registers operations */
-void setIC(int ic);
+void setIC(unsigned int ic);
 unsigned int getIC();
 void incIC(unsigned  int addition);
-void setDC(int dc); /* todo unsigned */
+void setDC(unsigned int dc);
 unsigned int getDC();
 void incDC(unsigned  int addition);
 
