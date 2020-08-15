@@ -2,6 +2,9 @@
 
 #define EXTERNAL_POSTFIX ".ext"
 
+/*
+ * If source files has external symbols, printexternals creates .ext file with all the external symbols usages.
+ */
 void printexternals(char *filename, external_node *head){
     FILE *externals = NULL;
 

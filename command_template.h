@@ -1,4 +1,9 @@
 
+/*
+ * DataTypes for a commands and guides
+ * Converters of commands and guides to unsigned integers
+ */
+
 typedef struct {
     unsigned int E : 1;
     unsigned int R : 1;

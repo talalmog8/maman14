@@ -4,12 +4,19 @@
 static external_node *createnode(char *label, int location);
 static char *allocate_external(char *from);
 
+/* head of linked list of external labels */
 static  external_node *head = NULL;
 
+/*
+ * Used for iterating through the list in different files
+ */
 external_node * iterate_externals(void){
     return head;
 }
 
+/*
+ * Adds the specified label in the end of the externals list
+ */
 void add_external(char *label, int location)
 {
     external_node *current = head;
@@ -25,6 +32,9 @@ void add_external(char *label, int location)
     current->next = createnode(label, location);
 }
 
+/*
+ * Allocates memory for a new external node and fills it with the specified information
+ */
 static external_node *createnode(char *label, int location)
 {
     external_node *new = (external_node *)malloc(sizeof(external_node));
@@ -42,6 +52,9 @@ static external_node *createnode(char *label, int location)
     return new;
 }
 
+/*
+ * Allocates memory for label (string) that will be stores in an external node
+ */
 static char *allocate_external(char *from){
     char *to;
 
@@ -56,6 +69,9 @@ static char *allocate_external(char *from){
     return to;
 }
 
+/*
+ * Frees memory of all variables that were given dynamic memory allocation in the externals list
+ */
 void dispose_externals()
 {
     external_node *current = head, *next;

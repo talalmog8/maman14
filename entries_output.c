@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "assembler.h"
 
 #define ENTRY_POSTFIX ".ent"
