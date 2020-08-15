@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#define MAX_LABLE_SIZE 31
+#define MAX_LABEL_SIZE 31
 #define RESERVED_OPS_AMOUNT 11
 
 static void copy(char *dest,char *source, int length);
@@ -69,7 +69,7 @@ bool islable(char *line, int length) {
             {".extern"},
     };
 
-    if (length > MAX_LABLE_SIZE) {
+    if (length > MAX_LABEL_SIZE) {
         fprintf(stderr, "Lable bigger than max size\n");
         return FALSE;
     }
