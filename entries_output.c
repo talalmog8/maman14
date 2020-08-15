@@ -11,7 +11,7 @@ void printentries(char *filename, labelnode *head) {
     while (head != NULL) {
         if (head->kind == label_entry) {
             entries = lazyopen(entries, filename, ENTRY_POSTFIX);
-            fprintf(entries, "%s %07d\n", head->lable, head->location);
+            fprintf(entries, "%s %07d\n", head->label, head->location);
         }
         head = head->next;
     }
