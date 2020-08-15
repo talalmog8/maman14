@@ -1,7 +1,6 @@
 #include "assembler.h"
 #include<string.h>
 #include <ctype.h>
-#include <stdlib.h>
 
 /*
  * This file contains function for parsing commands
@@ -94,19 +93,9 @@ arguments read_args(char *line) {
     char *token, *arg1 = NULL, *arg2 = NULL;
 
     if ((token = strtok(line, ", \t\n\0"))) {
-        arg1 = malloc(sizeof(char) * strlen(token));
-        if (!arg1) {
-            fprintf(stderr, "Failed to allocate memory for argument. exiting...");
-            exit(1);
-        }
-        strcpy(arg1, token);
+        arg1 = token;
         if ((token = strtok(NULL, ", \t\n\0"))) {
-            arg2 = malloc(sizeof(char) * strlen(token));
-            if (!arg2) {
-                fprintf(stderr, "Failed to allocate memory for argument. exiting...");
-                exit(1);
-            }
-            strcpy(arg2, token);
+            arg2 = token;
         } else {
             fprintf(stderr, "Managed to read only 1 operands from 2. arguments: %s", line);
         }
@@ -125,20 +114,6 @@ arguments read_args(char *line) {
 }
 
 /*
- * Disposes specified variable of dynamic allocated memory
- */
-void dispose_operands(arguments args) {
-    if (args.arg1 != NULL && args.arg2 != NULL) {
-        free(args.arg1);
-        free(args.arg2);
-    } else if (args.arg1 != NULL) {
-        free(args.arg1);
-    } else if (args.arg2 != NULL) {
-        free(args.arg2);
-    }
-}
-
-/*
  * Reads argument from specified string, after trimming white characters.
  * If argument is found, it is copied to a new string, allocated by dynamic memory, and a pointer to it's beginning is returned.
  * Otherwise NULL is returned.
@@ -149,11 +124,7 @@ char *read_arg(char *line) {
     token = strtok(line, " \t\n\0");
 
     if (token) {
-        if (strtok(NULL, " \t\n\0")) {
-            fprintf(stderr, "More arguments than expected\n");
-        }
-        arg = malloc(sizeof(char) * strlen(token));
-        strcpy(arg, token);
+        arg = token;
         return arg;
     }
 
