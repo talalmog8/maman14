@@ -28,7 +28,6 @@ typedef struct {
 
 operation isoperation(char **text_p);
 arguments read_args(char *line);
-void dispose_operands(arguments args);
 char *read_arg(char *line);
 
 int try_parse_number(char* arg, int *number);
