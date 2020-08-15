@@ -1,5 +1,10 @@
 #include<string.h>
 
+/*
+ * Definitions for labels linked list structure
+ * Definitions for functions to manipulate labels linked list
+ */
+
 typedef enum{
     label_no_kind,
     label_entry,
@@ -12,7 +17,7 @@ typedef enum{
 } label_area;
 
 typedef struct node {
-    char *lable;
+    char *label;
     int location;
     label_kind kind;
     label_area area;
@@ -20,9 +25,8 @@ typedef struct node {
 } labelnode;
 
 labelnode* iterate_labels(void);
-void printlist();
 void addtoend(char *content, int location, label_area area, label_kind kind);
-void disposelist();
+void disposelist(void);
 int exists(char *label);
 void increment_data_labels(int ic);
 int add_label_if_new(char *label, int location, int area, int kind);
