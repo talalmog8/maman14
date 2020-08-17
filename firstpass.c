@@ -12,7 +12,7 @@ bool firstpass(FILE *file) {
     int guide_result = 0;  /*  */
     char line_mem[MAX_LINE_LENGTH]; /* reused for holding current line read from source file */
     
-    /* intializes registers */
+    /* initializes registers */
     setIC(100);
     setDC(0);    
     while (readline(file, (moving_line = line_mem)) != NULL) {
@@ -23,11 +23,11 @@ bool firstpass(FILE *file) {
             continue;
         } 
         else if ((label_length = findlable(moving_line, TRUE)) != -1) {   
-            /* found label's delimeter at beginning od command */         
+            /* found label's delimiter at beginning od command */
             if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
-                /* label has been validated successfuly */
+                /* label has been validated successfully */
                 foundLabel = TRUE;
-                skip_characters(&moving_line, label_length + 1); /* foward line after the label*/
+                skip_characters(&moving_line, label_length + 1); /* forwards line after the label*/
             } 
             else {
                 fprintf(stderr, "Found illegal label in line: %s", line_mem);
