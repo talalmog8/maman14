@@ -7,9 +7,13 @@ static void fill_empty_command(command_template *command);
 static void insert_number_to_command(command_template *command, int number);
 static int parse_arg(char *arg, command_template *, bool);
 
-
+/*
+ * Parses a 2 argument command.
+ * Returns 1 if successful
+ * Otherwise, returns -1
+ */
 int parse_two_args_command(char *text, int opcode, int funct) {
-    int parsed = 0;
+    int parsed = -1;
     arguments args = read_args(text);
     command_template *command = get_current_command();
 
@@ -30,6 +34,10 @@ int parse_two_args_command(char *text, int opcode, int funct) {
     return parsed;
 }
 
+/*
+ * Parses one argument in a 2 argument command
+ * If successful, returns addressing type, otherwise, returns -1
+ */
 static int parse_arg(char *arg, command_template *command, bool is_destination) {
     int number_arg;
 
@@ -44,7 +52,7 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     } else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
-        incIC(1);
+        incIC(1); /* saved space for label address*/
     } else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
@@ -62,6 +70,11 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     return addressing_type;
 }
 
+/*
+ * Helper function to fill default field of a 2 args command
+ * Increments IC
+ * Sets the A flag
+ */
 static void fill_two_args_command_defaults(command_template *command, int opcode, int funct){
     command->opcode = opcode;
     command->func = funct;
@@ -69,6 +82,11 @@ static void fill_two_args_command_defaults(command_template *command, int opcode
     incIC(1);
 }
 
+/*
+ * Parses a one argument command
+ * If successful returns the addressing type found.
+ * Otherwise, returns -1
+ */
 int parse_one_arg_command(char *text, int opcode, int funct) {
     int _register, number_arg;
     int addressing_type = -1;
@@ -103,6 +121,11 @@ int parse_one_arg_command(char *text, int opcode, int funct) {
     return addressing_type;
 }
 
+/*
+ * Helper function to fill default fields of one argument commands
+ * Increments IC
+ * Sets the A flag
+ */
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct) {
     command->opcode = opcode;
     command->func = funct;
@@ -112,6 +135,11 @@ static void fill_one_arg_command_defaults(command_template *command, int opcode,
     incIC(1);
 }
 
+/*
+ * Parses a command with zero argument
+ * Increments IC
+ * Sets the A flag
+ */
 int fill_zero_args_command(char *text, int opcode, int funct) {
     command_template *command = get_current_command();
     command->opcode = opcode;
@@ -130,6 +158,11 @@ int fill_zero_args_command(char *text, int opcode, int funct) {
     return TRUE;
 }
 
+/*
+ * Inserts a number to the form of command_template using bitwise operations
+ * Sets the A flag on
+ * Increments IC
+ */
 static void insert_number_to_command(command_template *command, int number) {
     command->opcode = EXTRACT_OPCODE(number);
     command->func = EXTRACT_FUNC(number);
