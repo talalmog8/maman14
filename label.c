@@ -14,12 +14,7 @@ static void copy(char *dest,char *source, int length);
 char *allocate_label(int length){
     char *label;
 
-    /*
-        TODO change to calloc
-    */
-    label = (char *)malloc((sizeof(char) * (length + 1)));
-
-    if(!label){
+    if(!(label = (char *)calloc(length + 1, sizeof(char)))){
         fprintf(stderr, "Failed to allocate label. exiting program\n");
         exit(1);
     }
@@ -30,25 +25,24 @@ char *allocate_label(int length){
 /*
     Tries to find label in specified string. 
     If a label is found, it's length is returned. 
-    Otherwise -1 is returned. 
-    TODO change to macros
+    Otherwise -1 is returned.
 */
 int findlable(char *line, bool atStart) {
     int i = 0;
 
-    while (line[i] != '\n' && line[i] != '\0' && line[i] != ':') {
+    while (line[i] != NEWLINE && line[i] != STRING_END && line[i] != COLON) {
         i++;
     }
 
     if(atStart){
-        if (line[i] == ':') {
+        if (line[i] == COLON) {
             return i;
         }
         return -1;
     }
     skip_white_characters(&line);
 
-    if(line[i] == '\n' || line[i] == '\0')
+    if(line[i] == '\n' || line[i] == STRING_END)
         return i;
     return -1;
 }
@@ -91,11 +85,11 @@ bool islable(char *line, int length) {
     };
 
     if (length > MAX_LABEL_SIZE) {
-        fprintf(stderr, "Lable bigger than max size\n");
+        fprintf(stderr, "Label bigger than max size\n");
         return FALSE;
     }
     if (!isalpha(line[0])) {
-        fprintf(stderr, "Lable not starting with letter\n");
+        fprintf(stderr, "Label not starting with letter\n");
         return FALSE;
     }
 
@@ -119,8 +113,8 @@ bool islable(char *line, int length) {
 }
 
 /*
-    Copies source string to destination string. the number of copied characters is specified. 
-    TODO change to strncpy
+    Copies source string to destination string. the number of copied characters is specified.
+    Adds STRING_END at the end of the copied string
 */
 static void copy(char *dest,char *source, int length){
     int i;

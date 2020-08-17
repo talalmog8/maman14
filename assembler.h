@@ -3,6 +3,13 @@
 #include "command_template.h"
 #include "operations_parsers.h"
 
+#define COMMENT ';'
+#define NEWLINE '\n'
+#define TAB '\t'
+#define STRING_END '\0'
+#define SPACE ' '
+#define COLON ':'
+
 #define MAX_LINE_LENGTH 81
 #define MAX_FILE_NAME_LENGTH 100
 #define MAX_PROGRAM_OUTPUT_SIZE 200

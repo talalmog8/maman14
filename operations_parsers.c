@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "assembler.h"
 
 
@@ -39,26 +38,23 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     int addressing_type = -1;
 
     if ((_register = isregister(arg)) != -1) {
-        addressing_type = REGISTER_ADDRESSING;
+        command->des_delivery_type = addressing_type = REGISTER_ADDRESSING;
     } else if (try_parse_number(arg, &number_arg)) {
-        addressing_type = IMMEDIATE_ADDRESSING;
+        command->des_delivery_type = addressing_type = IMMEDIATE_ADDRESSING;
         insert_number_to_command(get_current_command(), number_arg);
     } else if (isaddress(arg)) {
-        addressing_type = RELATIVE_ADDRESSING;
+        command->des_delivery_type = addressing_type = RELATIVE_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1);
     } else if (islable(arg, strlen(arg))) {
-        addressing_type = DIRECT_ADDRESSING;
+        command->des_delivery_type = addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1); /* saved space for label address*/
     }
 
-
     if (is_destination) {
-        command->des_delivery_type = addressing_type;
         command->des_register = (_register == -1) ? EMPTY_FIELD : _register;
     } else {
-        command->orig_delivery_type = addressing_type;
         command->orig_register = (_register == -1) ? EMPTY_FIELD : _register;
     }
 
@@ -144,6 +140,9 @@ static void insert_number_to_command(command_template *command, int number) {
     incIC(1);
 }
 
+/*
+ * Fills the specified command with zeros. This method is used for debugging secondpass
+ */
 static void fill_empty_command(command_template *command) {
     command->opcode = 0;
     command->des_register = 0;
@@ -154,6 +153,9 @@ static void fill_empty_command(command_template *command) {
     command->func = 0;
 }
 
+/*
+ * Initializes A R E flags in the specified command
+ */
 static void fill_flags(command_template *command, bool a, bool r, bool e){
     command->A = a;
     command->R = r;

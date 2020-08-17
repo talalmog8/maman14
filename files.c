@@ -4,10 +4,6 @@
 #define POSTFIX ".as"
 
 /*
- * TODO check warnings in functions
- */
-
-/*
     Tries to open file with specified name + ".ob" postfix
 */
 FILE *openfile_for_write(char *name, char *postfix)

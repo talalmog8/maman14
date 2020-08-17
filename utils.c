@@ -1,10 +1,5 @@
 #include "assembler.h"
 
-#define COMMENT ';'
-#define NEWLINE '\n'
-#define TAB '\t'
-#define STRING_END '\0'
-#define SPACE ' '
 
 /*
  * Skips white characters in the string that the specified pointer points to
