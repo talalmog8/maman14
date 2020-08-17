@@ -4,7 +4,6 @@
 static void fill_two_args_command_defaults(command_template *command, int opcode, int funct);
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct);
 static void fill_empty_command(command_template *command);
-static void fill_flags(command_template *command, bool a, bool r, bool e);
 static void insert_number_to_command(command_template *command, int number);
 static int parse_arg(char *arg, command_template *, bool);
 
@@ -38,23 +37,25 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     int addressing_type = -1;
 
     if ((_register = isregister(arg)) != -1) {
-        command->des_delivery_type = addressing_type = REGISTER_ADDRESSING;
+        addressing_type = REGISTER_ADDRESSING;
     } else if (try_parse_number(arg, &number_arg)) {
-        command->des_delivery_type = addressing_type = IMMEDIATE_ADDRESSING;
+        addressing_type = IMMEDIATE_ADDRESSING;
         insert_number_to_command(get_current_command(), number_arg);
     } else if (isaddress(arg)) {
-        command->des_delivery_type = addressing_type = RELATIVE_ADDRESSING;
+        addressing_type = RELATIVE_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1);
     } else if (islable(arg, strlen(arg))) {
-        command->des_delivery_type = addressing_type = DIRECT_ADDRESSING;
+        addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1); /* saved space for label address*/
     }
 
     if (is_destination) {
+        command->des_delivery_type  = addressing_type;
         command->des_register = (_register == -1) ? EMPTY_FIELD : _register;
     } else {
+        command->orig_delivery_type = addressing_type;
         command->orig_register = (_register == -1) ? EMPTY_FIELD : _register;
     }
 
@@ -153,11 +154,3 @@ static void fill_empty_command(command_template *command) {
     command->func = 0;
 }
 
-/*
- * Initializes A R E flags in the specified command
- */
-static void fill_flags(command_template *command, bool a, bool r, bool e){
-    command->A = a;
-    command->R = r;
-    command->E = e;
-}
