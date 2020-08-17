@@ -14,22 +14,21 @@ int main(int argc, char *argv[]) {
         if ((file = openfile_for_read(arg))) {
             /* Opened a source file */
             reset_output_arrays(); /* resest output arrays (that stores compiled data) indexes */
-            if (firstpass(file)) { 
-                /* current source file succeeded in firstpass */
-                rewind(file); /* reset file cursor to beginning for secondapass */
-                /* store final IC and final DC */
-                icf = getIC();
-                idf = getDC();
-                if (secondpass(file)) {
-                    /* current source file succeeded in secondpass */
-                    printexternals(arg, iterate_externals()); /* creates and fills .ext file if needed */
-                    printentries(arg, iterate_labels()); /* creates and fills .ent file if needed */
-                    print_output_arrays(arg, icf, idf); /* creates and fills .ob file */
-                } else {
-                    printf("[%s] Failed second pass. Not creating output files\n", arg);
-                }
-            } else {
+            if (!firstpass(file)) {
                 printf("[%s] Failed first pass\n", arg);
+            }
+            /* current source file succeeded in firstpass */
+            rewind(file); /* reset file cursor to beginning for secondapass */
+            /* store final IC and final DC */
+            icf = getIC();
+            idf = getDC();
+            if (secondpass(file)) {
+                /* current source file succeeded in secondpass */
+                printexternals(arg, iterate_externals()); /* creates and fills .ext file if needed */
+                printentries(arg, iterate_labels()); /* creates and fills .ent file if needed */
+                print_output_arrays(arg, icf, idf); /* creates and fills .ob file */
+            } else {
+                printf("[%s] Failed second pass. Not creating output files\n", arg);
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */
