@@ -20,7 +20,7 @@ bool firstpass_parse_command(char **line_p) {
     }
 
     if(operation.parser(*line_p, operation.opcode, operation.funct) != -1){
-        return  TRUE;
+        return TRUE;
     }
 
     return FALSE;
@@ -40,7 +40,9 @@ bool secondpass_parse_command(char **line_p) {
     }
 
     if (operation.address_inserter) {
-        operation.address_inserter(*line_p);
+        if(operation.address_inserter(*line_p) == -1){
+            return  FALSE;
+        }
     }
     return TRUE;
 }
