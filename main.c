@@ -26,10 +26,10 @@ int main(int argc, char *argv[]) {
                     printentries(arg, iterate_labels()); /* creates and fills .ent file if needed */
                     print_output_arrays(arg, icf, idf); /* creates and fills .ob file */
                 } else {
-                    printf("Failed second pass. Not creating output files\n");
+                    printf("[%s] Failed second pass. Not creating output files\n", arg);
                 }
             } else {
-                printf("Failed first pass\n");
+                printf("[%s] Failed first pass\n", arg);
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */

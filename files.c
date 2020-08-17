@@ -14,8 +14,6 @@ FILE *openfile_for_write(char *name, char *postfix)
 
     p = strcat(strcpy(filename, name), postfix);
 
-    printf("Attempting To Open File. Filename: \"%s\"\n", p);
-
     if(!(output = fopen(p, "w"))){
         fprintf(stderr, "Failed to open output file. exiting program\n");
         exit(1);
@@ -34,7 +32,6 @@ FILE *openfile_for_read(char *name)
 
     p = strcat(strcpy(filename, name), POSTFIX);
 
-    printf("Attempting To Open File. Filename: \"%s\"\n", p);
     return fopen(p, "r");
 }
 

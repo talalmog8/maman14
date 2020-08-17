@@ -108,9 +108,12 @@ arguments read_args(char *line) {
         fprintf(stderr, "Managed to read only 0 operands from 2. arguments: %s", line);
     }
 
-/*
- * TODO check if no more arguments left
-*/
+    if(strtok(NULL, ", \t\n\0")){
+        fprintf(stderr, "Found 3 arguments in command. There are at most 2 argument per command. IC: %d\n", getIC());
+        args.arg1 = NULL;
+        args.arg2 = NULL;
+        return args;
+    }
 
     args.arg1 = arg1;
     args.arg2 = arg2;
@@ -130,12 +133,13 @@ char *read_arg(char *line) {
 
     if (token) {
         arg = token;
+
+        if(strtok(NULL, " \t\n\0")){
+            fprintf(stderr, "Found 2 arguments in a 1 argument command. IC: %d\n", getIC());
+            return NULL;
+        }
         return arg;
     }
-
-    /*
-     * TODO check if no more arguments left
-     */
 
     fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
     return arg;

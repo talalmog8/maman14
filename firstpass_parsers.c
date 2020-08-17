@@ -23,10 +23,10 @@ int parse_two_args_command(char *text, int opcode, int funct) {
             if (parse_arg(args.arg2, command, TRUE) != -1) {
                 parsed = 1;
             } else {
-                fprintf(stderr, "Failed to parse second argument in command. arguments: %s", text);
+                fprintf(stderr, "Failed to parse second argument in command. arguments: %s\n", text);
             }
         } else {
-            fprintf(stderr, "Failed to parse first argument in command. arguments: %s", text);
+            fprintf(stderr, "Failed to parse first argument in command. arguments: %s\n", text);
         }
 
     }
