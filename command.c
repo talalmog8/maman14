@@ -19,8 +19,11 @@ bool firstpass_parse_command(char **line_p) {
         return FALSE;
     }
 
-    operation.parser(*line_p, operation.opcode, operation.funct);
-    return TRUE;
+    if(operation.parser(*line_p, operation.opcode, operation.funct) != -1){
+        return  TRUE;
+    }
+
+    return FALSE;
 }
 
 /*
