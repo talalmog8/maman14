@@ -30,6 +30,8 @@ operation isoperation(char **text_p);
 arguments read_args(char *line);
 char *read_arg(char *line);
 
+void fill_flags(command_template *command, int a, int r, int e);
+
 int try_parse_number(char* arg, int *number);
 int isregister(char *arg);
 int isaddress(char *arg);

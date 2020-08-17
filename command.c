@@ -136,6 +136,14 @@ char *read_arg(char *line) {
     return arg;
 }
 
+/*
+ * Initializes A R E flags in the specified command
+ */
+void fill_flags(command_template *command, int a, int r, int e){
+    command->A = a;
+    command->R = r;
+    command->E = e;
+}
 
 /*
  * Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1

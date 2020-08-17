@@ -1,9 +1,7 @@
-#include <stdlib.h>
 #include "assembler.h"
 
 static int parse_arg(char *arg);
 
-static void fill_flags(command_template *command, bool a, bool r, bool e);
 static int insert_jump(command_template *command, char *arg);
 static int insert_label(command_template *command, char *label);
 
@@ -141,10 +139,4 @@ static int insert_label(command_template *command, char *label) {
     incIC(1);
 
     return TRUE;
-}
-
-static void fill_flags(command_template *command, bool a, bool r, bool e) {
-    command->A = a;
-    command->R = r;
-    command->E = e;
 }
