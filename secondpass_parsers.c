@@ -5,8 +5,12 @@ static int parse_arg(char *arg);
 static int insert_jump(command_template *command, char *arg);
 static int insert_label(command_template *command, char *label);
 
+/*
+ * Parses a 2 argument command
+ * Returns 1 if succeeded and -1 otherwise.
+ */
 int secondpass_two_args_command(char *text) {
-    int parsed = 0;
+    int parsed = -1;
     arguments args = read_args(text);
     incIC(1);
 
@@ -26,6 +30,11 @@ int secondpass_two_args_command(char *text) {
     return parsed;
 }
 
+/*
+ * Parses one argument from a 2 argument command in secondpass.
+ * Inserts label location needed. Otherwise, increments IC according to command.
+ * Returns addressing type found, or -1 if couldn't recognize addressing type.
+ */
 static int parse_arg(char *arg) {
     int number_arg;
     int addressing_type = -1;
@@ -37,20 +46,21 @@ static int parse_arg(char *arg) {
         incIC(1);
     } else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
-        if (!insert_label(get_command_by_ic(getIC()), (arg + 1))) {
-            addressing_type = -1;
-        }
+        /* todo  take care of operations validtaion. this souldn't happen*/
     } else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         if (!insert_label(get_command_by_ic(getIC()), arg)) {
-            addressing_type = -1;
+            addressing_type = -1; /*  this will fail secondpass */
         }
     }
 
     return addressing_type;
 }
 
-
+/*
+ * Parses specified command for secondpass.
+ * Inserts label location or jump to label if needed. Otherwise, increments IC according to command.
+ */
 int secondpass_one_arg_command(char *text) {
     int number_arg;
     int addressing_type = -1;
@@ -69,23 +79,32 @@ int secondpass_one_arg_command(char *text) {
     } else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
         if(!insert_jump(get_command_by_ic(getIC()), arg)){
-            addressing_type = -1;
+            addressing_type = -1; /*  this will fail secondpass */
         }
     } else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         if (!insert_label(get_command_by_ic(getIC()), arg)) {
-            addressing_type = -1;
+            addressing_type = -1; /*  this will fail secondpass */
         }
     }
     return addressing_type;
 }
 
+/*
+ * No parsing is needed for zero arg commands in secondpass.
+ * Keeping track of IC is essential for secondpass algorithm
+ */
 int secondpass_zero_arg_command(char *text) {
     incIC(1);
 
     return TRUE;
 }
 
+/*
+ * Tries to insert jump to specified label into current command's output.
+ * If label is not found in symbols table, FALSE is returned.
+ * Otherwise TRUE is returned.
+ */
 static int insert_jump(command_template *command, char *arg){
     labelnode *label;
     int jump;
@@ -115,6 +134,12 @@ static int insert_jump(command_template *command, char *arg){
     return TRUE;
 }
 
+/*
+ * Tries to insert specified label's location from symbols table to current command's output.
+ * Also sets the E flag is the label is external. otherwise, sets the R flag.
+ * If label is not in symbols table, FALSE is returned.
+ * Otherwise, TRUE is returned.
+ */
 static int insert_label(command_template *command, char *label) {
     labelnode *label_info;
 
