@@ -3,6 +3,9 @@
 #include "command_template.h"
 #include "firstpass_parsers.h"
 
+/*
+ * Macros for basic characters that need to be recognized
+ */
 #define COMMENT ';'
 #define NEWLINE '\n'
 #define TAB '\t'
@@ -10,8 +13,20 @@
 #define SPACE ' '
 #define COLON ':'
 
+/*
+ * Max source file line length
+ */
 #define MAX_LINE_LENGTH 81
+
+/*
+ * Max source file's name length
+ */
 #define MAX_FILE_NAME_LENGTH 100
+
+/*
+ * Max commands possible in program's output
+ * Max guides possible in program's output
+ */
 #define MAX_PROGRAM_OUTPUT_SIZE 200
 
 typedef enum {
@@ -19,6 +34,9 @@ typedef enum {
     TRUE    
 } bool;
 
+/*
+ * Different guide operations types
+ */
 typedef enum {
     __string,
     __data,
@@ -29,7 +47,6 @@ typedef enum {
 
 /* command line arguments */
 char * nextArg(int amount, char* args[]);
-FILE * readFile(char *name);
 
 
 /* file */
@@ -99,6 +116,6 @@ external_node * iterate_externals(void);
 void add_external(char *label, int location);
 void dispose_externals();
 
-/* output files */
+/* output files for entries and externals */
 void printentries(char *filename, labelnode *head);
 void printexternals(char *filename, external_node *head);

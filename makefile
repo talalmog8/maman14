@@ -8,7 +8,7 @@ firstpass.o: firstpass.c files.o registers.o utils.o label.o guide.o labelslist.
 	gcc -c firstpass.c -ansi -pedantic -Wall -o firstpass.o
 secondpass.o: secondpass.c files.o registers.o utils.o label.o guide.o labelslist.o command.o assembler.h labelslist.h
 	gcc -c secondpass.c -ansi -pedantic -Wall -o secondpass.o
-secondpass_parsers.o: secondpass_parsers.c registers.o parsed.o label.o labelslist.o assembler.h command_template.h labelslist.h
+secondpass_parsers.o: secondpass_parsers.c registers.o parsed.o label.o labelslist.o assembler.h command_template.h labelslist.h firstpass_parsers.h
 	gcc -c secondpass_parsers.c -ansi -pedantic -Wall -o secondpass_parsers.o
 registers.o: registers.c assembler.h
 	gcc -c registers.c -ansi -pedantic -Wall -o registers.o
@@ -22,9 +22,9 @@ labelslist.o: labelslist.c assembler.h labelslist.h
 	gcc -c labelslist.c -ansi -pedantic -Wall -o labelslist.o
 guide.o: guide.c utils.o parsed.o registers.o assembler.h
 	gcc -c guide.c -ansi -pedantic -Wall -o guide.o
-command.o: command.c utils.o firstpass_parsers.o secondpass_parsers.o label.o assembler.h
+command.o: command.c utils.o firstpass_parsers.o secondpass_parsers.o label.o assembler.h firstpass_parsers.h
 	gcc -c command.c -ansi -pedantic -Wall -o command.o
-firstpass_parsers.o: firstpass_parsers.c parsed.o registers.o label.o utils.o assembler.h command_template.h
+firstpass_parsers.o: firstpass_parsers.c parsed.o registers.o label.o utils.o assembler.h command_template.h firstpass_parsers.h
 	gcc -c firstpass_parsers.c -ansi -pedantic -Wall -o firstpass_parsers.o
 entries_output.o: entries_output.c files.o assembler.h labelslist.h
 	gcc -c entries_output.c -ansi -pedantic -Wall -o entries_output.o
