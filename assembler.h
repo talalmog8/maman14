@@ -68,8 +68,13 @@ bool parselable(char *line, int length, char *output);
 char * allocate_label(int length);
 bool islable(char *line, int length);
 
+/* todo make one more header file for this functions */
+
 /* command */
 bool firstpass_parse_command(char **line_p);
+
+/* addressing types validation */
+bool is__origin_address_type_valid(int operation_id, int address_type);
 
 /*second pass */
 bool secondpass_parse_command(char **line_p);

@@ -19,7 +19,7 @@ bool firstpass_parse_command(char **line_p) {
         return FALSE;
     }
 
-    if(operation.parser(*line_p, operation.opcode, operation.funct) != -1){
+    if (operation.parser(*line_p, operation.opcode, operation.funct, operation.id) != -1) {
         return TRUE;
     }
 
@@ -40,8 +40,8 @@ bool secondpass_parse_command(char **line_p) {
     }
 
     if (operation.address_inserter) {
-        if(operation.address_inserter(*line_p) == -1){
-            return  FALSE;
+        if (operation.address_inserter(*line_p) == -1) {
+            return FALSE;
         }
     }
     return TRUE;
@@ -55,23 +55,23 @@ operation isoperation(char **text_p) {
     char *text = *text_p;
     int i = 0, length;
     operation ops[] = {
-            {-1, 0, "unknown", NULL},
-            {0,  0, "mov",  parse_two_args_command, secondpass_two_args_command},
-            {1,  0, "cmp",  parse_two_args_command, secondpass_two_args_command},
-            {2,  1, "add",  parse_two_args_command, secondpass_two_args_command},
-            {2,  2, "sub",  parse_two_args_command, secondpass_two_args_command},
-            {4,  0, "lea",  parse_two_args_command, secondpass_two_args_command},
-            {5,  1, "clr",  parse_one_arg_command,  secondpass_one_arg_command},
-            {5,  2, "not",  parse_one_arg_command,  secondpass_one_arg_command},
-            {5,  3, "inc",  parse_one_arg_command,  secondpass_one_arg_command},
-            {5,  4, "dec",  parse_one_arg_command,  secondpass_one_arg_command},
-            {9,  1, "jmp",  parse_one_arg_command,  secondpass_one_arg_command},
-            {9,  2, "bne",  parse_one_arg_command,  secondpass_one_arg_command},
-            {9,  3, "jsr",  parse_one_arg_command,  secondpass_one_arg_command},
-            {12, 0, "red",  parse_one_arg_command,  secondpass_one_arg_command},
-            {13, 0, "prn",  parse_one_arg_command,  secondpass_one_arg_command},
-            {14, 0, "rts",  fill_zero_args_command, secondpass_zero_arg_command},
-            {15, 0, "stop", fill_zero_args_command, secondpass_zero_arg_command}
+            {0,  -1, 0, "unknown", NULL},
+            {1,  0,  0, "mov",  parse_two_args_command, secondpass_two_args_command},
+            {2,  1,  0, "cmp",  parse_two_args_command, secondpass_two_args_command},
+            {3,  2,  1, "add",  parse_two_args_command, secondpass_two_args_command},
+            {4,  2,  2, "sub",  parse_two_args_command, secondpass_two_args_command},
+            {5,  4,  0, "lea",  parse_two_args_command, secondpass_two_args_command},
+            {6,  5,  1, "clr",  parse_one_arg_command,  secondpass_one_arg_command},
+            {7,  5,  2, "not",  parse_one_arg_command,  secondpass_one_arg_command},
+            {8,  5,  3, "inc",  parse_one_arg_command,  secondpass_one_arg_command},
+            {9,  5,  4, "dec",  parse_one_arg_command,  secondpass_one_arg_command},
+            {10, 9,  1, "jmp",  parse_one_arg_command,  secondpass_one_arg_command},
+            {11, 9,  2, "bne",  parse_one_arg_command,  secondpass_one_arg_command},
+            {12, 9,  3, "jsr",  parse_one_arg_command,  secondpass_one_arg_command},
+            {13, 12, 0, "red",  parse_one_arg_command,  secondpass_one_arg_command},
+            {14, 13, 0, "prn",  parse_one_arg_command,  secondpass_one_arg_command},
+            {15, 14, 0, "rts",  fill_zero_args_command, secondpass_zero_arg_command},
+            {16, 15, 0, "stop", fill_zero_args_command, secondpass_zero_arg_command}
     };
 
     for (; i < (sizeof(ops) / sizeof(operation)); i++) {
@@ -108,7 +108,7 @@ arguments read_args(char *line) {
         fprintf(stderr, "Managed to read only 0 operands from 2. arguments: %s", line);
     }
 
-    if(strtok(NULL, ", \t\n\0")){
+    if (strtok(NULL, ", \t\n\0")) {
         fprintf(stderr, "Found 3 arguments in command. There are at most 2 argument per command. IC: %d\n", getIC());
         args.arg1 = NULL;
         args.arg2 = NULL;
@@ -134,7 +134,7 @@ char *read_arg(char *line) {
     if (token) {
         arg = token;
 
-        if(strtok(NULL, " \t\n\0")){
+        if (strtok(NULL, " \t\n\0")) {
             fprintf(stderr, "Found 2 arguments in a 1 argument command. IC: %d\n", getIC());
             return NULL;
         }
@@ -148,7 +148,7 @@ char *read_arg(char *line) {
 /*
  * Initializes A R E flags in the specified command
  */
-void fill_flags(command_template *command, int a, int r, int e){
+void fill_flags(command_template *command, int a, int r, int e) {
     command->A = a;
     command->R = r;
     command->E = e;
@@ -208,7 +208,7 @@ int try_parse_number(char *arg, int *number) {
 int isaddress(char *arg) {
     if (*arg == '&') {
         arg++; /* skip '&' */
-        if (islable(arg, (int)strlen(arg))) {
+        if (islable(arg, (int) strlen(arg))) {
             return TRUE;
         }
         fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);
@@ -216,4 +216,5 @@ int isaddress(char *arg) {
     }
     return FALSE;
 }
+
 

@@ -12,23 +12,25 @@ static int parse_arg(char *arg, command_template *, bool);
  * Returns 1 if successful
  * Otherwise, returns -1
  */
-int parse_two_args_command(char *text, int opcode, int funct) {
-    int parsed = -1;
+int parse_two_args_command(char *text, int opcode, int funct, int operation_id) {
+    int parsed = -1, temp_parse_result;
     arguments args = read_args(text);
     command_template *command = get_current_command();
 
     if (args.arg1 && args.arg2) {
         fill_two_args_command_defaults(command, opcode, funct);
-        if (parse_arg(args.arg1, command, FALSE) != -1) {
+        if (is__origin_address_type_valid(operation_id, temp_parse_result = parse_arg(args.arg1, command, FALSE))){
             if (parse_arg(args.arg2, command, TRUE) != -1) {
                 parsed = 1;
             } else {
                 fprintf(stderr, "Failed to parse second argument in command. arguments: %s\n", text);
             }
-        } else {
-            fprintf(stderr, "Failed to parse first argument in command. arguments: %s\n", text);
+        } else if(temp_parse_result == -1){
+            printf("Failed to parse addressing type in command. command: %s\n", text);
         }
-
+        else{
+            printf("Command origin addressing type is not valid, Addressing type found: %d. Origin Operand: %s\n", temp_parse_result, text);
+        }
     }
 
     return parsed;
@@ -87,7 +89,7 @@ static void fill_two_args_command_defaults(command_template *command, int opcode
  * If successful returns the addressing type found.
  * Otherwise, returns -1
  */
-int parse_one_arg_command(char *text, int opcode, int funct) {
+int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
     int _register, number_arg;
     int addressing_type = -1;
     command_template *command = get_current_command();
@@ -140,7 +142,7 @@ static void fill_one_arg_command_defaults(command_template *command, int opcode,
  * Increments IC
  * Sets the A flag
  */
-int fill_zero_args_command(char *text, int opcode, int funct) {
+int fill_zero_args_command(char *text, int opcode, int funct, int operation_id) {
     command_template *command = get_current_command();
     command->opcode = opcode;
     command->func = funct;

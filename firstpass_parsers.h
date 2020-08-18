@@ -22,12 +22,11 @@
  * Also holds pointers to the right a firstpass and secondpass parsers for the command.
  */
 typedef struct {
+    int id;
     int opcode;
     int funct;
     char *opname;
-
-    int (*parser)(char *text, int opcode, int funct);
-
+    int (*parser)(char *text, int opcode, int funct, int operation_id);
     int (*address_inserter)(char *text);
 } operation;
 
@@ -57,7 +56,7 @@ int isregister(char *arg);
 int isaddress(char *arg);
 
 /* Firstpass command parsers */
-int parse_two_args_command(char *text, int opcode, int funct);
-int parse_one_arg_command(char *text, int opcode, int funct);
-int fill_zero_args_command(char *text, int opcode, int funct);
+int parse_two_args_command(char *text, int opcode, int funct, int operation_id);
+int parse_one_arg_command(char *text, int opcode, int funct, int operation_id);
+int fill_zero_args_command(char *text, int opcode, int funct, int operation_id);
 void fill_flags(command_template *command, int a, int r, int e);
