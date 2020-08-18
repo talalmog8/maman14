@@ -19,10 +19,10 @@ int secondpass_two_args_command(char *text) {
             if (parse_arg(args.arg2) != -1) {
                 parsed = 1;
             } else {
-                fprintf(stderr, "Failed to parse second argument in command. arguments: %s\n", text);
+                fprintf(stderr, "[Secondpass]   Failed to parse second argument in command. arguments: %s\n", text);
             }
         } else {
-            fprintf(stderr, "Failed to parse first argument in command. arguments: %s\n", text);
+            fprintf(stderr, "[Secondpass]    Failed to parse first argument in command. arguments: %s\n", text);
         }
 
     }

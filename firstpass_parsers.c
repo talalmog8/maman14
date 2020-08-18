@@ -2,9 +2,13 @@
 
 
 static void fill_two_args_command_defaults(command_template *command, int opcode, int funct);
+
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct);
+
 static void fill_empty_command(command_template *command);
+
 static void insert_number_to_command(command_template *command, int number);
+
 static int parse_arg(char *arg, command_template *, bool);
 
 /*
@@ -19,17 +23,21 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
 
     if (args.arg1 && args.arg2) {
         fill_two_args_command_defaults(command, opcode, funct);
-        if (is__origin_address_type_valid(operation_id, temp_parse_result = parse_arg(args.arg1, command, FALSE))){
-            if (parse_arg(args.arg2, command, TRUE) != -1) {
+        if (is_origin_address_type_valid(operation_id, temp_parse_result = parse_arg(args.arg1, command, FALSE))) {
+            if (is_destination_address_type_valid(operation_id,
+                                                  temp_parse_result = parse_arg(args.arg2, command, TRUE))) {
                 parsed = 1;
+            } else if (temp_parse_result == -1) {
+                printf("[Firstpass] Failed to parse destination addressing type in command.\n");
             } else {
-                fprintf(stderr, "Failed to parse second argument in command. arguments: %s\n", text);
+                printf("[Firstpass] Command destination addressing type is not valid, Addressing type found: %d.\n",
+                       temp_parse_result);
             }
-        } else if(temp_parse_result == -1){
-            printf("Failed to parse addressing type in command. command: %s\n", text);
-        }
-        else{
-            printf("Command origin addressing type is not valid, Addressing type found: %d. Origin Operand: %s\n", temp_parse_result, text);
+        } else if (temp_parse_result == -1) {
+            printf("[Firstpass] Failed to parse origin addressing type in command\n");
+        } else {
+            printf("[Firstpass] Command origin addressing type is not valid, Addressing type found: %d.\n",
+                   temp_parse_result);
         }
     }
 
@@ -62,7 +70,7 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     }
 
     if (is_destination) {
-        command->des_delivery_type  = addressing_type;
+        command->des_delivery_type = addressing_type;
         command->des_register = (_register == -1) ? EMPTY_FIELD : _register;
     } else {
         command->orig_delivery_type = addressing_type;
@@ -77,7 +85,7 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
  * Increments IC
  * Sets the A flag
  */
-static void fill_two_args_command_defaults(command_template *command, int opcode, int funct){
+static void fill_two_args_command_defaults(command_template *command, int opcode, int funct) {
     command->opcode = opcode;
     command->func = funct;
     fill_flags(command, TRUE, FALSE, FALSE);
@@ -95,7 +103,7 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
     command_template *command = get_current_command();
     char *arg;
 
-    if (!(arg = read_arg(text))){
+    if (!(arg = read_arg(text))) {
         return -1;
     }
 
@@ -117,8 +125,16 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
         command->des_delivery_type = addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command());
         incIC(1); /* saved space for label address*/
+    } else if(addressing_type == -1){
+        printf("[Firstpass] Failed to parse destination addressing type in command.\n");
+        return -1; /* Couldn't find addressing type */
     }
 
+    if (!is_destination_address_type_valid(operation_id, addressing_type)) {
+        printf("[Firstpass] Command destination addressing type is not valid, Addressing type found: %d.\n",
+               addressing_type);
+        return -1; /* addressing type not valid */
+    }
 
     return addressing_type;
 }

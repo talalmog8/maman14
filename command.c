@@ -211,7 +211,7 @@ int isaddress(char *arg) {
         if (islable(arg, (int) strlen(arg))) {
             return TRUE;
         }
-        fprintf(stderr, "Not a valid label after \'&\' sign. sign: %s", arg + 1);
+        printf("Not a valid label after \'&\' sign. sign: %s\n", arg);
         return FALSE;
     }
     return FALSE;

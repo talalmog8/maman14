@@ -85,11 +85,11 @@ bool islable(char *line, int length) {
     };
 
     if (length > MAX_LABEL_SIZE) {
-        fprintf(stderr, "Label bigger than max size\n");
+        printf("Label bigger than max size\n");
         return FALSE;
     }
     if (!isalpha(line[0])) {
-        fprintf(stderr, "Label not starting with letter\n");
+        printf("Label not starting with letter. Line: %s\n", line);
         return FALSE;
     }
 

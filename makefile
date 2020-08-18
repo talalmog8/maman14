@@ -1,5 +1,5 @@
 build.o: parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o entries_output.o externals_output.o externals.o main.c assembler.h labelslist.h
-	gcc -g main.c externals_output.o externals.o entries_output.o parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o firstpass_parsers.o -ansi -pedantic -Wall -o build.o
+	gcc -g main.c externals_output.o externals.o entries_output.o parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o firstpass_parsers.o addressing_types.o -ansi -pedantic -Wall -o build.o
 files.o: files.c assembler.h
 	gcc -c files.c -ansi -pedantic -Wall -o files.o	
 cmdline.o: cmdline.c assembler.h
@@ -24,7 +24,7 @@ guide.o: guide.c utils.o parsed.o registers.o assembler.h
 	gcc -c guide.c -ansi -pedantic -Wall -o guide.o
 command.o: command.c utils.o firstpass_parsers.o secondpass_parsers.o label.o assembler.h firstpass_parsers.h
 	gcc -c command.c -ansi -pedantic -Wall -o command.o
-firstpass_parsers.o: firstpass_parsers.c parsed.o registers.o label.o utils.o assembler.h command_template.h firstpass_parsers.h
+firstpass_parsers.o: firstpass_parsers.c parsed.o registers.o label.o utils.o addressing_types.o assembler.h command_template.h firstpass_parsers.h
 	gcc -c firstpass_parsers.c -ansi -pedantic -Wall -o firstpass_parsers.o
 entries_output.o: entries_output.c files.o assembler.h labelslist.h
 	gcc -c entries_output.c -ansi -pedantic -Wall -o entries_output.o
@@ -32,3 +32,5 @@ externals.o: externals.c assembler.h
 	gcc -c externals.c -ansi -pedantic -Wall -o externals.o
 externals_output.o: externals_output.c
 	gcc -c  externals_output.c -ansi -pedantic -Wall -o externals_output.o
+addressing_types.o: addressing_types.c assembler.h
+	gcc -c  addressing_types.c -ansi -pedantic -Wall -o addressing_types.o

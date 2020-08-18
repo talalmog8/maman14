@@ -74,7 +74,8 @@ bool islable(char *line, int length);
 bool firstpass_parse_command(char **line_p);
 
 /* addressing types validation */
-bool is__origin_address_type_valid(int operation_id, int address_type);
+bool is_origin_address_type_valid(int operation_id, int address_type);
+bool is_destination_address_type_valid(int operation_id, int address_type);
 
 /*second pass */
 bool secondpass_parse_command(char **line_p);
