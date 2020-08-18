@@ -85,11 +85,11 @@ bool islable(char *line, int length) {
     };
 
     if (length > MAX_LABEL_SIZE) {
-        printf("Label bigger than max size\n");
+        log_message("Label bigger than max size. Max Size: %d", MAX_LABEL_SIZE);
         return FALSE;
     }
     if (!isalpha(line[0])) {
-        printf("Label not starting with letter. Line: %s\n", line);
+        log_message("Label not starting with letter. Line: %s", line);
         return FALSE;
     }
 
@@ -97,7 +97,7 @@ bool islable(char *line, int length) {
 
     for (i = 0; i < RESERVED_OPS_AMOUNT; ++i) {
         if (!strncmp(line, reserved[i].name, length)) {
-            fprintf(stderr, "reserved assembly word used as label %s\n", reserved[i].name);
+            log_message("Reserved assembly word used as label %s", reserved[i].name);
             return FALSE;
         }
     }

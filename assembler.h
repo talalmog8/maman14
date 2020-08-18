@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include <stdarg.h>
 #include "labelslist.h"
 #include "command_template.h"
 #include "firstpass_parsers.h"
@@ -125,3 +126,10 @@ void dispose_externals();
 /* output files for entries and externals */
 void printentries(char *filename, labelnode *head);
 void printexternals(char *filename, external_node *head);
+
+/*
+ * Logger
+ */
+void dispose_logger();
+void set_logger(char *filename, char *log_stage);
+void log_message(char* fmt, ...);

@@ -1,5 +1,5 @@
-build.o: parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o entries_output.o externals_output.o externals.o main.c assembler.h labelslist.h
-	gcc -g main.c externals_output.o externals.o entries_output.o parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o firstpass_parsers.o addressing_types.o -ansi -pedantic -Wall -o build.o
+build.o: parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o entries_output.o externals_output.o externals.o logger.o main.c assembler.h labelslist.h
+	gcc -g main.c externals_output.o externals.o entries_output.o parsed.o cmdline.o files.o firstpass.o secondpass.o labelslist.o secondpass_parsers.o registers.o utils.o label.o guide.o command.o firstpass_parsers.o addressing_types.o logger.o -ansi -pedantic -Wall -o build.o
 files.o: files.c assembler.h
 	gcc -c files.c -ansi -pedantic -Wall -o files.o	
 cmdline.o: cmdline.c assembler.h
@@ -34,3 +34,5 @@ externals_output.o: externals_output.c
 	gcc -c  externals_output.c -ansi -pedantic -Wall -o externals_output.o
 addressing_types.o: addressing_types.c assembler.h
 	gcc -c  addressing_types.c -ansi -pedantic -Wall -o addressing_types.o
+logger.o: logger.c assembler.h
+	gcc -c  logger.c -ansi -pedantic -Wall -o logger.o

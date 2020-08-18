@@ -7,37 +7,39 @@
 */
 int main(int argc, char *argv[]) {
     unsigned int icf, idf;
-    char *arg;
+    char *filename;
     FILE *file;
     assign_output_arrays(); /* assigns memory for guides and commands output arrays */
-    while ((arg = nextArg(argc, argv)) != NULL) {
-        if ((file = openfile_for_read(arg))) {
+    while ((filename = nextArg(argc, argv)) != NULL) {
+        if ((file = openfile_for_read(filename))) {
             /* Opened a source file */
-            reset_output_arrays(); /* resest output arrays (that stores compiled data) indexes */
+            reset_output_arrays(); /* resets output arrays (that stores compiled data) indexes */
+            set_logger(filename, "firstpass");
             if (!firstpass(file)) {
-                printf("[%s] Failed first pass\n", arg);
+                log_message("Failed firstpass");
             }
             /* current source file succeeded in firstpass */
-            rewind(file); /* reset file cursor to beginning for secondapass */
+            rewind(file); /* reset file cursor to beginning for secondpass */
+            set_logger(filename, "secondpass");
             /* store final IC and final DC */
             icf = getIC();
             idf = getDC();
             if (secondpass(file)) {
                 /* current source file succeeded in secondpass */
-                printexternals(arg, iterate_externals()); /* creates and fills .ext file if needed */
-                printentries(arg, iterate_labels()); /* creates and fills .ent file if needed */
-                print_output_arrays(arg, icf, idf); /* creates and fills .ob file */
+                printexternals(filename, iterate_externals()); /* creates and fills .ext file if needed */
+                printentries(filename, iterate_labels()); /* creates and fills .ent file if needed */
+                print_output_arrays(filename, icf, idf); /* creates and fills .ob file */
             } else {
-                printf("[%s] Failed second pass. Not creating output files\n", arg);
+                log_message("Failed second pass. Not creating output files");
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */
             disposefile(file); /* disposes current file pointer */
         } else {
-            printf("Could not open file: \"%s.as\". It will not be compiled\n", arg);
+            printf("Could not open file: \"%s.as\". It will not be compiled");
         }
     }
     dispose_output_arrays(); /* disposes output arrays */
-
+    dispose_logger();
     return 0;
 }

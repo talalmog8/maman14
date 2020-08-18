@@ -28,15 +28,15 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
                                                   temp_parse_result = parse_arg(args.arg2, command, TRUE))) {
                 parsed = 1;
             } else if (temp_parse_result == -1) {
-                printf("[Firstpass] Failed to parse destination addressing type in command.\n");
+                log_message("Failed to parse destination addressing type in command.");
             } else {
-                printf("[Firstpass] Command destination addressing type is not valid, Addressing type found: %d.\n",
+                log_message("Command destination addressing type is not valid, Addressing type found: %d.",
                        temp_parse_result);
             }
         } else if (temp_parse_result == -1) {
-            printf("[Firstpass] Failed to parse origin addressing type in command\n");
+            log_message("Failed to parse origin addressing type in command");
         } else {
-            printf("[Firstpass] Command origin addressing type is not valid, Addressing type found: %d.\n",
+            printf("Command origin addressing type is not valid, Addressing type found: %d.",
                    temp_parse_result);
         }
     }
@@ -93,6 +93,10 @@ static void fill_two_args_command_defaults(command_template *command, int opcode
 }
 
 /*
+ * Todo build global logger with filename, line, firstpass/secondpass
+ */
+
+/*
  * Parses a one argument command
  * If successful returns the addressing type found.
  * Otherwise, returns -1
@@ -126,12 +130,12 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
         fill_empty_command(get_current_command());
         incIC(1); /* saved space for label address*/
     } else if(addressing_type == -1){
-        printf("[Firstpass] Failed to parse destination addressing type in command.\n");
+        log_message("Failed to parse destination addressing type in command.");
         return -1; /* Couldn't find addressing type */
     }
 
     if (!is_destination_address_type_valid(operation_id, addressing_type)) {
-        printf("[Firstpass] Command destination addressing type is not valid, Addressing type found: %d.\n",
+        log_message("Command destination addressing type is not valid, Addressing type found: %d.",
                addressing_type);
         return -1; /* addressing type not valid */
     }
