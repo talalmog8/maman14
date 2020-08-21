@@ -30,7 +30,7 @@ char *allocate_label(int length) {
 int findlable(char *line, bool atStart) {
     int i = 0;
 
-    while (line[i] != NEWLINE && line[i] != STRING_END && line[i] != COLON) {
+    while (line[i] != NEWLINE && line[i] != STRING_END && line[i] != COLON && !is_space(line[i]) ) {
         i++;
     }
 
@@ -89,14 +89,14 @@ bool islable(char *line, int length) {
         return FALSE;
     }
     if (!isalpha(line[0])) {
-        log_message("Label not starting with letter. Line: %s", line);
+        log_message("Label not starting with a letter");
         return FALSE;
     }
 
 
     for (i = 0; i < RESERVED_OPS_AMOUNT; ++i) {
         if (!strncmp(line, reserved[i].name, length)) {
-            log_message("Reserved assembly word used as label %s", reserved[i].name);
+            log_message("Reserved assembly word used as label. Reserved Name: %s", reserved[i].name);
             return FALSE;
         }
     }
