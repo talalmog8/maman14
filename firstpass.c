@@ -18,7 +18,7 @@ bool firstpass(FILE *file) {
     while (readline(file, (moving_line = line_mem)) != NULL) {
         foundLabel = FALSE;
         skip_white_characters(&moving_line);
-        set_logger_current_line(line_mem);
+        set_logger_current_line(moving_line);
 
         if (is_comment_or_empty(moving_line)) {
             continue; /* Skip empty lines and comments */

@@ -11,7 +11,7 @@ static bool parse_string(char *text);
 /*
     Check if specified string contains a guide type command. 
     If a valid guide type is found, the proper guide_name is returned.
-    Otherwise, -1 is returned 
+    Otherwise, Negative number is returned according to output
 */
 int is_guide(char **line_p) {
     int i;
@@ -38,8 +38,8 @@ int is_guide(char **line_p) {
                 return types[i].no;
             }
             else{
-                log_message("Missing whit character after guide name. guide name: %s", types[i].type);
-                return -1;
+                log_message("Missing white character after guide name. guide name: %s", types[i].type);
+                return -3;
             }
         }
     }
