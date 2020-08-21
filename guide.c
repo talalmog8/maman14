@@ -92,6 +92,9 @@ static bool parse_numbers(char *line) {
         if (parse_number(token)) {
             counter++;
         }
+        else{
+            return FALSE;
+        }
 
         token = strtok(NULL, ", \t\n\0");
     }
