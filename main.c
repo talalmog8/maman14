@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
                 printentries(filename, iterate_labels()); /* creates and fills .ent file if needed */
                 print_output_arrays(filename, icf, idf); /* creates and fills .ob file */
             } else {
-                log_message("Failed second pass. Not creating output files");
+                log_message("Failed secondpass. Not creating output files");
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */
