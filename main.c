@@ -6,6 +6,7 @@
     Each loop iteration complies another source file provided in command line arguments.    
 */
 int main(int argc, char *argv[]) {
+    int firstpass_result; /* stores firstpass result */
     unsigned int icf, idf; /* store registers final count after firstpass */
     char *filename; /* pointer to current file's name */
     FILE *file; /* pointer to current file */
@@ -15,7 +16,7 @@ int main(int argc, char *argv[]) {
             /* Opened a source file */
             reset_output_arrays(); /* resets output arrays (that stores compiled data) indexes */
             set_logger(filename, "firstpass"); /* adds "firstpass" suffix to log messages from firstpass */
-            if (!firstpass(file)) {
+            if (!(firstpass_result = firstpass(file))) {
                 log_message("Failed firstpass");
             }
             rewind(file); /* reset file cursor to beginning for secondpass */
@@ -23,19 +24,19 @@ int main(int argc, char *argv[]) {
             /* store final IC and final DC */
             icf = getIC();
             idf = getDC();
-            if (secondpass(file)) {
+            if (secondpass(file) && firstpass_result) {
                 /* current source file succeeded in secondpass, output files will be created */
                 printexternals(filename, iterate_externals()); /* creates and fills .ext file if needed */
                 printentries(filename, iterate_labels()); /* creates and fills .ent file if needed */
                 print_output_arrays(filename, icf, idf); /* creates and fills .ob file */
             } else {
-                log_message("Failed secondpass. Not creating output files");
+                log_message("Failed secondpass");
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */
             disposefile(file); /* disposes current file pointer */
         } else {
-            log_message("Could not open file: \"%s.as\". It will not be compiled", filename);
+            printf("Could not open file: \"%s.as\". It will not be compiled\n", filename);
         }
     }
     dispose_output_arrays(); /* disposes output arrays */
