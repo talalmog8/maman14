@@ -60,7 +60,7 @@ FILE *lazyopen(FILE *file, char *filename, char *postfix) {
         /* lazy initialization */
         file = openfile_for_write(filename, postfix);
         if (!file) {
-            fprintf(stderr, "Failed to open file for entries. filename: %s\n", filename);
+            log_message("Failed to open file for entries. filename: %s\n", filename);
             exit(1);
         }
     }

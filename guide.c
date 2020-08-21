@@ -8,6 +8,9 @@
 #define POSITIVE_NUMBER '+'
 #define NEGATIVE_NUMBER '-'
 
+/*
+ * Element parsers
+ */
 static bool parse_numbers(char *line);
 static bool parse_number(char *text);
 static bool parse_string(char *text);

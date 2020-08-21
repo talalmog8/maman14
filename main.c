@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
             dispose_externals(); /* disposes externals table */
             disposefile(file); /* disposes current file pointer */
         } else {
-            printf("Could not open file: \"%s.as\". It will not be compiled", filename);
+            log_message("Could not open file: \"%s.as\". It will not be compiled", filename);
         }
     }
     dispose_output_arrays(); /* disposes output arrays */
