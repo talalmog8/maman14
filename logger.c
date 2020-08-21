@@ -44,15 +44,15 @@ void set_logger_current_line(char *current_line, unsigned int line_no) {
     }
 
     strncpy(faulted_line, current_line, line_length - 1); /* copy faulted line without \n or \0 */
-    faulted_line[line_length-1] = '\0';
+    faulted_line[line_length - 1] = '\0';
     faulted_line_number = line_no;
 }
 
 /*
  * Disposes allocated memory for source file current line
  */
-void dispose_logger_current_line(void){
-    if(faulted_line){
+void dispose_logger_current_line(void) {
+    if (faulted_line) {
         free(faulted_line);
         faulted_line = NULL;
         faulted_line_number = 0;

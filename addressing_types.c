@@ -20,10 +20,12 @@ bool is_origin_address_type_valid(int operation_id, int address_type) {
     if (operation_id == MIN_ONE_ARG_COMMAND_ID) {
         /* unknown command */
         return FALSE;
-    } else if (operation_id >= CLR_ID) {
+    }
+    else if (operation_id >= CLR_ID) {
         /* this commands don't have origin operand */
         return FALSE;
-    } else if (address_type == -1) {
+    }
+    else if (address_type == -1) {
         /* couldn't parse addressing type */
         return FALSE;
     }
@@ -63,10 +65,12 @@ bool is_destination_address_type_valid(int operation_id, int address_type) {
     if (operation_id == MIN_ONE_ARG_COMMAND_ID) {
         /* unknown command */
         return FALSE;
-    } else if (operation_id >= MIN_0_ARGS_COMMAND_ID) {
+    }
+    else if (operation_id >= MIN_0_ARGS_COMMAND_ID) {
         /* this commands don't have origin operand */
         return FALSE;
-    } else if (address_type == -1) {
+    }
+    else if (address_type == -1) {
         /* couldn't parse addressing type */
         return FALSE;
     }

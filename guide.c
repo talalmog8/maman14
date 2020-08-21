@@ -80,7 +80,7 @@ static bool parse_numbers(char *line) {
 
     /* this block makes sure the is no consecutive ',' in line */
     for (i = 0; line[i] != '\n' && line[i] != '\0'; ++i) {
-        if(line[i] == ',' && line[i + 1] == ','){
+        if (line[i] == ',' && line[i + 1] == ',') {
             log_message("Consecutive ',' within a .data command");
             return FALSE; /* consecutive ',' */
         }
@@ -92,7 +92,7 @@ static bool parse_numbers(char *line) {
         if (parse_number(token)) {
             counter++;
         }
-        else{
+        else {
             return FALSE;
         }
 

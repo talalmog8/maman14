@@ -146,7 +146,8 @@ int add_label_if_new(char *label, int location, int area, int kind) {
     if (exists(label)) {
         log_message("Label already exists. Label: %s", label);
         return FALSE;
-    } else {
+    }
+    else {
         addtoend(label, location, area, kind);
         return TRUE;
     }

@@ -17,10 +17,12 @@ int secondpass_two_args_command(char *text) {
         if (parse_arg(args.arg1) != -1) {
             if (parse_arg(args.arg2) != -1) {
                 parsed = 1;
-            } else {
+            }
+            else {
                 log_message("Failed to parse second argument in command");
             }
-        } else {
+        }
+        else {
             log_message("Failed to parse first argument in command");
         }
 
@@ -40,12 +42,15 @@ static int parse_arg(char *arg) {
 
     if (isregister(arg) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg, TRUE)) {
+    }
+    else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         incIC(1);
-    } else if (isaddress(arg)) {
+    }
+    else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
-    } else if (islable(arg, strlen(arg))) {
+    }
+    else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         if (!insert_label(get_command_by_ic(getIC()), arg)) {
             addressing_type = -1; /*  this will fail secondpass */
@@ -71,15 +76,18 @@ int secondpass_one_arg_command(char *text) {
 
     if (isregister(arg) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg, TRUE)) {
+    }
+    else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         incIC(1);
-    } else if (isaddress(arg)) {
+    }
+    else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
         if (!insert_jump(get_command_by_ic(getIC()), arg)) {
             addressing_type = -1; /*  this will fail secondpass */
         }
-    } else if (islable(arg, strlen(arg))) {
+    }
+    else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         if (!insert_label(get_command_by_ic(getIC()), arg)) {
             addressing_type = -1; /*  this will fail secondpass */
@@ -149,7 +157,8 @@ static int insert_label(command_template *command, char *label) {
     if (label_info->kind == label_external) {
         fill_flags(command, FALSE, FALSE, TRUE);
         add_external(label, getIC());
-    } else {
+    }
+    else {
         fill_flags(command, FALSE, TRUE, FALSE);
     }
 

@@ -40,7 +40,8 @@ bool secondpass(FILE *file) {
             }
             else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 if (!update_label_kind(label, label_entry)) {
-                    log_message("Couldn't find label symbols table, in order to update it's kind to entry. label: %s", label);
+                    log_message("Couldn't find label symbols table, in order to update it's kind to entry. label: %s",
+                                label);
                     output = FALSE;
                 }
                 free(label);

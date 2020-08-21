@@ -29,13 +29,15 @@ int main(int argc, char *argv[]) {
                 printexternals(filename, iterate_externals()); /* creates and fills .ext file if needed */
                 printentries(filename, iterate_labels()); /* creates and fills .ent file if needed */
                 print_output_arrays(filename, icf, idf); /* creates and fills .ob file */
-            } else {
+            }
+            else {
                 log_message("Failed secondpass");
             }
             dispose_labels(); /* disposes symbols table */
             dispose_externals(); /* disposes externals table */
             disposefile(file); /* disposes current file pointer */
-        } else {
+        }
+        else {
             printf("Could not open file: \"%s.as\". It will not be compiled\n", filename);
         }
     }
