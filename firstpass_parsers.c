@@ -93,10 +93,6 @@ static void fill_two_args_command_defaults(command_template *command, int opcode
 }
 
 /*
- * Todo build global logger with filename, line, firstpass/secondpass
- */
-
-/*
  * Parses a one argument command
  * If successful returns the addressing type found.
  * Otherwise, returns -1
