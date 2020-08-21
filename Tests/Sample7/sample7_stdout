@@ -1,0 +1,4 @@
+sample7.as: [firstpass] Could not parse a number in .data command. number: 123df554. Error in line: 2. Content: [.data 1,2,123df554,]
+sample7.as: [firstpass] Could not parse a number in .data command. number: a. Error in line: 3. Content: [.data 1,a,3,4]
+sample7.as: [firstpass] Failed firstpass
+sample7.as: [secondpass] Failed secondpass

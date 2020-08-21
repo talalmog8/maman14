@@ -1,0 +1,7 @@
+sample13.as: [firstpass] Command destination addressing type is not valid, Addressing type found: 2. Error in line: 1. Content: [mov r3, &LIST]
+sample13.as: [firstpass] Command origin addressing type is not valid, Addressing type found: 2. Error in line: 2. Content: [cmp &LIST, &LIST]
+sample13.as: [firstpass] Command destination addressing type is not valid, Addressing type found: 0. Error in line: 3. Content: [clr #45]
+sample13.as: [firstpass] Command destination addressing type is not valid, Addressing type found: 2. Error in line: 4. Content: [clr &L3]
+sample13.as: [firstpass] Failed firstpass
+sample13.as: [secondpass] Can't insert jump because label's info not found. label: L3. Error in line: 4. Content: [clr &L3]
+sample13.as: [secondpass] Failed secondpass

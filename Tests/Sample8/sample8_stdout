@@ -1,0 +1,7 @@
+sample8.as: [firstpass] Unknown guide. Error in line: 1. Content: [.test "ASD"]
+sample8.as: [firstpass] Unknown guide. Error in line: 2. Content: [.test2 "34"]
+sample8.as: [firstpass] Empty string int .string command. Error in line: 3. Content: [.string ""]
+sample8.as: [firstpass] Failed firstpass
+sample8.as: [secondpass] Unknown guide. Error in line: 1. Content: [.test "ASD"]
+sample8.as: [secondpass] Unknown guide. Error in line: 2. Content: [.test2 "34"]
+sample8.as: [secondpass] Failed secondpass

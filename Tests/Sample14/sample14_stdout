@@ -1,0 +1,5 @@
+sample14.as: [secondpass] Can't insert jump because label's info not found. label: LIST. Error in line: 1. Content: [jsr &LIST]
+sample14.as: [secondpass] Couldn't insert label's location because label is not in symbols table. Label: r3asd4. Error in line: 2. Content: [mov r3asd4, r4]
+sample14.as: [secondpass] Failed to parse first argument in command. Error in line: 2. Content: [mov r3asd4, r4]
+sample14.as: [secondpass] Cannot jump to external labels. Label: U3. Error in line: 4. Content: [jsr &U3]
+sample14.as: [secondpass] Failed secondpass

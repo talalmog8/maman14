@@ -1,0 +1,4 @@
+sample5.as: [firstpass] Label already exists. Label: LIST. Error in line: 2. Content: [LIST: .string "abc"]
+sample5.as: [firstpass] Label already exists. Label: ARE. Error in line: 5. Content: [ARE: .data 8,9]
+sample5.as: [firstpass] Failed firstpass
+sample5.as: [secondpass] Failed secondpass

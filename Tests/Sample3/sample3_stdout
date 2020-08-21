@@ -1,0 +1,3 @@
+sample3.as: [firstpass] Consecutive ',' within a .data command. Error in line: 3. Content: [ER: .data 4,5,,]
+sample3.as: [firstpass] Failed firstpass
+sample3.as: [secondpass] Failed secondpass

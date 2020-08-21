@@ -1,0 +1,7 @@
+sample9.as: [firstpass] Missing white character after guide name. guide name: .entry. Error in line: 1. Content: [.entry]
+sample9.as: [firstpass] Failed firstpass
+sample9.as: [secondpass] Missing white character after guide name. guide name: .entry. Error in line: 1. Content: [.entry]
+sample9.as: [secondpass] Label not starting with a letter. Error in line: 2. Content: [.entry #3]
+sample9.as: [secondpass] Missing label \ Illegal label on entry guide. Error in line: 3. Content: [.entry ae ar3]
+sample9.as: [secondpass] Couldn't find label symbols table, in order to update it's kind to entry. label: ALON. Error in line: 5. Content: [.entry ALON]
+sample9.as: [secondpass] Failed secondpass

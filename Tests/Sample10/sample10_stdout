@@ -1,0 +1,6 @@
+sample10.as: [firstpass] Entered unknown operation. Error in line: 1. Content: [elvate r1, r4]
+sample10.as: [firstpass] Missing white character after operation name. Operation name: sub. Error in line: 2. Content: [subr1, r4]
+sample10.as: [firstpass] Failed firstpass
+sample10.as: [secondpass] Entered unknown operation. Error in line: 1. Content: [elvate r1, r4]
+sample10.as: [secondpass] Missing white character after operation name. Operation name: sub. Error in line: 2. Content: [subr1, r4]
+sample10.as: [secondpass] Failed secondpass

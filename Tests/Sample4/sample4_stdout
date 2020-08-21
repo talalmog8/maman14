@@ -1,0 +1,6 @@
+sample4.as: [firstpass] Missing " suffix in .string argument. Error in line: 1. Content: [.string abdc"]
+sample4.as: [firstpass] Missing " postfix in .string argument. Error in line: 2. Content: [.string "def]
+sample4.as: [firstpass] Excess data after .string guide. Error in line: 4. Content: [.string "qwe" afdb #2]
+sample4.as: [firstpass] Found illegal character in .string guide. character decimal code: 9. Error in line: 7. Content: [.string "abv		asd"]
+sample4.as: [firstpass] Failed firstpass
+sample4.as: [secondpass] Failed secondpass

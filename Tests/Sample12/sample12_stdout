@@ -1,0 +1,13 @@
+sample12.as: [firstpass] Found 3 arguments in command. There are at most 2 argument per command. Error in line: 1. Content: [sub r1, #45, &asd]
+sample12.as: [firstpass] Managed to read only 0 operands from 2. Error in line: 2. Content: [mov]
+sample12.as: [firstpass] Managed to read only 1 operands from 2. Error in line: 3. Content: [add r3]
+sample12.as: [firstpass] Managed to read only 0 operands from a 1 argument command. Error in line: 4. Content: [bne]
+sample12.as: [firstpass] Found 2 arguments in a 1 argument command. Error in line: 5. Content: [bne #45, #45]
+sample12.as: [firstpass] Command destination addressing type is not valid, Addressing type found: 0. Error in line: 6. Content: [bne #45]
+sample12.as: [firstpass] Failed firstpass
+sample12.as: [secondpass] Found 3 arguments in command. There are at most 2 argument per command. Error in line: 1. Content: [sub r1, #45, &asd]
+sample12.as: [secondpass] Managed to read only 0 operands from 2. Error in line: 2. Content: [mov]
+sample12.as: [secondpass] Managed to read only 1 operands from 2. Error in line: 3. Content: [add r3]
+sample12.as: [secondpass] Managed to read only 0 operands from a 1 argument command. Error in line: 4. Content: [bne]
+sample12.as: [secondpass] Found 2 arguments in a 1 argument command. Error in line: 5. Content: [bne #45, #45]
+sample12.as: [secondpass] Failed secondpass

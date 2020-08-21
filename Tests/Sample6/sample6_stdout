@@ -1,0 +1,6 @@
+sample6.as: [firstpass] Missing label / Illegal label format, on extern guide command. Error in line: 1. Content: [.extern avb sfd4]
+sample6.as: [firstpass] Missing label / Illegal label format, on extern guide command. Error in line: 2. Content: [.extern L6 .]
+sample6.as: [firstpass] Missing label / Illegal label format, on extern guide command. Error in line: 3. Content: [.extern abc "asd"]
+sample6.as: [firstpass] Reserved assembly word used as label. Reserved Name: r2. Error in line: 4. Content: [.extern r2]
+sample6.as: [firstpass] Failed firstpass
+sample6.as: [secondpass] Failed secondpass
