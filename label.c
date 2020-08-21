@@ -30,7 +30,7 @@ char *allocate_label(int length) {
 int findlable(char *line, bool atStart) {
     int i = 0;
 
-    while (line[i] != NEWLINE && line[i] != STRING_END && line[i] != COLON && !is_space(line[i]) ) {
+    while (line[i] != NEWLINE && line[i] != STRING_END && line[i] != COLON && !is_space(line[i])) {
         i++;
     }
 
@@ -71,6 +71,7 @@ bool islable(char *line, int length) {
     struct {
         char *name;
     } reserved[] = {
+            {"r0"},
             {"r1"},
             {"r2"},
             {"r3"},
@@ -82,6 +83,23 @@ bool islable(char *line, int length) {
             {".string"},
             {".entry"},
             {".extern"},
+            {"unknown"},
+            {"mov"},
+            {"cmp"},
+            {"add"},
+            {"sub"},
+            {"lea"},
+            {"clr"},
+            {"not"},
+            {"inc"},
+            {"dec"},
+            {"jmp"},
+            {"bne"},
+            {"jsr"},
+            {"red"},
+            {"prn"},
+            {"rts"},
+            {"stop"}
     };
 
     if (length > MAX_LABEL_SIZE) {
