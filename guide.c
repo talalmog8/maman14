@@ -33,18 +33,18 @@ int is_guide(char **line_p) {
 
     for (i = 0; i < sizeof(types) / sizeof(guide_type); ++i) {
         if (!strncmp(line, types[i].type, types[i].length)) {
-            if(is_space(line[types[i].length])){
+            if (is_space(line[types[i].length])) {
                 skip_characters(line_p, types[i].length);
                 return types[i].no;
             }
-            else{
+            else {
                 log_message("Missing white character after guide name. guide name: %s", types[i].type);
                 return -3;
             }
         }
     }
 
-    if(**line_p == '.'){
+    if (**line_p == '.') {
         log_message("Unknown guide");
         return -2;
     }
@@ -95,7 +95,8 @@ static bool parse_number(char *text) {
     if (*text == '-') {
         sign = -1;
         i++;
-    } else if (*text == '+') {
+    }
+    else if (*text == '+') {
         i++;
     }
 
@@ -103,7 +104,8 @@ static bool parse_number(char *text) {
         if (isdigit(text[i])) {
             num *= 10;
             num += (text[i] - '0');
-        } else {
+        }
+        else {
             log_message("Could not parse a number in .data command. number: %s", text);
             return FALSE;
         }
@@ -125,7 +127,8 @@ static bool parse_string(char *text) {
     if (*text != '\"') {
         log_message("Missing \" suffix in .string argument");
         return FALSE;
-    } else if(*(text+ 1) == '\"'){
+    }
+    else if (*(text + 1) == '\"') {
         log_message("Empty string int .string command");
     }
 
@@ -133,7 +136,8 @@ static bool parse_string(char *text) {
         if ((text[i] >= 32 && text[i] < 127)) {
             get_current_guide()->data = text[i];;
             incDC(1);
-        } else {
+        }
+        else {
             log_message("Found illegal character in .string guide. character decimal code: %d", text[i]);
             return FALSE;
         }
