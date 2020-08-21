@@ -11,11 +11,10 @@
  * Otherwise, FALSE is returned.
  */
 bool firstpass_parse_command(char **line_p) {
-    char *line = *line_p;
     operation operation;
 
     if ((operation = isoperation(line_p)).opcode == -1) {
-        fprintf(stderr, "entered unknown operation in line %s", line);
+        log_message("Entered unknown operation");
         return FALSE;
     }
 
@@ -31,11 +30,10 @@ bool firstpass_parse_command(char **line_p) {
  * Otherwise, FALSE is returned.
  */
 bool secondpass_parse_command(char **line_p) {
-    char *line = *line_p;
     operation operation;
 
     if ((operation = isoperation(line_p)).opcode == -1) {
-        fprintf(stderr, "entered unknown operation in line %s", line);
+        log_message("Entered unknown operation");
         return FALSE;
     }
 
