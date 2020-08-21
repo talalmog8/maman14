@@ -82,6 +82,7 @@ int exists(char *label) {
 
     while (current != NULL) {
         if (!strcmp(current->label, label)) {
+            /* match found */
             return 1;
         }
         current = current->next;

@@ -5,12 +5,18 @@
  * Definitions for functions to manipulate labels linked list
  */
 
+/*
+ * Label Kinds
+ */
 typedef enum {
     label_no_kind,
     label_entry,
     label_external
 } label_kind;
 
+/*
+ * Label Area
+ */
 typedef enum {
     label_code,
     label_data

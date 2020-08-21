@@ -104,6 +104,7 @@ bool islable(char *line, int length) {
 
     for (i = 1; i < length; i++) {
         if (!isalnum(line[i])) {
+            /* label must consist of alpha numeric characters*/
             return FALSE;
         }
     }

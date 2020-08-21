@@ -2,10 +2,14 @@
 #include "assembler.h"
 #include<ctype.h>
 
+#define WRITEABLE_ASCII_MAX 127
+#define WRITEABLE_ASCII_MIN 32
+
+#define POSITIVE_NUMBER '+'
+#define NEGATIVE_NUMBER '-'
+
 static bool parse_numbers(char *line);
-
 static bool parse_number(char *text);
-
 static bool parse_string(char *text);
 
 /*
@@ -15,7 +19,7 @@ static bool parse_string(char *text);
 */
 int is_guide(char **line_p) {
     int i;
-    char *line = (*line_p);
+    char *line = (*line_p); /* points to current line*/
 
     typedef struct {
         char *type;
@@ -34,7 +38,8 @@ int is_guide(char **line_p) {
     for (i = 0; i < sizeof(types) / sizeof(guide_type); ++i) {
         if (!strncmp(line, types[i].type, types[i].length)) {
             if (is_space(line[types[i].length])) {
-                skip_characters(line_p, types[i].length);
+                /* found valid guide type followed by a white character */
+                skip_characters(line_p, types[i].length); /* skip guide type for next parsers */
                 return types[i].no;
             }
             else {
@@ -53,7 +58,7 @@ int is_guide(char **line_p) {
 }
 
 /*
-    Parses specified string as guide command 
+    Parses the specified .string / .data guide
 */
 bool parse_guide(char *line, guide_names guide_type) {
     if (guide_type == __data) {
@@ -79,7 +84,7 @@ static bool parse_numbers(char *line) {
         token = strtok(NULL, ", \t\n\0");
     }
 
-    incDC(counter);
+    incDC(counter); /* each number increments DC by 1 */
     return counter > 0;
 }
 
@@ -92,11 +97,11 @@ static bool parse_number(char *text) {
     int num = 0;
     int sign = 1;
 
-    if (*text == '-') {
+    if (*text == NEGATIVE_NUMBER) {
         sign = -1;
         i++;
     }
-    else if (*text == '+') {
+    else if (*text == POSITIVE_NUMBER) {
         i++;
     }
 
@@ -133,7 +138,8 @@ static bool parse_string(char *text) {
     }
 
     for (i = 1; text[i] != '\"' && text[i] != '\n' && text[i] != '\0'; ++i) {
-        if ((text[i] >= 32 && text[i] < 127)) {
+        if ((text[i] >= WRITEABLE_ASCII_MIN && text[i] < WRITEABLE_ASCII_MAX)) {
+            /* this is a writable ascii character */
             get_current_guide()->data = text[i];;
             incDC(1);
         }

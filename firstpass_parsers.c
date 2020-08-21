@@ -1,6 +1,5 @@
 #include "assembler.h"
 
-
 static void fill_two_args_command_defaults(command_template *command, int opcode, int funct);
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct);
 static void fill_empty_command(command_template *command);
@@ -13,23 +12,22 @@ static int parse_arg(char *arg, command_template *, bool);
  * Otherwise, returns -1
  */
 int parse_two_args_command(char *text, int opcode, int funct, int operation_id) {
-    int parsed = -1, temp_parse_result;
-    arguments args = read_args(text);
+    int parsed = -1; /* stores the functions returned output*/
+    int temp_parse_result;
+    arguments args = read_args(text); /* stores current line's arguments striped of white characters, seperated by ',' */
     command_template *command = get_current_command();
 
     if (args.arg1 && args.arg2) {
         fill_two_args_command_defaults(command, opcode, funct);
         if (is_origin_address_type_valid(operation_id, temp_parse_result = parse_arg(args.arg1, command, FALSE))) {
-            if (is_destination_address_type_valid(operation_id,
-                                                  temp_parse_result = parse_arg(args.arg2, command, TRUE))) {
+            if (is_destination_address_type_valid(operation_id,temp_parse_result = parse_arg(args.arg2, command, TRUE))) {
                 parsed = 1;
             }
             else if (temp_parse_result == -1) {
                 log_message("Failed to parse destination addressing type in command");
             }
             else {
-                log_message("Command destination addressing type is not valid, Addressing type found: %d",
-                            temp_parse_result);
+                log_message("Command destination addressing type is not valid, Addressing type found: %d", temp_parse_result);
             }
         }
         else if (temp_parse_result == -1) {
@@ -48,10 +46,9 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
  * If successful, returns addressing type, otherwise, returns -1
  */
 static int parse_arg(char *arg, command_template *command, bool is_destination) {
-    int number_arg;
-
-    int _register = EMPTY_FIELD;
-    int addressing_type = -1;
+    int number_arg; /* stores number argument (if present) */
+    int _register = EMPTY_FIELD;  /* stores the register number in command */
+    int addressing_type = -1; /* addressing type found*/
 
     if ((_register = isregister(arg)) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
