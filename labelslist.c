@@ -143,7 +143,7 @@ void increment_data_labels(int ic) {
  */
 int add_label_if_new(char *label, int location, int area, int kind) {
     if (exists(label)) {
-        fprintf(stderr, "Label already exists. Label: %s\n", label);
+        log_message("Label already exists. Label: %s", label);
         return FALSE;
     } else {
         addtoend(label, location, area, kind);
