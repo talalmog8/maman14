@@ -9,8 +9,9 @@ bool firstpass(FILE *file) {
     char *moving_line; /* holds current position in the line that is being parsed */
     char *label; /* points to label found */
     int label_length; /* holds label's length */
-    int guide_result = 0;  /*  */
+    int guide_result;  /* the res */
     char line_mem[MAX_LINE_LENGTH]; /* reused for holding current line read from source file */
+    int line_count = 0;
 
     /* initialize registers */
     setIC(100);
@@ -18,7 +19,7 @@ bool firstpass(FILE *file) {
     while (readline(file, (moving_line = line_mem)) != NULL) {
         foundLabel = FALSE;
         skip_white_characters(&moving_line);
-        set_logger_current_line(moving_line);
+        set_logger_current_line(moving_line, ++line_count);
 
         if (is_comment_or_empty(moving_line)) {
             continue; /* Skip empty lines and comments */

@@ -1,9 +1,7 @@
 #include "assembler.h"
 
 static int parse_arg(char *arg);
-
 static int insert_jump(command_template *command, char *arg);
-
 static int insert_label(command_template *command, char *label);
 
 /*
@@ -12,7 +10,7 @@ static int insert_label(command_template *command, char *label);
  */
 int secondpass_two_args_command(char *text) {
     int parsed = -1;
-    arguments args = read_args(text);
+    arguments args = read_args(text); /* the arguments stripped from white characters, separated by ',' */
     incIC(1);
 
     if (args.arg1 && args.arg2) {
@@ -38,7 +36,7 @@ int secondpass_two_args_command(char *text) {
  */
 static int parse_arg(char *arg) {
     int number_arg;
-    int addressing_type = -1;
+    int addressing_type = -1; /* the addressing type found */
 
     if (isregister(arg) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
@@ -63,8 +61,8 @@ static int parse_arg(char *arg) {
  */
 int secondpass_one_arg_command(char *text) {
     int number_arg;
-    int addressing_type = -1;
-    char *arg;
+    int addressing_type = -1; /* the addressing type found */
+    char *arg; /* the argument stripped from with characters */
     incIC(1);
 
     if (!(arg = read_arg(text))) {
@@ -106,8 +104,8 @@ int secondpass_zero_arg_command(char *text) {
  * Otherwise TRUE is returned.
  */
 static int insert_jump(command_template *command, char *arg) {
-    labelnode *label;
-    int jump;
+    labelnode *label; /* stores the label with specified name */
+    int jump; /* stores the jump needed to be inserted to command */
 
     if (!(label = get_label(arg + 1))) {
         log_message("Can't insert jump because label's info not found. label: %s", arg + 1);
@@ -141,7 +139,7 @@ static int insert_jump(command_template *command, char *arg) {
  * Otherwise, TRUE is returned.
  */
 static int insert_label(command_template *command, char *label) {
-    labelnode *label_info;
+    labelnode *label_info; /* stores the label with specified name */
 
     if (!(label_info = get_label(label))) {
         log_message("Couldn't insert label's location because label is not in symbols table. Label: %s", label);

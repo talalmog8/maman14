@@ -13,7 +13,7 @@ void setIC(unsigned int ic) {
 /*
  * Returns current IC
  */
-unsigned int getIC() {
+unsigned int getIC(void) {
     return IC;
 }
 
@@ -34,7 +34,7 @@ void setDC(unsigned int dc) {
 /*
  * Returns current DC
  */
-unsigned int getDC() {
+unsigned int getDC(void) {
     return DC;
 }
 

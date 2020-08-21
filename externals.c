@@ -70,7 +70,7 @@ static char *allocate_external(char *from) {
 /*
  * Frees memory of all variables that were given dynamic memory allocation in the externals list
  */
-void dispose_externals() {
+void dispose_externals(void) {
     external_node *current = head, *next;
 
     if (current == NULL)

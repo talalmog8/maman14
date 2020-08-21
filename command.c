@@ -44,11 +44,8 @@ bool secondpass_parse_command(char **line_p) {
     if ((operation = isoperation(line_p)).opcode == -1) {
         return FALSE;
     }
-
-    if (operation.address_inserter) {
-        if (operation.address_inserter(*line_p) == -1) {
-            return FALSE;
-        }
+    if (operation.address_inserter(*line_p) == -1) {
+        return FALSE;
     }
     return TRUE;
 }

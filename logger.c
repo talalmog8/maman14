@@ -1,9 +1,10 @@
 #include "assembler.h"
 #include <stdlib.h>
 
-static char *name = NULL;
-static char *stage = NULL;
-static char *faulted_line = NULL;
+static char *name = NULL; /* logger name - will set to current .as file's name */
+static char *stage = NULL; /* logger stage - will set to firstpass/secondpass */
+static char *faulted_line = NULL; /* logger faulted line - will be set to current line being parsed */
+static unsigned int faulted_line_number; /* logger faulted line number - will be set to current line number being parsed */
 
 /*
  * Initializes logger with file's name and stage (firstpass/secondpass)
@@ -25,7 +26,11 @@ void set_logger(char *filename, char *log_stage) {
     strcpy(stage, log_stage);
 }
 
-void set_logger_current_line(char *current_line) {
+/*
+ * Allocates memory, and saves current line. save current line number as well.
+ * This information will be printed in logs.
+ */
+void set_logger_current_line(char *current_line, unsigned int line_no) {
     int line_length;
 
     if (faulted_line) {
@@ -40,19 +45,24 @@ void set_logger_current_line(char *current_line) {
 
     strncpy(faulted_line, current_line, line_length - 1); /* copy faulted line without \n or \0 */
     faulted_line[line_length-1] = '\0';
+    faulted_line_number = line_no;
 }
 
+/*
+ * Disposes allocated memory for source file current line
+ */
 void dispose_logger_current_line(void){
     if(faulted_line){
         free(faulted_line);
         faulted_line = NULL;
+        faulted_line_number = 0;
     }
 }
 
 /*
  * Disposes logger if initialized
  */
-void dispose_logger() {
+void dispose_logger(void) {
     if (name)
         free(name);
     if (stage)
@@ -70,7 +80,7 @@ void log_message(char *fmt, ...) {
     va_start(args, fmt);
     vprintf(fmt, args);
     if (faulted_line) {
-        printf(". Faulted line: [%s]", faulted_line);
+        printf(". Error in line: %d. Content: [%s]", faulted_line_number, faulted_line);
     }
     printf("\n");
     va_end(args);

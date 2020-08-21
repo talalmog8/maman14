@@ -41,7 +41,7 @@ void reset_output_arrays(void) {
 /*
  * Get the last free cell in commands array
  */
-command_template *get_current_command() {
+command_template *get_current_command(void) {
     return &commands_p[current_command++];
 }
 
@@ -68,8 +68,8 @@ void dispose_output_arrays(void) {
  * Prints output arrays output to file with the specified name, in requested format
  */
 void print_output_arrays(char *filename, unsigned int ic, unsigned int dc) {
-    command_2_integer commandconverter;
-    guide_2_integer guideconverter;
+    command_2_integer commandconverter; /* will convert commands to integers representation */
+    guide_2_integer guideconverter; /* will convert guides to integers representation */
     int i;
     FILE *file = openfile_for_write(filename, OBJECT_POSTFIX); /* Opens .ob file for writing */
 
