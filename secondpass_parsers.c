@@ -20,10 +20,10 @@ int secondpass_two_args_command(char *text) {
             if (parse_arg(args.arg2) != -1) {
                 parsed = 1;
             } else {
-                fprintf(stderr, "[Secondpass]   Failed to parse second argument in command. arguments: %s\n", text);
+                log_message("Failed to parse second argument in command");
             }
         } else {
-            fprintf(stderr, "[Secondpass]    Failed to parse first argument in command. arguments: %s\n", text);
+            log_message("Failed to parse first argument in command");
         }
 
     }
@@ -40,14 +40,13 @@ static int parse_arg(char *arg) {
     int number_arg;
     int addressing_type = -1;
 
-    if (isregister(arg) != -1) {
+    if (isregister(arg) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
     } else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         incIC(1);
     } else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
-        /* todo  take care of operations validtaion. this souldn't happen*/
     } else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         if (!insert_label(get_command_by_ic(getIC()), arg)) {
@@ -72,7 +71,7 @@ int secondpass_one_arg_command(char *text) {
         return -1;
     }
 
-    if (isregister(arg) != -1) {
+    if (isregister(arg) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
     } else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
@@ -111,12 +110,12 @@ static int insert_jump(command_template *command, char *arg) {
     int jump;
 
     if (!(label = get_label(arg + 1))) {
-        fprintf(stderr, "Label's info not found.\n");
+        log_message("Can't insert jump because label's info not found. label: %s", arg + 1);
         return FALSE;
     }
 
     if (label->location == 0) {
-        fprintf(stderr, "Cannot jump to external labels.\n");
+        log_message("Cannot jump to external labels. Label: %s", arg + 1);
         return FALSE;
     }
 
@@ -145,7 +144,7 @@ static int insert_label(command_template *command, char *label) {
     labelnode *label_info;
 
     if (!(label_info = get_label(label))) {
-        fprintf(stderr, "Could not find label by the name: %s, in label list.\n", label);
+        log_message("Couldn't insert label's location because label is not in symbols table. Label: %s", label);
         return FALSE;
     }
 

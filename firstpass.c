@@ -22,14 +22,15 @@ bool firstpass(FILE *file) {
 
         if (is_comment_or_empty(moving_line)) {
             continue; /* Skip empty lines and comments */
-        } else if ((label_length = findlable(moving_line, TRUE)) !=
-                   -1) { /* This block is for adding a label at beginning of line */
+        }
+        else if ((label_length = findlable(moving_line, TRUE)) != -1) {
             /* found label's delimiter at beginning of command */
             if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 /* label has been validated successfully */
                 foundLabel = TRUE;
                 skip_characters(&moving_line, label_length + 1); /* forwards line after the label for further parsing */
-            } else {
+            }
+            else {
                 log_message("Found illegal label in line: %s", line_mem);
                 output = FALSE;
             }
@@ -44,13 +45,16 @@ bool firstpass(FILE *file) {
             if (foundLabel == TRUE)
                 output &= add_label_if_new(label, getDC(), label_data, label_no_kind); /* add label to symbol table */
             output &= parse_guide(moving_line, guide_result); /* parse the rest of guide command */
-        } else if (guide_result == __entry) {
+        }
+        else if (guide_result == __entry) {
             continue; /* parsed at secondpass */
-        } else if (guide_result == __extern) {
+        }
+        else if (guide_result == __extern) {
             if ((label_length = findlable(moving_line, FALSE)) == -1) {
                 log_message("Missing label / Illegal label format, on extern guide command");
                 output = FALSE;
-            } else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
+            }
+            else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
                 /* found a valid label in .extern guide */
                 addtoend(label, 0, label_data, label_external); /* add label to symbol table */
                 skip_characters(&moving_line, label_length);
@@ -58,14 +62,15 @@ bool firstpass(FILE *file) {
                     log_message("Excess data in the end of extern guide");
                 }
             }
-        } else if(guide_result == -1) {
+        }
+        else if (guide_result == -1) {
             /* this should be a command. starting command parsing on line*/
             if (foundLabel)
                 output &= add_label_if_new(label, getIC(), label_code, label_no_kind); /* add label to symbol table */
 
             output &= firstpass_parse_command(&moving_line); /* parse the rest of the command */
         }
-        else{
+        else {
             /* entered an unknown guide starting with '.' */
             output = FALSE;
         }

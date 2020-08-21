@@ -2,13 +2,9 @@
 
 
 static void fill_two_args_command_defaults(command_template *command, int opcode, int funct);
-
 static void fill_one_arg_command_defaults(command_template *command, int opcode, int funct);
-
 static void fill_empty_command(command_template *command);
-
 static void insert_number_to_command(command_template *command, int number);
-
 static int parse_arg(char *arg, command_template *, bool);
 
 /*
@@ -29,10 +25,10 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
                 parsed = 1;
             }
             else if (temp_parse_result == -1) {
-                log_message("Failed to parse destination addressing type in command.");
+                log_message("Failed to parse destination addressing type in command");
             }
             else {
-                log_message("Command destination addressing type is not valid, Addressing type found: %d.",
+                log_message("Command destination addressing type is not valid, Addressing type found: %d",
                             temp_parse_result);
             }
         }
@@ -40,8 +36,7 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
             log_message("Failed to parse origin addressing type in command");
         }
         else {
-            printf("Command origin addressing type is not valid, Addressing type found: %d.",
-                   temp_parse_result);
+            log_message("Command origin addressing type is not valid, Addressing type found: %d", temp_parse_result);
         }
     }
 
@@ -116,7 +111,7 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
     }
 
     fill_one_arg_command_defaults(command, opcode, funct);
-    if ((_register = isregister(arg)) != -1) {
+    if ((_register = isregister(arg)) >= 0) {
         command->des_register = _register;
         command->des_delivery_type = addressing_type = REGISTER_ADDRESSING;
     }
@@ -143,8 +138,7 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
     }
 
     if (!is_destination_address_type_valid(operation_id, addressing_type)) {
-        log_message("Command destination addressing type is not valid, Addressing type found: %d.",
-                    addressing_type);
+        log_message("Command destination addressing type is not valid, Addressing type found: %d", addressing_type);
         return -1; /* addressing type not valid */
     }
 
