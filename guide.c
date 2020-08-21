@@ -73,6 +73,15 @@ bool parse_guide(char *line, guide_names guide_type) {
 static bool parse_numbers(char *line) {
     char *token;
     int counter = 0;
+    int i;
+
+    /* this block makes sure the is no consecutive ',' in line */
+    for (i = 0; line[i] != '\n' && line[i] != '\0'; ++i) {
+        if(line[i] == ',' && line[i + 1] == ','){
+            log_message("Consecutive ',' within a .data command");
+            return FALSE; /* consecutive ',' */
+        }
+    }
 
     token = strtok(line, ", \t\n\0");
 
@@ -85,6 +94,7 @@ static bool parse_numbers(char *line) {
     }
 
     incDC(counter); /* each number increments DC by 1 */
+
     return counter > 0;
 }
 
