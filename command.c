@@ -2,6 +2,16 @@
 #include<string.h>
 #include <ctype.h>
 
+#define MAX_REG 7
+#define MIN_REG 0
+#define REG_SUFFIX 'r'
+
+#define NUMBER_SUFFIX '#'
+#define ADDRESS_SUFFIX '&'
+
+#define POSITIVE_NUMBER_SUFFIX '+'
+#define NEGATIVE_NUMBER_SUFFIX '-'
+
 /*
  * This file contains function for parsing commands
  */
@@ -14,7 +24,6 @@ bool firstpass_parse_command(char **line_p) {
     operation operation;
 
     if ((operation = isoperation(line_p)).opcode == -1) {
-        log_message("Entered unknown operation");
         return FALSE;
     }
 
@@ -33,7 +42,6 @@ bool secondpass_parse_command(char **line_p) {
     operation operation;
 
     if ((operation = isoperation(line_p)).opcode == -1) {
-        log_message("Entered unknown operation");
         return FALSE;
     }
 
@@ -75,7 +83,7 @@ operation isoperation(char **text_p) {
     for (; i < (sizeof(ops) / sizeof(operation)); i++) {
         if ((!strncmp(text, ops[i].opname, (length = strlen(ops[i].opname))))) {
             if (!isspace(text[length])) {
-                fprintf(stderr, "Missing space or tab after operation name. Line: %s", text);
+                log_message("Missing white character after operation name. Operation name: %s", ops[i].opname);
                 return ops[0];
             }
             skip_characters(text_p, length);
@@ -83,6 +91,7 @@ operation isoperation(char **text_p) {
         }
     }
 
+    log_message("Entered unknown operation");
     return ops[0];
 }
 
@@ -99,15 +108,17 @@ arguments read_args(char *line) {
         arg1 = token;
         if ((token = strtok(NULL, ", \t\n\0"))) {
             arg2 = token;
-        } else {
-            fprintf(stderr, "Managed to read only 1 operands from 2. arguments: %s", line);
         }
-    } else {
-        fprintf(stderr, "Managed to read only 0 operands from 2. arguments: %s", line);
+        else {
+            log_message("Managed to read only 1 operands from 2");
+        }
+    }
+    else {
+        log_message("Managed to read only 0 operands from 2");
     }
 
     if (strtok(NULL, ", \t\n\0")) {
-        fprintf(stderr, "Found 3 arguments in command. There are at most 2 argument per command. IC: %d\n", getIC());
+        log_message("Found 3 arguments in command. There are at most 2 argument per command");
         args.arg1 = NULL;
         args.arg2 = NULL;
         return args;
@@ -133,13 +144,13 @@ char *read_arg(char *line) {
         arg = token;
 
         if (strtok(NULL, " \t\n\0")) {
-            fprintf(stderr, "Found 2 arguments in a 1 argument command. IC: %d\n", getIC());
+            log_message("Found 2 arguments in a 1 argument command");
             return NULL;
         }
         return arg;
     }
 
-    fprintf(stderr, "Managed to read only 0 operands from 1. arguments: %s", line);
+    log_message("Managed to read only 0 operands from a 1 argument command");
     return arg;
 }
 
@@ -156,9 +167,21 @@ void fill_flags(command_template *command, int a, int r, int e) {
  * Checks if string is a register. If it is, it returns the register's number, otherwise it returns -1
  */
 int isregister(char *arg) {
-    if (*(arg++) == 'r') {
-        if (*arg >= '0' && *arg <= '7') {
-            return (*arg - '0');
+    int reg;
+
+    if (*arg == REG_SUFFIX) {
+        if (try_parse_number(arg, &reg, FALSE)) {
+            if ((reg >= MIN_REG) && (reg <= MAX_REG)) {
+                return reg;
+            }
+            else {
+                log_message("Entered a non existing register. Register: r%d", *arg);
+                return -2;
+            }
+        }
+        else {
+            /* register suffix is not followed by a valid number. this could be a label, no logs are printed */
+            return -2;
         }
     }
 
@@ -170,19 +193,20 @@ int isregister(char *arg) {
  * and 1 is returned
  * Otherwise 0 is returned.
  */
-int try_parse_number(char *arg, int *number) {
+int try_parse_number(char *arg, int *number, int check_suffix) {
     int i = 1;
     int num = 0;
     int sign = 1;
 
-    if (*arg != '#') {
+    if (check_suffix && (*arg != NUMBER_SUFFIX)) {
         return FALSE;
     }
 
-    if (arg[i] == '-') {
+    if (arg[i] == NEGATIVE_NUMBER_SUFFIX) {
         sign = -1;
         i++;
-    } else if (arg[i] == '+') {
+    }
+    else if (arg[i] == POSITIVE_NUMBER_SUFFIX) {
         i++;
     }
 
@@ -190,7 +214,8 @@ int try_parse_number(char *arg, int *number) {
         if (isdigit(arg[i])) {
             num *= 10;
             num += (arg[i] - '0');
-        } else {
+        }
+        else {
             return FALSE;
         }
     }
@@ -204,7 +229,7 @@ int try_parse_number(char *arg, int *number) {
  * Returns 0 otherwise.
  */
 int isaddress(char *arg) {
-    if (*arg == '&') {
+    if (*arg == ADDRESS_SUFFIX) {
         arg++; /* skip '&' */
         if (islable(arg, (int) strlen(arg))) {
             return TRUE;

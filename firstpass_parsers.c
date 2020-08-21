@@ -27,15 +27,19 @@ int parse_two_args_command(char *text, int opcode, int funct, int operation_id) 
             if (is_destination_address_type_valid(operation_id,
                                                   temp_parse_result = parse_arg(args.arg2, command, TRUE))) {
                 parsed = 1;
-            } else if (temp_parse_result == -1) {
+            }
+            else if (temp_parse_result == -1) {
                 log_message("Failed to parse destination addressing type in command.");
-            } else {
+            }
+            else {
                 log_message("Command destination addressing type is not valid, Addressing type found: %d.",
                             temp_parse_result);
             }
-        } else if (temp_parse_result == -1) {
+        }
+        else if (temp_parse_result == -1) {
             log_message("Failed to parse origin addressing type in command");
-        } else {
+        }
+        else {
             printf("Command origin addressing type is not valid, Addressing type found: %d.",
                    temp_parse_result);
         }
@@ -54,16 +58,19 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     int _register = EMPTY_FIELD;
     int addressing_type = -1;
 
-    if ((_register = isregister(arg)) != -1) {
+    if ((_register = isregister(arg)) >= 0) {
         addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg)) {
+    }
+    else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         insert_number_to_command(get_current_command(), number_arg);
-    } else if (isaddress(arg)) {
+    }
+    else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1); /* saved space for label address*/
-    } else if (islable(arg, strlen(arg))) {
+    }
+    else if (islable(arg, strlen(arg))) {
         addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1); /* saved space for label address*/
@@ -72,7 +79,8 @@ static int parse_arg(char *arg, command_template *command, bool is_destination) 
     if (is_destination) {
         command->des_delivery_type = addressing_type;
         command->des_register = (_register == -1) ? EMPTY_FIELD : _register;
-    } else {
+    }
+    else {
         command->orig_delivery_type = addressing_type;
         command->orig_register = (_register == -1) ? EMPTY_FIELD : _register;
     }
@@ -111,22 +119,26 @@ int parse_one_arg_command(char *text, int opcode, int funct, int operation_id) {
     if ((_register = isregister(arg)) != -1) {
         command->des_register = _register;
         command->des_delivery_type = addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg)) {
+    }
+    else if (try_parse_number(arg, &number_arg, TRUE)) {
         command->des_register = EMPTY_FIELD;
         command->des_delivery_type = addressing_type = IMMEDIATE_ADDRESSING;
         insert_number_to_command(get_current_command(), number_arg);
-    } else if (isaddress(arg)) {
+    }
+    else if (isaddress(arg)) {
         command->des_register = EMPTY_FIELD;
         command->des_delivery_type = addressing_type = RELATIVE_ADDRESSING;
         fill_empty_command(get_current_command()); /* reserved for label's address */
         incIC(1);
-    } else if (islable(arg, strlen(arg))) {
+    }
+    else if (islable(arg, strlen(arg))) {
         command->des_register = EMPTY_FIELD;
         command->des_delivery_type = addressing_type = DIRECT_ADDRESSING;
         fill_empty_command(get_current_command());
         incIC(1); /* saved space for label address*/
-    } else if (addressing_type == -1) {
-        log_message("Failed to parse destination addressing type in command.");
+    }
+    else if (addressing_type == -1) {
+        log_message("Failed to parse destination addressing type in command");
         return -1; /* Couldn't find addressing type */
     }
 

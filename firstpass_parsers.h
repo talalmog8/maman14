@@ -54,7 +54,7 @@ char *read_arg(char *line);
 
 
 /* Element parsers*/
-int try_parse_number(char *arg, int *number);
+int try_parse_number(char *arg, int *number, int check_suffix);
 
 int isregister(char *arg);
 

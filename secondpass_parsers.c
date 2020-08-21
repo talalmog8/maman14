@@ -42,7 +42,7 @@ static int parse_arg(char *arg) {
 
     if (isregister(arg) != -1) {
         addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg)) {
+    } else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         incIC(1);
     } else if (isaddress(arg)) {
@@ -74,7 +74,7 @@ int secondpass_one_arg_command(char *text) {
 
     if (isregister(arg) != -1) {
         addressing_type = REGISTER_ADDRESSING;
-    } else if (try_parse_number(arg, &number_arg)) {
+    } else if (try_parse_number(arg, &number_arg, TRUE)) {
         addressing_type = IMMEDIATE_ADDRESSING;
         incIC(1);
     } else if (isaddress(arg)) {
