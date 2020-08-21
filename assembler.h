@@ -167,3 +167,7 @@ void dispose_logger();
 void set_logger(char *filename, char *log_stage);
 
 void log_message(char *fmt, ...);
+
+void set_logger_current_line(char *current_line);
+
+void dispose_logger_current_line(void);
