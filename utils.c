@@ -14,7 +14,7 @@ void skip_white_characters(char **text_p) {
  * Skips the specified amount of characters in the string that the specified pointer points to.
  * Then skips white characters in the string that the specified pointer points to.
  */
-void skip_characters(char **text_p, int amount){
+void skip_characters(char **text_p, int amount) {
     (*text_p) += amount;
     skip_white_characters(text_p);
 }

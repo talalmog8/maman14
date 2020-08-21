@@ -5,7 +5,7 @@
 
 #define CLR_ID 6
 
-bool is_origin_address_type_valid(int operation_id, int address_type){
+bool is_origin_address_type_valid(int operation_id, int address_type) {
     int i, *valids;
 
 
@@ -23,8 +23,7 @@ bool is_origin_address_type_valid(int operation_id, int address_type){
     } else if (operation_id >= CLR_ID) {
         /* this commands don't have origin operand */
         return FALSE;
-    }
-    else if(address_type == -1){
+    } else if (address_type == -1) {
         /* couldn't parse addressing type */
         return FALSE;
     }
@@ -33,7 +32,7 @@ bool is_origin_address_type_valid(int operation_id, int address_type){
     valids = valid_addressing_types[operation_id];
 
     for (i = 0; valids[i] != -1; ++i) {
-        if(valids[i] == address_type){
+        if (valids[i] == address_type) {
             return TRUE;
         }
     }
@@ -41,7 +40,7 @@ bool is_origin_address_type_valid(int operation_id, int address_type){
     return FALSE;
 }
 
-bool is_destination_address_type_valid(int operation_id, int address_type){
+bool is_destination_address_type_valid(int operation_id, int address_type) {
     int i, *valids;
 
     int valid_addressing_types[14][4] = {
@@ -67,8 +66,7 @@ bool is_destination_address_type_valid(int operation_id, int address_type){
     } else if (operation_id >= MIN_0_ARGS_COMMAND_ID) {
         /* this commands don't have origin operand */
         return FALSE;
-    }
-    else if(address_type == -1){
+    } else if (address_type == -1) {
         /* couldn't parse addressing type */
         return FALSE;
     }
@@ -77,7 +75,7 @@ bool is_destination_address_type_valid(int operation_id, int address_type){
     valids = valid_addressing_types[operation_id];
 
     for (i = 0; valids[i] != -1; ++i) {
-        if(valids[i] == address_type){
+        if (valids[i] == address_type) {
             return TRUE;
         }
     }

@@ -26,7 +26,9 @@ typedef struct {
     int opcode;
     int funct;
     char *opname;
+
     int (*parser)(char *text, int opcode, int funct, int operation_id);
+
     int (*address_inserter)(char *text);
 } operation;
 
@@ -47,16 +49,22 @@ operation isoperation(char **text_p);
 
 /* Argument readers*/
 arguments read_args(char *line);
+
 char *read_arg(char *line);
 
 
 /* Element parsers*/
 int try_parse_number(char *arg, int *number);
+
 int isregister(char *arg);
+
 int isaddress(char *arg);
 
 /* Firstpass command parsers */
 int parse_two_args_command(char *text, int opcode, int funct, int operation_id);
+
 int parse_one_arg_command(char *text, int opcode, int funct, int operation_id);
+
 int fill_zero_args_command(char *text, int opcode, int funct, int operation_id);
+
 void fill_flags(command_template *command, int a, int r, int e);

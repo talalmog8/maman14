@@ -5,21 +5,20 @@
     This file holds functions to manipulate labels linked list
 */
 
-static  labelnode* head = NULL; /* holds the head of the labels linked list */
-static labelnode *createnode(char *, int , label_area, label_kind);
+static labelnode *head = NULL; /* holds the head of the labels linked list */
+static labelnode *createnode(char *, int, label_area, label_kind);
 
 /*
  * Used for iterating over the labels list in different files
  */
-labelnode* iterate_labels(void){
+labelnode *iterate_labels(void) {
     return head;
 }
 
 /*
  * Adds a new label to the end of the labels list, with the provided information
  */
-void addtoend(char *content, int location, label_area area, label_kind kind)
-{
+void addtoend(char *content, int location, label_area area, label_kind kind) {
     labelnode *current = head;
 
     if (head == NULL) {
@@ -38,12 +37,10 @@ void addtoend(char *content, int location, label_area area, label_kind kind)
  * The node's memory is dynamically allocated.
  * A pointer to the node is returned.
  */
-static labelnode *createnode(char *content, int location, label_area area, label_kind kind)
-{
-    labelnode *new = (labelnode *)malloc(sizeof(labelnode));
+static labelnode *createnode(char *content, int location, label_area area, label_kind kind) {
+    labelnode *new = (labelnode *) malloc(sizeof(labelnode));
 
-    if (!new)
-    {
+    if (!new) {
         fprintf(stderr, "couldn't allocate memory for linked list node\n");
         exit(1);
     }
@@ -52,22 +49,20 @@ static labelnode *createnode(char *content, int location, label_area area, label
     new->location = location;
     new->area = area;
     new->kind = kind;
-    new -> next = NULL;
+    new->next = NULL;
     return new;
 }
 
 /*
  * Disposes all memory that has been dynamic allocated in labels list
  */
-void dispose_labels(void)
-{
+void dispose_labels(void) {
     labelnode *current = head, *next;
 
     if (current == NULL)
         return;
 
-    while ((current->next) != NULL)
-    {
+    while ((current->next) != NULL) {
         next = current->next;
         free(current);
         current = next;
@@ -82,30 +77,30 @@ void dispose_labels(void)
  * Returns 1 if a label with the specified name is stored in labels list.
  * Otherwise, returns 0
  */
-int exists(char *label){
+int exists(char *label) {
     labelnode *current = head;
 
-    while (current != NULL){
-        if(!strcmp(current->label, label)){
+    while (current != NULL) {
+        if (!strcmp(current->label, label)) {
             return 1;
-        }        
-        current = current -> next;
+        }
+        current = current->next;
     }
-    return 0;    
+    return 0;
 }
 
 /*
  * Searches for a label with the specified name in labels list. If such label is found, a pointer to it is returned.
  * Otherwise, NULL is returned.
  */
-labelnode* get_label(char *label){
+labelnode *get_label(char *label) {
     labelnode *current = head;
 
-    while (current != NULL){
-        if(!strcmp(current->label, label)){
+    while (current != NULL) {
+        if (!strcmp(current->label, label)) {
             return current;
         }
-        current = current -> next;
+        current = current->next;
     }
     return NULL;
 }
@@ -115,15 +110,15 @@ labelnode* get_label(char *label){
  * If such label is found, the label's kind is updated using the specified label kind, and 1 is returned.
  * Otherwise, if such label isn't found, 0 is returned.
  */
-int update_label_kind(char  *label, label_kind new_kind){
+int update_label_kind(char *label, label_kind new_kind) {
     labelnode *current = head;
 
-    while (current != NULL){
-        if(!strcmp(current->label, label)){
-            current -> kind = new_kind;
+    while (current != NULL) {
+        if (!strcmp(current->label, label)) {
+            current->kind = new_kind;
             return 1;
         }
-        current = current -> next;
+        current = current->next;
     }
     return 0;
 }
@@ -131,14 +126,14 @@ int update_label_kind(char  *label, label_kind new_kind){
 /*
  * Adds specified ic to all non label_external labels that classified as label_data
  */
-void increment_data_labels(int ic){
+void increment_data_labels(int ic) {
     labelnode *current = head;
 
-    while (current != NULL){
-        if((current -> area == label_data) && (current -> kind != label_external) ){
-            current -> location += ic;
+    while (current != NULL) {
+        if ((current->area == label_data) && (current->kind != label_external)) {
+            current->location += ic;
         }
-        current = current -> next;
+        current = current->next;
     }
 }
 

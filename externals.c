@@ -2,23 +2,23 @@
 #include <stdlib.h>
 
 static external_node *createnode(char *label, int location);
+
 static char *allocate_external(char *from);
 
 /* head of linked list of external labels */
-static  external_node *head = NULL;
+static external_node *head = NULL;
 
 /*
  * Used for iterating through the list in different files
  */
-external_node * iterate_externals(void){
+external_node *iterate_externals(void) {
     return head;
 }
 
 /*
  * Adds the specified label in the end of the externals list
  */
-void add_external(char *label, int location)
-{
+void add_external(char *label, int location) {
     external_node *current = head;
 
     if (head == NULL) {
@@ -35,19 +35,17 @@ void add_external(char *label, int location)
 /*
  * Allocates memory for a new external node and fills it with the specified information
  */
-static external_node *createnode(char *label, int location)
-{
-    external_node *new = (external_node *)malloc(sizeof(external_node));
+static external_node *createnode(char *label, int location) {
+    external_node *new = (external_node *) malloc(sizeof(external_node));
 
-    if (!new)
-    {
+    if (!new) {
         fprintf(stderr, "couldn't allocate memory for linked list node\n");
         exit(1);
     }
 
-    new -> label = allocate_external(label);
-    new -> location = location;
-    new -> next = NULL;
+    new->label = allocate_external(label);
+    new->location = location;
+    new->next = NULL;
 
     return new;
 }
@@ -55,11 +53,11 @@ static external_node *createnode(char *label, int location)
 /*
  * Allocates memory for label (string) that will be stores in an external node
  */
-static char *allocate_external(char *from){
+static char *allocate_external(char *from) {
     char *to;
 
-    to = (char *)calloc(strlen(from) + 1, sizeof(char));
-    if(!to){
+    to = (char *) calloc(strlen(from) + 1, sizeof(char));
+    if (!to) {
         fprintf(stderr, "Failed to allocate external. exiting program\n");
         exit(1);
     }
@@ -72,20 +70,18 @@ static char *allocate_external(char *from){
 /*
  * Frees memory of all variables that were given dynamic memory allocation in the externals list
  */
-void dispose_externals()
-{
+void dispose_externals() {
     external_node *current = head, *next;
 
     if (current == NULL)
         return;
 
-    while ((current->next) != NULL)
-    {
+    while ((current->next) != NULL) {
         next = current->next;
         free(current);
         current = next;
     }
-    free(current -> label);
+    free(current->label);
     free(current);
 
     head = NULL;

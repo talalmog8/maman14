@@ -6,41 +6,41 @@ static unsigned int DC; /* stores current DC */
 /*
  * Sets current IC to specified integer
  */
-void setIC(unsigned int ic){
+void setIC(unsigned int ic) {
     IC = ic;
 }
 
 /*
  * Returns current IC
  */
-unsigned int getIC(){
+unsigned int getIC() {
     return IC;
 }
 
 /*
  * Increments current IC with specified integer
  */
-void incIC(unsigned  int addition){
+void incIC(unsigned int addition) {
     IC += addition;
 }
 
 /*
  * Sets current DC to specified integer
  */
-void setDC(unsigned int dc){
+void setDC(unsigned int dc) {
     DC = dc;
 }
 
 /*
  * Returns current DC
  */
-unsigned int getDC(){
+unsigned int getDC() {
     return DC;
 }
 
 /*
  * Increments current DC with specified integer
  */
-void incDC(unsigned  int addition){
+void incDC(unsigned int addition) {
     DC += addition;
 }

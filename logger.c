@@ -14,7 +14,7 @@ void set_logger(char *filename, char *log_stage) {
         fprintf(stderr, "Failed to allocate memory for logger. Exiting program");
         exit(1);
     }
-    if (!(stage = calloc(1, strlen(log_stage) + 1))){
+    if (!(stage = calloc(1, strlen(log_stage) + 1))) {
         fprintf(stderr, "Failed to allocate memory for logger. Exiting program");
         exit(1);
     }
@@ -37,12 +37,11 @@ void dispose_logger() {
 /*
  * Logs message to stdout
  */
-void log_message(char* fmt, ...)
-{
+void log_message(char *fmt, ...) {
     va_list args;
     printf("%s: [%s] ", name, stage);
     va_start(args, fmt);
-    vprintf(fmt,args);
+    vprintf(fmt, args);
     printf("\n");
     va_end(args);
 }

@@ -13,33 +13,31 @@ bool secondpass(FILE *file) {
         skip_white_characters(&moving_line);
         if (is_comment_or_empty(moving_line)) {
             continue;
-        }
-        else if ((label_length = findlable(moving_line, TRUE)) != -1) {
+        } else if ((label_length = findlable(moving_line, TRUE)) != -1) {
             skip_characters(&moving_line, label_length + 1); /* skip label */
         }
 
         guide_result = is_guide(&moving_line);
         if ((guide_result == __string) || (guide_result == __data) || (guide_result == __extern)) {
             continue;
-        }
-        else if (guide_result == __entry) {
+        } else if (guide_result == __entry) {
             if ((label_length = findlable(moving_line, FALSE)) == -1) {
                 printf("Missing label on entry guide command\n");
                 output = FALSE;
-            }
-            else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
-                if(!update_label_kind(label, label_entry)){
-                    fprintf(stderr, "Couldn't find label in label's linked list, in order to update it's kind to entry. label: %s", label);
+            } else if (parselable(moving_line, label_length, (label = allocate_label(label_length)))) {
+                if (!update_label_kind(label, label_entry)) {
+                    fprintf(stderr,
+                            "Couldn't find label in label's linked list, in order to update it's kind to entry. label: %s",
+                            label);
                     output = FALSE;
                 }
                 skip_characters(&moving_line, label_length);
                 if (!is_end(*moving_line)) {
-                    fprintf(stderr,"Too much data in command: %s", line_mem);
+                    fprintf(stderr, "Too much data in command: %s", line_mem);
                 }
             }
 
-        }
-        else {
+        } else {
             /* this should be command operation*/
             output &= secondpass_parse_command(&moving_line);
         }

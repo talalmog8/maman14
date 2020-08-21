@@ -3,6 +3,7 @@
 static int parse_arg(char *arg);
 
 static int insert_jump(command_template *command, char *arg);
+
 static int insert_label(command_template *command, char *label);
 
 /*
@@ -78,7 +79,7 @@ int secondpass_one_arg_command(char *text) {
         incIC(1);
     } else if (isaddress(arg)) {
         addressing_type = RELATIVE_ADDRESSING;
-        if(!insert_jump(get_command_by_ic(getIC()), arg)){
+        if (!insert_jump(get_command_by_ic(getIC()), arg)) {
             addressing_type = -1; /*  this will fail secondpass */
         }
     } else if (islable(arg, strlen(arg))) {
@@ -105,21 +106,21 @@ int secondpass_zero_arg_command(char *text) {
  * If label is not found in symbols table, FALSE is returned.
  * Otherwise TRUE is returned.
  */
-static int insert_jump(command_template *command, char *arg){
+static int insert_jump(command_template *command, char *arg) {
     labelnode *label;
     int jump;
 
-    if(!(label = get_label(arg + 1))){
+    if (!(label = get_label(arg + 1))) {
         fprintf(stderr, "Label's info not found.\n");
         return FALSE;
     }
 
-    if(label -> location == 0){
+    if (label->location == 0) {
         fprintf(stderr, "Cannot jump to external labels.\n");
         return FALSE;
     }
 
-    jump = ((label -> location) - ((int)getIC() - 1));
+    jump = ((label->location) - ((int) getIC() - 1));
 
     command->opcode = EXTRACT_OPCODE(jump);
     command->func = EXTRACT_FUNC(jump);

@@ -6,15 +6,15 @@
 #define MAX_LABEL_SIZE 31
 #define RESERVED_OPS_AMOUNT 11
 
-static void copy(char *dest,char *source, int length);
+static void copy(char *dest, char *source, int length);
 
 /*
     Allocates memory for label with the specified length
 */
-char *allocate_label(int length){
+char *allocate_label(int length) {
     char *label;
 
-    if(!(label = (char *)calloc(length + 1, sizeof(char)))){
+    if (!(label = (char *) calloc(length + 1, sizeof(char)))) {
         fprintf(stderr, "Failed to allocate label. exiting program\n");
         exit(1);
     }
@@ -34,7 +34,7 @@ int findlable(char *line, bool atStart) {
         i++;
     }
 
-    if(atStart){
+    if (atStart) {
         if (line[i] == COLON) {
             return i;
         }
@@ -42,7 +42,7 @@ int findlable(char *line, bool atStart) {
     }
     skip_white_characters(&line);
 
-    if(line[i] == '\n' || line[i] == STRING_END)
+    if (line[i] == '\n' || line[i] == STRING_END)
         return i;
     return -1;
 }
@@ -53,7 +53,7 @@ int findlable(char *line, bool atStart) {
     Otherwise, FALSE is returned.
 */
 bool parselable(char *line, int length, char *output) {
-    if(islable(line, length)){
+    if (islable(line, length)) {
         copy(output, line, length);
         return TRUE;
     }
@@ -94,7 +94,6 @@ bool islable(char *line, int length) {
     }
 
 
-
     for (i = 0; i < RESERVED_OPS_AMOUNT; ++i) {
         if (!strncmp(line, reserved[i].name, length)) {
             log_message("Reserved assembly word used as label %s", reserved[i].name);
@@ -103,8 +102,8 @@ bool islable(char *line, int length) {
     }
 
 
-    for(i = 1; i < length; i++){
-        if(!isalnum(line[i])){
+    for (i = 1; i < length; i++) {
+        if (!isalnum(line[i])) {
             return FALSE;
         }
     }
@@ -116,9 +115,9 @@ bool islable(char *line, int length) {
     Copies source string to destination string. the number of copied characters is specified.
     Adds STRING_END at the end of the copied string
 */
-static void copy(char *dest,char *source, int length){
+static void copy(char *dest, char *source, int length) {
     int i;
-    for (i= 0; i < length; ++i) {
+    for (i = 0; i < length; ++i) {
         dest[i] = source[i];
     }
     dest[length] = '\0';
