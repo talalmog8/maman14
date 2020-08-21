@@ -32,12 +32,22 @@ int is_guide(char **line_p) {
 
 
     for (i = 0; i < sizeof(types) / sizeof(guide_type); ++i) {
-        if (!strncmp(line, types[i].type, types[i].length) && is_space(line[types[i].length])) {
-            skip_characters(line_p, types[i].length);
-            return types[i].no;
+        if (!strncmp(line, types[i].type, types[i].length)) {
+            if(is_space(line[types[i].length])){
+                skip_characters(line_p, types[i].length);
+                return types[i].no;
+            }
+            else{
+                log_message("Missing whit character after guide name. guide name: %s", types[i].type);
+                return -1;
+            }
         }
     }
 
+    if(**line_p == '.'){
+        log_message("Unknown guide");
+        return -2;
+    }
 
     return -1;
 }
@@ -94,7 +104,7 @@ static bool parse_number(char *text) {
             num *= 10;
             num += (text[i] - '0');
         } else {
-            fprintf(stderr, "Could not parse numbers in .data command. arguements: %s", text);
+            log_message("Could not parse a number in .data command. number: %s", text);
             return FALSE;
         }
     }
@@ -113,28 +123,30 @@ static bool parse_string(char *text) {
     skip_white_characters(&text);
 
     if (*text != '\"') {
-        fprintf(stderr, "Missing \" suffix in .string argument. argument: %s", text);
+        log_message("Missing \" suffix in .string argument");
         return FALSE;
+    } else if(*(text+ 1) == '\"'){
+        log_message("Empty string int .string command");
     }
 
     for (i = 1; text[i] != '\"' && text[i] != '\n' && text[i] != '\0'; ++i) {
-        if ((text[i] > 32 && text[i] < 127) || isspace(text[i])) {
+        if ((text[i] >= 32 && text[i] < 127)) {
             get_current_guide()->data = text[i];;
             incDC(1);
         } else {
-            fprintf(stderr, "Found illegal character in .string guide. arguments: %s", text);
+            log_message("Found illegal character in .string guide. character decimal code: %d", text[i]);
             return FALSE;
         }
     }
 
     if (text[i] != '\"') {
-        fprintf(stderr, "Missing \" postfix in .string argument. argument: %s", text);
+        log_message("Missing \" postfix in .string argument");
         return FALSE;
     }
 
     skip_characters(&text, i + 1);
     if (!is_end(*text)) {
-        fprintf(stderr, "Excess data after .string argument. argument: %s", text);
+        log_message("Excess data after .string guide");
         return FALSE;
     }
 
